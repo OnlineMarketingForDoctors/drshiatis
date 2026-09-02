@@ -9,6 +9,14 @@ const tiles = [
 
 <section class="proc section" id="expertise" aria-labelledby="expertise-title">
   <div class="container">
+    <header class="proc__head" data-reveal-group>
+      <div>
+        <p class="eyebrow eyebrow--gold" data-reveal>Areas of expertise</p>
+        <h2 class="h2" id="expertise-title" data-reveal>Considered surgery, <em class="italic">never standard</em></h2>
+      </div>
+      <p class="lead measure-narrow" data-reveal>Four areas, one approach. Every plan is built around your own anatomy and what you hope to achieve, not a technique applied to everyone.</p>
+    </header>
+
     <div class="proc__grid">
       {tiles.filter(t => t.pos === 'left').map((t) => (
         <a class="proc__tile cover" href={t.href} data-img-reveal>
@@ -20,8 +28,8 @@ const tiles = [
       <div class="proc__centre cover" data-img-reveal>
         <img src="/images/mosaic-centre.webp" alt="Woman in an ivory silk dress turning in sunlight in front of emerald curtains" width="1800" height="1208" loading="lazy" decoding="async" />
         <div class="proc__centre-content on-dark" data-reveal-group>
-          <p class="eyebrow" data-reveal>Areas of expertise</p>
-          <h2 class="h2 italic" id="expertise-title" data-reveal>Breast and body surgery</h2>
+          <p class="eyebrow" data-reveal>Most of the practice</p>
+          <h3 class="h2 italic" data-reveal>Breast and body surgery</h3>
           <p class="proc__copy" data-reveal>
             Augmentation, reduction and uplift. Tummy tuck, liposuction and body contouring. Gynaecomastia surgery for men. Every plan is built around your anatomy, never a standard technique.
           </p>
@@ -43,7 +51,15 @@ const tiles = [
 </section>
 
 <style>
-  .proc { padding-top: calc(var(--section) * 0.7); }
+  .proc__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .proc__head .h2 { margin-top: 1rem; max-width: 9.5em; }
 
   .proc__grid {
     display: grid;
