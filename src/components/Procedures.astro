@@ -1,9 +1,22 @@
 ---
+// Procedure lists mirror the categories on the current drshiatis.com site.
 const tiles = [
-  { label: 'Breast', href: '/surgical', img: '/images/tile-breast.webp', alt: 'Woman in an ivory silk camisole looking back over her shoulder', pos: 'left' },
-  { label: 'Body', href: '/surgical', img: '/images/tile-body.webp', alt: 'Profile of a woman in an ivory bodysuit against blush marble', pos: 'left' },
-  { label: 'For men', href: '/for-men', img: '/images/tile-men.webp', alt: 'Man in a white linen shirt seated against an emerald wall', pos: 'right' },
-  { label: 'Face', href: '/surgical', img: '/images/tile-face.webp', alt: 'Close crop of a woman\'s eyes and brow', pos: 'right' },
+  {
+    label: 'Breast', href: '/surgical', img: '/images/tile-breast.webp', alt: 'Woman in an ivory silk camisole looking back over her shoulder', pos: 'left',
+    items: ['Breast augmentation', 'Breast reduction', 'Breast lift (mastopexy)', 'Breast lift with implants', 'Fat transfer (lipomodelling)', 'Breast asymmetry correction', 'Implant removal and auto-augmentation'],
+  },
+  {
+    label: 'Body', href: '/surgical', img: '/images/tile-body.webp', alt: 'Profile of a woman in an ivory bodysuit against blush marble', pos: 'left',
+    items: ['Tummy tuck (abdominoplasty)', 'Body lift', 'Liposuction and liposculpting', 'Arm lift', 'Thigh lift', 'Mummy makeover'],
+  },
+  {
+    label: 'For men', href: '/for-men', img: '/images/tile-men.webp', alt: 'Man in a white linen shirt seated against an emerald wall', pos: 'right',
+    items: ['Gynaecomastia surgery', '3D abdominal liposculpting', 'Hair loss prevention'],
+  },
+  {
+    label: 'Face', href: '/surgical', img: '/images/tile-face.webp', alt: 'Close crop of a woman\'s eyes and brow', pos: 'right',
+    items: ['Upper blepharoplasty', 'Prominent ear correction', 'Earlobe reduction', 'Earlobe revision', 'Lip lift', 'Mole removal', 'Keloid scar treatment'],
+  },
 ];
 ---
 
@@ -19,9 +32,14 @@ const tiles = [
 
     <div class="proc__grid">
       {tiles.filter(t => t.pos === 'left').map((t) => (
-        <a class="proc__tile cover" href={t.href} data-img-reveal>
+        <a class="proc__tile cover" href={t.href} data-img-reveal aria-label={`${t.label}: ${t.items.join(', ')}`}>
           <img src={t.img} alt={t.alt} width="900" height="1350" loading="lazy" decoding="async" />
-          <span class="proc__tile-label">{t.label}</span>
+          <span class="proc__tile-body">
+            <span class="proc__tile-label">{t.label}</span>
+            <ul class="proc__tile-list" aria-hidden="true">
+              {t.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </span>
         </a>
       ))}
 
@@ -41,9 +59,14 @@ const tiles = [
       </div>
 
       {tiles.filter(t => t.pos === 'right').map((t) => (
-        <a class="proc__tile cover" href={t.href} data-img-reveal>
+        <a class="proc__tile cover" href={t.href} data-img-reveal aria-label={`${t.label}: ${t.items.join(', ')}`}>
           <img src={t.img} alt={t.alt} width="900" height="1350" loading="lazy" decoding="async" />
-          <span class="proc__tile-label">{t.label}</span>
+          <span class="proc__tile-body">
+            <span class="proc__tile-label">{t.label}</span>
+            <ul class="proc__tile-list" aria-hidden="true">
+              {t.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </span>
         </a>
       ))}
     </div>
@@ -117,21 +140,70 @@ const tiles = [
     position: absolute;
     inset: 0;
     background: linear-gradient(to top, rgba(10, 42, 33, 0.7), rgba(10, 42, 33, 0) 55%);
-    transition: opacity 0.6s;
   }
-  .proc__tile:hover > img { transform: scale(1.06); }
-  .proc__tile-label {
+  /* Deeper wash that fades in on hover so the list reads over the photo. */
+  .proc__tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to top, rgba(10, 42, 33, 0.92) 0%, rgba(10, 42, 33, 0.6) 60%, rgba(10, 42, 33, 0.25) 100%);
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-out);
+  }
+  .proc__tile:hover::before,
+  .proc__tile:focus-visible::before { opacity: 1; }
+  .proc__tile:hover > img,
+  .proc__tile:focus-visible > img { transform: scale(1.06); }
+
+  .proc__tile-body {
     position: absolute;
     left: 1.5rem;
+    right: 1.5rem;
     bottom: 1.4rem;
-    z-index: 1;
+    z-index: 2;
+    display: block;
+  }
+  .proc__tile-label {
+    display: block;
     font-family: var(--font-display);
     font-style: italic;
     font-size: clamp(1.5rem, 2.4vw, 2.3rem);
     letter-spacing: 0.02em;
-    transition: transform 0.6s var(--ease-out);
   }
-  .proc__tile:hover .proc__tile-label { transform: translateY(-0.3rem); }
+  .proc__tile-list {
+    display: grid;
+    gap: 0.25rem;
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(0.5rem);
+    transition: max-height 0.7s var(--ease-out), opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out), margin-top 0.5s var(--ease-out);
+  }
+  .proc__tile-list li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: rgba(244, 238, 228, 0.92);
+  }
+  .proc__tile-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 0.55rem;
+    height: 1px;
+    background: var(--gold-light);
+  }
+  .proc__tile:hover .proc__tile-list,
+  .proc__tile:focus-visible .proc__tile-list {
+    max-height: 18rem;
+    margin-top: 0.8rem;
+    opacity: 1;
+    transform: none;
+  }
 
   @media (max-width: 900px) {
     .proc__grid {
@@ -146,6 +218,7 @@ const tiles = [
       aspect-ratio: 4 / 5;
     }
     .proc__tile { grid-column: auto; grid-row: auto; }
-    .proc__tile-label { left: 1rem; bottom: 0.9rem; }
+    .proc__tile-body { left: 1rem; right: 1rem; bottom: 0.9rem; }
+    .proc__tile-list li { font-size: 0.78rem; }
   }
 </style>
