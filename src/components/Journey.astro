@@ -130,14 +130,15 @@ const steps = [
   .journey__title { color: var(--emerald); }
   .journey__text { margin-top: 0.5rem; color: var(--ink-soft); max-width: 34em; }
 
+  .journey__figure { align-self: stretch; }
   .journey__sticky { position: sticky; top: 6rem; }
-  .journey__img { aspect-ratio: 4 / 5; }
+  .journey__img { aspect-ratio: 4 / 5; max-height: calc(100vh - 11rem); }
   .journey__img > img { position: absolute; inset: 0; }
   .journey__caption { margin-top: 1rem; color: var(--ink-soft); }
 
   @media (max-width: 900px) {
     .journey__grid { grid-template-columns: 1fr; }
-    .journey__figure { order: -1; }
+    .journey__figure { order: -1; align-self: auto; }
     .journey__sticky { position: static; }
     .journey__img { aspect-ratio: 3 / 2; }
     .journey__steps { padding-left: 4rem; }

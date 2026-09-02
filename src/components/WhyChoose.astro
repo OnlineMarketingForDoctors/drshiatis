@@ -2,26 +2,32 @@
 const points = [
   {
     title: 'UK trained, London refined',
+    icon: '<path d="M3 9.5 12 5l9 4.5-9 4.5z"/><path d="M6.5 11.3V16c0 1.4 2.5 2.7 5.5 2.7s5.5-1.3 5.5-2.7v-4.7"/><path d="M21 9.5v5.5"/>',
     text: 'University of Nottingham, a Fulbright Scholarship in the USA, specialist plastic surgery training in London teaching hospitals and a microsurgery fellowship at Imperial College NHS. Over 15 years in plastic surgery.',
   },
   {
     title: 'Reconstructive precision, aesthetic judgement',
+    icon: '<circle cx="12" cy="5" r="1.6"/><path d="M11.3 6.5 6 20M12.7 6.5 18 20"/><path d="M7.4 16.5c2.9 1.3 6.3 1.3 9.2 0"/>',
     text: 'As an NHS Consultant at Barts Health, Mr Shiatis performs microsurgical breast reconstruction. The same standards of safety and precision go into every aesthetic procedure.',
   },
   {
     title: 'Two consultations, never one',
+    icon: '<path d="M4 5.5h8.5a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H9l-3.5 2.6v-2.6H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"/><path d="M15.5 9.5H20a2 2 0 0 1 2 2v3.5a2 2 0 0 1-2 2h-.5v2.4l-3-2.4H15"/>',
     text: 'You share your three biggest concerns before you arrive, so each consultation is built around what matters to you. 3D imaging is available where it helps you picture the outcome.',
   },
   {
     title: 'Natural, proportional results',
+    icon: '<path d="M20 12a8 8 0 1 0-8 8 5 5 0 1 0 5-5 3 3 0 1 0-3 3 1.8 1.8 0 1 0 1.8-1.8"/>',
     text: 'No standard technique. Every plan respects your own anatomy, so the result looks refined rather than done, and still looks like you.',
   },
   {
     title: 'Honest about what is possible',
+    icon: '<path d="M12 4v16M7 20h10M12 6l6 2M12 6 6 8"/><path d="M3.5 13 6 8l2.5 5a2.5 2.5 0 0 1-5 0zM15.5 13 18 8l2.5 5a2.5 2.5 0 0 1-5 0z"/>',
     text: 'Clear, realistic expectations from the first meeting, including what surgery cannot do. Patients say this is the thing they value most.',
   },
   {
     title: 'A faster, gentler recovery',
+    icon: '<path d="M20.5 3.5c-7 0-12 5-13 12l-4 5"/><path d="M7.5 15.5c5 .5 10-3 13-12"/><path d="M11 12.5l3.5.3M13.5 9.5l3 .3M9 15l3 .2"/>',
     text: 'Day-case protocols, gynaecomastia surgery under local anaesthetic, short-scar breast augmentation and ultrasound-assisted liposuction, so you get back to normal sooner.',
   },
 ];
@@ -50,8 +56,13 @@ const points = [
       <ol class="why__list" data-reveal-group>
         {points.map((p) => (
           <li class="why__item" data-reveal>
-            <h3 class="h3 italic why__title">{p.title}</h3>
-            <p class="why__text">{p.text}</p>
+            <span class="why__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" set:html={p.icon} />
+            </span>
+            <div class="why__body">
+              <h3 class="h3 italic why__title">{p.title}</h3>
+              <p class="why__text">{p.text}</p>
+            </div>
           </li>
         ))}
       </ol>
@@ -73,11 +84,13 @@ const points = [
     align-items: start;
   }
 
+  /* The figure must be as tall as the list for the sticky image to travel. */
+  .why__figure { align-self: stretch; }
   .why__sticky {
     position: sticky;
     top: 6rem;
   }
-  .why__img { aspect-ratio: 4 / 5; }
+  .why__img { aspect-ratio: 4 / 5; max-height: calc(100vh - 11rem); }
   .why__img > img { position: absolute; inset: 0; }
   .why__caption {
     display: flex;
@@ -97,16 +110,33 @@ const points = [
     padding-block: clamp(1.5rem, 2.6vw, 2.4rem);
     border-top: 1px solid rgba(184, 150, 79, 0.45);
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.6rem;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    column-gap: clamp(1rem, 2vw, 1.75rem);
+    align-items: start;
   }
+  .why__icon {
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(184, 150, 79, 0.55);
+    border-radius: 50%;
+    color: var(--gold);
+    margin-top: 0.15rem;
+  }
+  .why__icon svg { width: 1.35rem; height: 1.35rem; }
+  .why__body { display: grid; gap: 0.6rem; }
   .why__item:last-child { border-bottom: 1px solid rgba(184, 150, 79, 0.45); }
   .why__title { color: var(--emerald); }
   .why__text { color: var(--ink-soft); max-width: 36em; }
 
   @media (max-width: 900px) {
     .why__grid { grid-template-columns: 1fr; }
+    .why__figure { align-self: auto; }
     .why__sticky { position: static; }
     .why__img { aspect-ratio: 3 / 2; }
+    .why__item { grid-template-columns: 2.5rem minmax(0, 1fr); }
+    .why__icon { width: 2.5rem; height: 2.5rem; }
+    .why__icon svg { width: 1.15rem; height: 1.15rem; }
   }
 </style>
