@@ -1,7 +1,9 @@
 ---
+// Patient photographs supplied by the practice, shown with consent.
 const cases = [
-  { title: 'Breast augmentation', note: 'Preservé short-scar technique' },
-  { title: 'Gynaecomastia surgery', note: 'Performed under local anaesthetic' },
+  { key: 'p1', title: 'Breast augmentation', note: 'Anatomical implants, subglandular plane' },
+  { key: 'p2', title: 'Breast augmentation', note: 'Anatomical implants, placed in front of the muscle' },
+  { key: 'p3', title: 'Implant exchange', note: '400cc implants exchanged for 450cc anatomical implants behind the muscle, correcting rupture and rippling' },
 ];
 ---
 
@@ -19,10 +21,12 @@ const cases = [
       {cases.map((c, i) => (
         <figure class="ba__case" data-reveal>
           <div class="ba__compare" data-compare style="--pos: 50%">
-            <div class="ba__panel ba__panel--before" aria-hidden="true">
+            <div class="ba__panel ba__panel--before">
+              <img src={`/images/ba-${c.key}-before.webp`} alt={`${c.title}, before`} width="900" height="1125" loading="lazy" decoding="async" draggable="false" />
               <span class="ba__tag">Before</span>
             </div>
-            <div class="ba__panel ba__panel--after" aria-hidden="true">
+            <div class="ba__panel ba__panel--after">
+              <img src={`/images/ba-${c.key}-after.webp`} alt={`${c.title}, after`} width="900" height="1125" loading="lazy" decoding="async" draggable="false" />
               <span class="ba__tag">After</span>
             </div>
             <span class="ba__handle" aria-hidden="true">
@@ -42,7 +46,7 @@ const cases = [
     </div>
 
     <div class="ba__foot" data-reveal-group>
-      <p class="small ba__disclaimer" data-reveal>Placeholder frames. Patient photographs will be shown here with written consent, and results vary from person to person.</p>
+      <p class="small ba__disclaimer" data-reveal>Photographs of Mr Shiatis's patients, shown with their consent. Results vary from person to person.</p>
       <a class="link-rule" href="/before-and-after" data-reveal>View the gallery</a>
     </div>
   </div>
@@ -61,8 +65,8 @@ const cases = [
 
   .ba__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1.25rem, 3vw, 3rem);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
   }
 
   .ba__compare {
@@ -76,16 +80,14 @@ const cases = [
   .ba__panel {
     position: absolute;
     inset: 0;
-    background: url('/images/marble.webp') center / cover;
   }
-  .ba__panel--before::before,
-  .ba__panel--after::before {
-    content: '';
-    position: absolute;
-    inset: 0;
+  .ba__panel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    -webkit-user-drag: none;
   }
-  .ba__panel--before::before { background: rgba(227, 205, 194, 0.55); }
-  .ba__panel--after::before { background: rgba(15, 59, 46, 0.12); }
   .ba__panel--after { clip-path: inset(0 0 0 var(--pos)); }
 
   .ba__tag {
@@ -141,14 +143,12 @@ const cases = [
   .ba__compare:focus-within .ba__handle { background: var(--emerald); }
 
   .ba__caption {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
+    display: grid;
+    gap: 0.35rem;
     margin-top: 1.1rem;
     color: var(--emerald);
   }
-  .ba__note { color: var(--ink-mute); text-align: right; }
+  .ba__note { color: var(--ink-mute); }
 
   .ba__foot {
     display: flex;
@@ -163,7 +163,10 @@ const cases = [
   }
   .ba__disclaimer { color: var(--ink-mute); max-width: 40em; }
 
-  @media (max-width: 700px) {
+  @media (max-width: 1000px) {
+    .ba__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
     .ba__grid { grid-template-columns: 1fr; }
   }
 </style>
