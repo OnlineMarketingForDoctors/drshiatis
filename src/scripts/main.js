@@ -59,7 +59,6 @@ function initHero() {
 
     gsap.to('.hero__content', {
       yPercent: 18,
-      opacity: 0.35,
       ease: 'none',
       scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
     });
