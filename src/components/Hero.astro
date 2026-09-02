@@ -90,23 +90,14 @@ const VIDEO_ID = 'hLFJKqazyEQ';
     background: linear-gradient(to top, rgba(10, 42, 33, 0.8) 0%, rgba(10, 42, 33, 0.35) 22%, rgba(10, 42, 33, 0) 48%);
   }
 
-  /* Solid emerald through the logo row, fading to nothing across the nav.
-     Sits on the section, not the parallax layer, so it starts at the top edge. */
+  /* Translucent emerald band behind the header, fading to nothing. */
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    --solid: clamp(5.5rem, 9.6vw, 9.5rem);
-    background: linear-gradient(
-      to bottom,
-      var(--emerald) 0,
-      var(--emerald) var(--solid),
-      rgba(15, 59, 46, 0.78) calc(var(--solid) + 3.5rem),
-      rgba(15, 59, 46, 0.4) calc(var(--solid) + 9rem),
-      rgba(15, 59, 46, 0) calc(var(--solid) + 17rem)
-    );
+    background: linear-gradient(to bottom, rgba(10, 42, 33, 0.82) 0%, rgba(10, 42, 33, 0.55) 18%, rgba(10, 42, 33, 0) 46%);
   }
 
   .hero__content {
