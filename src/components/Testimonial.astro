@@ -1,13 +1,6 @@
 ---
 import { featured, DOCTIFY_URL } from '../data/reviews.js';
 import Stars from './Stars.astro';
-import { site } from '../data/site.js';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-
-// Inlined so the Doctify mark takes the ivory text colour on the dark ground.
-const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doctify-mono.svg', import.meta.url)), 'utf8')
-  .replace('<svg ', '<svg class="testi__doctify" role="img" aria-label="Doctify" ');
 ---
 
 <section class="testi" aria-labelledby="testi-title" data-testi>
@@ -44,12 +37,6 @@ const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doct
 
     <a class="link-rule testi__more" href={DOCTIFY_URL} target="_blank" rel="noopener" data-reveal>Read more on Doctify</a>
 
-    <ul class="testi__logos" data-reveal-group>
-      <li data-reveal><Fragment set:html={doctifyMono} /></li>
-      <li data-reveal><img src="/images/fitzrovia-hospital.png" alt="Fitzrovia Hospital" width="448" height="112" loading="lazy" decoding="async" /></li>
-      <li data-reveal><img src="/images/pantheons-clinic.png" alt="Pantheons Clinic" width="659" height="168" loading="lazy" decoding="async" /></li>
-      <li class="testi__gmc" data-reveal><span>GMC</span> {site.gmc}</li>
-    </ul>
   </div>
 </section>
 
@@ -142,27 +129,6 @@ const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doct
   .testi__arrow svg { width: 1.2rem; height: 1.2rem; }
 
   .testi__more { margin-top: clamp(2.5rem, 6vh, 4rem); color: var(--emerald); }
-
-  .testi__logos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem clamp(2rem, 4vw, 4rem);
-    margin-top: clamp(3rem, 7vh, 5rem);
-    padding-top: 2rem;
-    border-top: 1px solid rgba(28, 27, 24, 0.15);
-    width: 100%;
-    max-width: 62rem;
-  }
-  .testi__logos img {
-    height: 1.5rem;
-    width: auto;
-    opacity: 0.9;
-  }
-  .testi__logos :global(.testi__doctify) { height: 1.5rem; width: auto; color: var(--ink); opacity: 0.9; }
-  .testi__gmc { font-size: 0.85rem; letter-spacing: 0.08em; color: var(--ink-soft); }
-  .testi__gmc span { font-family: var(--font-display); font-size: 1.05rem; margin-right: 0.2rem; }
 
   @media (max-width: 700px) {
     .testi__stage { grid-template-columns: 1fr; }
