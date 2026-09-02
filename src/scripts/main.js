@@ -19,12 +19,24 @@ function initHeader() {
   const closeBtn = $('[data-menu-close]');
 
   if (bar && hero) {
-    ScrollTrigger.create({
-      trigger: hero,
-      start: 'bottom 80px',
-      onEnter: () => bar.classList.add('is-visible'),
-      onLeaveBack: () => bar.classList.remove('is-visible'),
-    });
+    // Derive the bar's state from the scroll position on every frame it
+    // changes, rather than toggling on enter/leave events, so a fast or
+    // programmatic scroll can never leave it stranded in the wrong state.
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const threshold = hero.getBoundingClientRect().bottom;
+      bar.classList.toggle('is-visible', threshold <= 80);
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    window.addEventListener('load', update);
+    update();
   }
 
   const setMenu = (open) => {
