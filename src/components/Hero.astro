@@ -131,11 +131,14 @@ const VIDEO_ID = 'hLFJKqazyEQ';
       rgba(10, 42, 33, 0) 72%
     );
   }
+  /* Each line is masked for the entrance reveal. The padding gives the
+     italic descenders and swashes room so nothing clips; the negative
+     margins cancel it out of the layout. */
   .hero__line {
     display: block;
     overflow: hidden;
-    padding-bottom: 0.08em;
-    margin-bottom: -0.08em;
+    padding: 0.12em 0.25em 0.28em;
+    margin: -0.12em -0.25em -0.28em;
   }
   .hero__line > span {
     display: block;
