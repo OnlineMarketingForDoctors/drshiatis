@@ -1,6 +1,6 @@
 ---
 const tiles = [
-  { label: 'Breast', href: '/surgical', img: '/images/tile-breast.webp', alt: 'Woman in an ivory silk blouse looking over her shoulder', pos: 'left' },
+  { label: 'Breast', href: '/surgical', img: '/images/tile-breast.webp', alt: 'Woman in an ivory silk camisole looking back over her shoulder', pos: 'left' },
   { label: 'Body', href: '/surgical', img: '/images/tile-body.webp', alt: 'Profile of a woman in an ivory bodysuit against blush marble', pos: 'left' },
   { label: 'For men', href: '/for-men', img: '/images/tile-men.webp', alt: 'Man in a white linen shirt seated against an emerald wall', pos: 'right' },
   { label: 'Face', href: '/surgical', img: '/images/tile-face.webp', alt: 'Close crop of a woman\'s eyes and brow', pos: 'right' },
@@ -18,7 +18,7 @@ const tiles = [
       ))}
 
       <div class="proc__centre cover" data-img-reveal>
-        <img src="/images/mosaic-centre.webp" alt="Woman resting on emerald satin in soft light through window blinds" width="1800" height="1208" loading="lazy" decoding="async" />
+        <img src="/images/mosaic-centre.webp" alt="Woman in an ivory silk dress turning in sunlight in front of emerald curtains" width="1800" height="1208" loading="lazy" decoding="async" />
         <div class="proc__centre-content on-dark" data-reveal-group>
           <p class="eyebrow" data-reveal>Areas of expertise</p>
           <h2 class="h2 italic" id="expertise-title" data-reveal>Breast and body surgery</h2>
@@ -70,6 +70,7 @@ const tiles = [
   .proc__centre > img {
     position: absolute;
     inset: 0;
+    object-position: 0% center;
     transition: transform 1.4s var(--ease-out);
   }
   .proc__centre-content {

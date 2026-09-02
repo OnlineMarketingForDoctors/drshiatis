@@ -96,10 +96,13 @@ function initHeroVideo() {
           modestbranding: 1,
           disablekb: 1,
           iv_load_policy: 3,
+          cc_load_policy: 0,
           fs: 0,
         },
         events: {
           onReady: (e) => {
+            // Keep captions off even for viewers whose YouTube default is on.
+            try { e.target.unloadModule('captions'); e.target.unloadModule('cc'); } catch {}
             e.target.mute();
             e.target.playVideo();
           },
