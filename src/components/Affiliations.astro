@@ -1,9 +1,14 @@
 ---
 import { site } from '../data/site.js';
 import Stars from './Stars.astro';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doctify-mono.svg', import.meta.url)), 'utf8')
+  .replace('<svg ', '<svg class="affil__doctify-mark" aria-hidden="true" focusable="false" ');
 ---
 
-<section class="affil bg-ivory" aria-label="Affiliations and credentials">
+<section class="affil" aria-label="Affiliations and credentials">
   <div class="container affil__inner" data-reveal-group>
     <ul class="affil__list">
       <li data-reveal>
@@ -21,8 +26,8 @@ import Stars from './Stars.astro';
         <span class="affil__key">FRCS</span> (Plast)
       </li>
       <li data-reveal>
-        <a class="affil__doctify" href={site.doctify} target="_blank" rel="noopener">
-          <img src="/images/doctify.svg" alt="Doctify" width="120" height="32" loading="lazy" decoding="async" />
+        <a class="affil__doctify" href={site.doctify} target="_blank" rel="noopener" aria-label="Rated 5.0 on Doctify">
+          <Fragment set:html={doctifyMono} />
           <Stars />
           <span class="affil__rating">5.0 rated</span>
         </a>
@@ -33,7 +38,8 @@ import Stars from './Stars.astro';
 
 <style>
   .affil {
-    border-bottom: 1px solid rgba(15, 59, 46, 0.12);
+    background: #111110;
+    color: var(--ivory);
   }
   .affil__inner {
     display: flex;
@@ -48,30 +54,33 @@ import Stars from './Stars.astro';
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 1.25rem clamp(2rem, 4vw, 4rem);
+    gap: 1.25rem clamp(2rem, 4vw, 4.5rem);
   }
-  .affil__logo { height: 1.6rem; width: auto; opacity: 0.85; }
+  .affil__logo { height: 1.6rem; width: auto; opacity: 0.92; }
   .affil__logo--fitzrovia { height: 1.75rem; }
+  .affil__logo--pantheons { filter: brightness(0) invert(1); }
   .affil__text {
     font-size: 0.85rem;
     letter-spacing: 0.06em;
-    color: var(--ink-soft);
+    color: rgba(244, 238, 228, 0.8);
   }
   .affil__key {
     font-family: var(--font-display);
     font-size: 1.05rem;
-    color: var(--ink);
+    color: var(--ivory);
     margin-right: 0.2rem;
   }
   .affil__doctify {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
+    color: var(--ivory);
   }
-  .affil__doctify img { height: 1.35rem; width: auto; }
+  .affil__doctify :global(.affil__doctify-mark) { height: 1.35rem; width: auto; }
+  .affil__doctify .stars { color: var(--gold-light); }
   .affil__rating {
     font-size: 0.8rem;
     letter-spacing: 0.08em;
-    color: var(--ink-soft);
+    color: rgba(244, 238, 228, 0.8);
   }
 </style>

@@ -96,18 +96,25 @@ function initHeroVideo() {
           modestbranding: 1,
           disablekb: 1,
           iv_load_policy: 3,
-          cc_load_policy: 0,
+          cc_load_policy: 3,
           fs: 0,
         },
         events: {
           onReady: (e) => {
-            // Keep captions off even for viewers whose YouTube default is on.
-            try { e.target.unloadModule('captions'); e.target.unloadModule('cc'); } catch {}
             e.target.mute();
             e.target.playVideo();
           },
           onStateChange: (e) => {
-            if (e.data === window.YT.PlayerState.PLAYING) container.classList.add('is-playing');
+            if (e.data === window.YT.PlayerState.PLAYING) {
+              container.classList.add('is-playing');
+              // YouTube switches captions on for muted autoplay. The module can
+              // only be unloaded once playback has started, so do it here.
+              try {
+                e.target.unloadModule('captions');
+                e.target.unloadModule('cc');
+                e.target.setOption('captions', 'track', {});
+              } catch {}
+            }
             if (e.data === window.YT.PlayerState.ENDED) e.target.playVideo();
           },
         },
