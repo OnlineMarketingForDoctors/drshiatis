@@ -50,7 +50,9 @@ const steps = [
 <style>
   .journey {
     position: relative;
-    overflow: hidden;
+    /* clip, not hidden: a hidden-overflow ancestor becomes the scroll
+       container for position: sticky and stops the image pinning. */
+    overflow: clip;
     isolation: isolate;
   }
   .journey__marble {
@@ -132,7 +134,7 @@ const steps = [
 
   .journey__figure { align-self: stretch; }
   .journey__sticky { position: sticky; top: 6rem; }
-  .journey__img { aspect-ratio: 4 / 5; max-height: calc(100vh - 11rem); }
+  .journey__img { aspect-ratio: 4 / 5; max-height: min(calc(100vh - 11rem), 36rem); }
   .journey__img > img { position: absolute; inset: 0; }
   .journey__caption { margin-top: 1rem; color: var(--ink-soft); }
 
