@@ -161,9 +161,11 @@ import { site, nav } from '../data/site.js';
     position: relative;
     display: inline-block;
     padding-bottom: 0.35rem;
-    font-size: 0.9rem;
+    font-size: 0.78rem;
     font-weight: 500;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
   .site-header__nav a::after,
   .site-bar__nav a::after {
@@ -227,11 +229,11 @@ import { site, nav } from '../data/site.js';
     height: 4.25rem;
   }
   .site-bar__logo { width: 2.4rem; flex: none; }
-  .site-bar__nav ul { display: flex; gap: clamp(1rem, 2vw, 2rem); }
-  .site-bar__nav a { font-size: 0.84rem; }
+  .site-bar__nav ul { display: flex; gap: clamp(0.8rem, 1.4vw, 1.5rem); }
+  .site-bar__nav a { font-size: 0.68rem; letter-spacing: 0.12em; }
   .site-bar__actions { display: flex; align-items: center; gap: 1rem; }
-  .site-bar__phone { font-size: 0.85rem; font-weight: 500; }
-  .site-bar .btn { padding: 0.8rem 1.2rem; font-size: 0.72rem; }
+  .site-bar__phone { font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
+  .site-bar .btn { padding: 0.8rem 1.2rem; font-size: 0.7rem; white-space: nowrap; }
   .site-bar__burger { display: none; }
 
   /* Mobile menu */
@@ -282,7 +284,9 @@ import { site, nav } from '../data/site.js';
     display: block;
     padding: 1rem 0;
     font-family: var(--font-display);
-    font-size: clamp(1.9rem, 7vw, 2.6rem);
+    font-size: clamp(1.5rem, 5.5vw, 2.1rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     line-height: 1.1;
   }
   .mobile-menu__foot {
@@ -295,9 +299,11 @@ import { site, nav } from '../data/site.js';
 
   body.menu-open { overflow: hidden; }
 
+  @media (max-width: 1400px) {
+    .site-bar__phone { display: none; }
+  }
   @media (max-width: 1100px) {
     .site-header__phone span { display: none; }
-    .site-bar__phone { display: none; }
   }
 
   @media (max-width: 900px) {

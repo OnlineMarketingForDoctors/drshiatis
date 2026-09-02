@@ -6,15 +6,6 @@ import Stars from './Stars.astro';
 <section class="reviews section bg-paper" id="reviews" aria-labelledby="reviews-title">
   <div class="container">
     <header class="reviews__head" data-reveal-group>
-      <div class="reviews__brand" data-reveal>
-        <a href={DOCTIFY_URL} target="_blank" rel="noopener" class="reviews__doctify">
-          <img src="/images/doctify.svg" alt="Doctify" width="120" height="32" loading="lazy" decoding="async" />
-        </a>
-        <div class="reviews__score">
-          <Stars />
-          <span class="small">5.0 from verified patients</span>
-        </div>
-      </div>
       <h2 class="h2 reviews__title" id="reviews-title" data-reveal>In their <em class="italic">own words</em></h2>
       <div class="reviews__controls" data-reveal>
         <button class="reviews__arrow" type="button" data-reviews-prev aria-label="Previous reviews">
@@ -31,6 +22,7 @@ import Stars from './Stars.astro';
     <ul class="reviews__track container" data-reviews-track>
       {reviews.map((r) => (
         <li class="reviews__card" data-reviews-card>
+          <img class="reviews__card-logo" src="/images/doctify.svg" alt="Doctify" width="120" height="32" loading="lazy" decoding="async" />
           <Stars class="reviews__stars" />
           <p class="eyebrow reviews__proc">{r.procedure}</p>
           <blockquote class="reviews__quote">
@@ -56,15 +48,11 @@ import Stars from './Stars.astro';
 
   .reviews__head {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1fr auto;
     align-items: end;
     gap: 2rem;
     margin-bottom: clamp(2rem, 4vw, 3rem);
   }
-  .reviews__brand { display: flex; flex-direction: column; gap: 0.6rem; }
-  .reviews__doctify img { height: 1.6rem; width: auto; }
-  .reviews__score { display: flex; align-items: center; gap: 0.6rem; color: var(--ink-soft); }
-  .reviews__title { text-align: center; }
 
   .reviews__controls { display: flex; gap: 0.6rem; }
   .reviews__arrow {
@@ -96,6 +84,7 @@ import Stars from './Stars.astro';
   .reviews__track::-webkit-scrollbar { display: none; }
 
   .reviews__card {
+    position: relative;
     flex: 0 0 clamp(18rem, 27vw, 25rem);
     scroll-snap-align: start;
     display: flex;
@@ -107,6 +96,13 @@ import Stars from './Stars.astro';
     transition: border-color 0.4s, transform 0.6s var(--ease-out);
   }
   .reviews__card:hover { border-color: var(--gold); }
+  .reviews__card-logo {
+    position: absolute;
+    top: clamp(1.5rem, 2.2vw, 2.2rem);
+    right: clamp(1.5rem, 2.2vw, 2.2rem);
+    height: 1.15rem;
+    width: auto;
+  }
   .reviews__proc { color: var(--emerald); }
   .reviews__quote {
     font-family: var(--font-display);
@@ -131,8 +127,7 @@ import Stars from './Stars.astro';
 
   .reviews__foot { margin-top: 1rem; color: var(--emerald); }
 
-  @media (max-width: 900px) {
-    .reviews__head { grid-template-columns: 1fr auto; }
-    .reviews__title { grid-column: 1 / -1; text-align: left; order: -1; }
+  @media (max-width: 600px) {
+    .reviews__head { grid-template-columns: 1fr; }
   }
 </style>
