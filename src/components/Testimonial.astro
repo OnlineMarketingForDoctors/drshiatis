@@ -10,7 +10,7 @@ const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doct
   .replace('<svg ', '<svg class="testi__doctify" role="img" aria-label="Doctify" ');
 ---
 
-<section class="testi on-dark" aria-labelledby="testi-title" data-testi>
+<section class="testi" aria-labelledby="testi-title" data-testi>
   <div class="testi__bg" aria-hidden="true" data-parallax data-parallax-strength="10">
     <img src="/images/testimonial-bg.webp" alt="" width="2400" height="1018" loading="lazy" decoding="async" />
   </div>
@@ -58,8 +58,8 @@ const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doct
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    background: var(--emerald-deep);
-    color: var(--ivory);
+    background: var(--ivory);
+    color: var(--ink);
     text-align: center;
   }
   .testi__bg {
@@ -68,20 +68,13 @@ const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doct
     z-index: -2;
   }
   .testi__bg img { width: 100%; height: 100%; object-fit: cover; }
-  .testi::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: rgba(10, 42, 33, 0.82);
-    mix-blend-mode: multiply;
-  }
+  /* A soft ivory pool behind the quote so the type stays clean over the marble. */
   .testi::after {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: radial-gradient(ellipse at center, rgba(10, 42, 33, 0) 30%, rgba(10, 42, 33, 0.55) 100%);
+    background: radial-gradient(ellipse 60% 55% at center 42%, rgba(244, 238, 228, 0.7) 0%, rgba(244, 238, 228, 0.35) 55%, rgba(244, 238, 228, 0) 100%);
   }
 
   .testi__inner {
@@ -92,8 +85,9 @@ const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doct
   }
   .testi__label {
     padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(244, 238, 228, 0.3);
+    border-bottom: 1px solid rgba(28, 27, 24, 0.25);
     letter-spacing: 0.3em;
+    color: var(--ink-soft);
   }
 
   .testi__stage {
@@ -124,7 +118,7 @@ const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doct
     pointer-events: none;
   }
   .testi__slide.is-active { opacity: 1; transform: none; pointer-events: auto; }
-  .testi__stars { color: var(--gold-light); }
+  .testi__stars { color: var(--gold); }
   .testi__quote {
     font-family: var(--font-display);
     font-size: clamp(1.45rem, 2.5vw, 2.3rem);
@@ -132,21 +126,22 @@ const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doct
     font-variation-settings: 'opsz' 60;
     text-wrap: balance;
   }
-  .testi__cite { color: rgba(244, 238, 228, 0.7); letter-spacing: 0.04em; }
+  .testi__cite { color: var(--ink-soft); letter-spacing: 0.04em; }
 
   .testi__arrow {
     width: 3.4rem;
     height: 3.4rem;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(244, 238, 228, 0.4);
+    border: 1px solid rgba(28, 27, 24, 0.35);
     border-radius: 50%;
+    color: var(--ink);
     transition: border-color 0.35s, background-color 0.35s, color 0.35s;
   }
-  .testi__arrow:hover { background: var(--ivory); color: var(--emerald); border-color: var(--ivory); }
+  .testi__arrow:hover { background: var(--emerald); color: var(--ivory); border-color: var(--emerald); }
   .testi__arrow svg { width: 1.2rem; height: 1.2rem; }
 
-  .testi__more { margin-top: clamp(2.5rem, 6vh, 4rem); color: var(--ivory); }
+  .testi__more { margin-top: clamp(2.5rem, 6vh, 4rem); color: var(--emerald); }
 
   .testi__logos {
     display: flex;
@@ -156,18 +151,17 @@ const doctifyMono = readFileSync(fileURLToPath(new URL('../../public/images/doct
     gap: 1.5rem clamp(2rem, 4vw, 4rem);
     margin-top: clamp(3rem, 7vh, 5rem);
     padding-top: 2rem;
-    border-top: 1px solid rgba(244, 238, 228, 0.18);
+    border-top: 1px solid rgba(28, 27, 24, 0.15);
     width: 100%;
     max-width: 62rem;
   }
   .testi__logos img {
     height: 1.5rem;
     width: auto;
-    filter: brightness(0) invert(1);
-    opacity: 0.85;
+    opacity: 0.9;
   }
-  .testi__logos :global(.testi__doctify) { height: 1.5rem; width: auto; color: var(--ivory); opacity: 0.9; }
-  .testi__gmc { font-size: 0.85rem; letter-spacing: 0.08em; opacity: 0.85; }
+  .testi__logos :global(.testi__doctify) { height: 1.5rem; width: auto; color: var(--ink); opacity: 0.9; }
+  .testi__gmc { font-size: 0.85rem; letter-spacing: 0.08em; color: var(--ink-soft); }
   .testi__gmc span { font-family: var(--font-display); font-size: 1.05rem; margin-right: 0.2rem; }
 
   @media (max-width: 700px) {
