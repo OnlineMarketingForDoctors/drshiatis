@@ -20,8 +20,8 @@ import Stars from './Stars.astro';
 
   <div class="reviews__viewport" data-reviews>
     <ul class="reviews__track container" data-reviews-track>
-      {reviews.map((r) => (
-        <li class="reviews__card" data-reviews-card>
+      {[0, 1].map((copy) => reviews.map((r) => (
+        <li class="reviews__card" data-reviews-card aria-hidden={copy === 1 ? 'true' : undefined} data-copy={copy}>
           <img class="reviews__card-logo" src="/images/doctify.svg" alt="Doctify" width="120" height="32" loading="lazy" decoding="async" />
           <Stars class="reviews__stars" />
           <p class="eyebrow reviews__proc">{r.procedure}</p>
@@ -34,7 +34,7 @@ import Stars from './Stars.astro';
             <time>{r.date}</time>
           </footer>
         </li>
-      ))}
+      )))}
     </ul>
   </div>
 
@@ -73,20 +73,18 @@ import Stars from './Stars.astro';
     display: flex;
     gap: clamp(1rem, 1.6vw, 1.5rem);
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
     scroll-padding-inline: var(--gutter);
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding-block: 0.5rem 1.5rem;
     cursor: grab;
   }
-  .reviews__track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+  .reviews__track.is-dragging { cursor: grabbing; }
   .reviews__track::-webkit-scrollbar { display: none; }
 
   .reviews__card {
     position: relative;
     flex: 0 0 clamp(18rem, 27vw, 25rem);
-    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     gap: 0.9rem;

@@ -303,12 +303,20 @@ function initReviews() {
   const prev = $('[data-reviews-prev]');
   const next = $('[data-reviews-next]');
 
+  // The cards are rendered twice; loopWidth is the width of one full set.
+  const loopWidth = () => track.scrollWidth / 2;
   const step = () => (cards[0]?.getBoundingClientRect().width || 320) + parseFloat(getComputedStyle(track).gap || '16');
-  const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+  const wrap = () => {
+    const half = loopWidth();
+    if (track.scrollLeft >= half) track.scrollLeft -= half;
+    else if (track.scrollLeft < 0) track.scrollLeft += half;
+  };
 
+  // Arrows: nudge by one card, then let the marquee carry on.
   const go = (dir) => {
-    if (dir > 0 && atEnd()) track.scrollTo({ left: 0, behavior: 'smooth' });
-    else track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+    pause();
+    track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+    setTimeout(() => { wrap(); resume(); }, 700);
   };
   prev?.addEventListener('click', () => go(-1));
   next?.addEventListener('click', () => go(1));
@@ -319,33 +327,51 @@ function initReviews() {
     if (e.pointerType !== 'mouse') return;
     down = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft;
     track.classList.add('is-dragging');
+    pause();
   });
   window.addEventListener('pointermove', (e) => {
     if (!down) return;
     const dx = e.clientX - startX;
     if (Math.abs(dx) > 4) moved = true;
     track.scrollLeft = startLeft - dx;
+    wrap();
   });
   window.addEventListener('pointerup', () => {
     if (!down) return;
     down = false;
     track.classList.remove('is-dragging');
+    resume();
   });
   track.addEventListener('click', (e) => { if (moved) e.preventDefault(); }, true);
+  track.addEventListener('scroll', wrap, { passive: true });
 
-  // Gentle autoplay, paused while the visitor is interacting or away.
+  // Continuous marquee, paused while the visitor hovers, touches or focuses.
+  const SPEED = 0.4; // px per frame at 60fps, a slow continuous drift
+  let raf = null, paused = false, visible = false, last = 0;
+  const tick = (t) => {
+    if (!visible || paused) { raf = null; return; }
+    const dt = last ? Math.min(t - last, 50) : 16.7;
+    last = t;
+    track.scrollLeft += SPEED * (dt / 16.7);
+    wrap();
+    raf = requestAnimationFrame(tick);
+  };
+  const start = () => { if (!raf && visible && !paused) { last = 0; raf = requestAnimationFrame(tick); } };
+  const pause = () => { paused = true; };
+  const resume = () => { paused = false; start(); };
+
   if (reduceMotion) return;
-  let timer = null;
-  let visible = false;
-  const start = () => { stop(); timer = setInterval(() => go(1), 5200); };
-  const stop = () => { if (timer) clearInterval(timer); timer = null; };
-  ['pointerenter', 'focusin', 'touchstart'].forEach((ev) => root.addEventListener(ev, stop, { passive: true }));
-  ['pointerleave', 'focusout'].forEach((ev) => root.addEventListener(ev, () => visible && start()));
+  root.addEventListener('pointerenter', pause);
+  root.addEventListener('pointerleave', () => { if (!down) resume(); });
+  root.addEventListener('focusin', pause);
+  root.addEventListener('focusout', resume);
+  root.addEventListener('touchstart', pause, { passive: true });
+  root.addEventListener('touchend', () => setTimeout(resume, 1500), { passive: true });
   ScrollTrigger.create({
     trigger: root,
-    start: 'top 90%',
-    end: 'bottom 10%',
-    onToggle: (self) => { visible = self.isActive; visible ? start() : stop(); },
+    start: 'top 95%',
+    end: 'bottom 5%',
+    onToggle: (self) => { visible = self.isActive; visible ? start() : (raf && cancelAnimationFrame(raf), raf = null); },
   });
 }
 

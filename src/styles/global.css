@@ -20,11 +20,11 @@
   --ink-soft: #5a564e;
   --ink-mute: #8a857a;
 
-  --font-display: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --font-display: 'DM Serif Display', 'Didot', 'Bodoni 72', Georgia, serif;
   --font-body: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
 
-  --fs-display: clamp(3.4rem, 8.5vw, 7.5rem);
-  --fs-h2: clamp(2.3rem, 4.6vw, 4.4rem);
+  --fs-display: clamp(3.2rem, 7.8vw, 6.9rem);
+  --fs-h2: clamp(2.2rem, 4.3vw, 4.1rem);
   --fs-h3: clamp(1.55rem, 2.3vw, 2.15rem);
   --fs-lead: clamp(1.1rem, 1.35vw, 1.3rem);
   --fs-body: 1.0625rem;
