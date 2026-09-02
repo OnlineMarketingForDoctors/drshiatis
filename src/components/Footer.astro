@@ -1,7 +1,16 @@
 ---
 import Monogram from './Monogram.astro';
+import SocialIcons from './SocialIcons.astro';
 import { site, nav } from '../data/site.js';
 const year = new Date().getFullYear();
+
+const icon = {
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  whatsapp: '<path d="M12 3a9 9 0 0 0-7.7 13.6L3 21l4.5-1.2A9 9 0 1 0 12 3z"/><path d="M9.2 8.5c.2-.4.5-.4.8-.4l.7 1.6-.6.8c.5 1.1 1.4 2 2.5 2.5l.8-.6 1.6.7c0 .3 0 .6-.4.8-1.5 1.2-4.6-.7-5.9-3.4-.4-.9-.1-1.6.5-2z"/>',
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/>',
+  pin: '<path d="M12 21s6.5-5.7 6.5-11A6.5 6.5 0 0 0 5.5 10c0 5.3 6.5 11 6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+  hospital: '<path d="M4 21V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v16"/><path d="M2 21h20M12 8v6M9 11h6M9 21v-4h6v4"/>',
+};
 ---
 
 <footer class="footer bg-emerald-deep on-dark">
@@ -11,6 +20,7 @@ const year = new Date().getFullYear();
       <p class="footer__wordmark">Andreas Shiatis</p>
       <p class="eyebrow">Plastic Surgery</p>
       <p class="footer__tag">Consultant Plastic Surgeon specialising in breast and body surgery, London.</p>
+      <div class="footer__social"><SocialIcons /></div>
     </div>
 
     <nav class="footer__col" aria-label="Footer">
@@ -23,23 +33,53 @@ const year = new Date().getFullYear();
       </ul>
     </nav>
 
-    <div class="footer__col">
+    <div class="footer__col footer__col--contact">
       <p class="eyebrow footer__col-title">Contact</p>
-      <ul>
-        <li><a href={site.phoneHref}>{site.phoneDisplay}</a></li>
-        <li><a href={site.whatsappHref} target="_blank" rel="noopener">WhatsApp</a></li>
-        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-        <li class="footer__addr">{site.hospital}</li>
+      <ul class="footer__icons">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.phone} />
+          <a href={site.phoneHref}>{site.phoneDisplay}</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.whatsapp} />
+          <a href={site.whatsappHref} target="_blank" rel="noopener">WhatsApp</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.mail} />
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.pin} />
+          <a href={site.addressHref} target="_blank" rel="noopener" class="footer__addr">
+            {site.address[0]}<br />{site.address[1]}
+          </a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon.hospital} />
+          <span class="footer__addr">Consulting at {site.hospital}</span>
+        </li>
       </ul>
     </div>
 
     <div class="footer__col">
       <p class="eyebrow footer__col-title">Follow</p>
-      <ul>
-        <li><a href={site.instagram} target="_blank" rel="noopener">Instagram</a></li>
-        <li><a href={site.tiktok} target="_blank" rel="noopener">TikTok</a></li>
-        <li><a href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href={site.doctify} target="_blank" rel="noopener">Doctify reviews</a></li>
+      <ul class="footer__icons">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.9" fill="currentColor" stroke="none"/></svg>
+          <a href={site.instagram} target="_blank" rel="noopener">Instagram</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 3c.3 2.3 1.7 3.8 4 4v3.1c-1.5 0-2.9-.5-4-1.3v6.3a5.6 5.6 0 1 1-5.6-5.6c.3 0 .6 0 .9.1v3.2a2.5 2.5 0 1 0 1.6 2.3V3h3.1z"/></svg>
+          <a href={site.tiktok} target="_blank" rel="noopener">TikTok</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.5 8.5h-3V20h3V8.5zM5 4a1.75 1.75 0 1 0 0 3.5A1.75 1.75 0 0 0 5 4zm15 9.3c0-3.2-1.7-4.9-4.2-4.9-1.8 0-2.7 1-3.2 1.7V8.5h-3V20h3v-6c0-1.6.6-2.7 2.1-2.7 1.4 0 2 1 2 2.7v6h3.3v-6.7z"/></svg>
+          <a href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>
+          <a href={site.doctify} target="_blank" rel="noopener">Doctify reviews</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -58,7 +98,7 @@ const year = new Date().getFullYear();
 <style>
   .footer__inner {
     display: grid;
-    grid-template-columns: 1.6fr repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1.5fr 0.9fr 1.3fr 1fr;
     gap: clamp(2rem, 5vw, 5rem);
     padding-block: clamp(3.5rem, 7vw, 6rem) clamp(2.5rem, 5vw, 4rem);
   }
@@ -77,12 +117,29 @@ const year = new Date().getFullYear();
     font-size: var(--fs-small);
     color: rgba(244, 238, 228, 0.65);
   }
+  .footer__social { margin-top: 1.5rem; margin-left: -0.5rem; }
+  .footer__social :global(.social a) { width: 2.4rem; height: 2.4rem; }
+  .footer__social :global(.social svg) { width: 1.2rem; height: 1.2rem; }
 
   .footer__col-title { margin-bottom: 1.1rem; color: var(--gold-light); }
   .footer__col li { padding-block: 0.3rem; font-size: 0.95rem; }
   .footer__col a { color: rgba(244, 238, 228, 0.85); transition: color 0.3s; }
   .footer__col a:hover { color: var(--ivory); }
-  .footer__addr { color: rgba(244, 238, 228, 0.65); }
+
+  .footer__icons li {
+    display: grid;
+    grid-template-columns: 1.1rem 1fr;
+    column-gap: 0.75rem;
+    align-items: start;
+    padding-block: 0.45rem;
+  }
+  .footer__icons svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.25rem;
+    color: var(--gold-light);
+  }
+  .footer__addr { color: rgba(244, 238, 228, 0.7); line-height: 1.5; }
 
   .footer__bottom {
     display: flex;
@@ -97,8 +154,11 @@ const year = new Date().getFullYear();
   .footer__legal a { color: rgba(244, 238, 228, 0.85); border-bottom: 1px solid rgba(244, 238, 228, 0.25); }
   .footer__legal a:hover { color: var(--ivory); }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1000px) {
     .footer__inner { grid-template-columns: 1fr 1fr; }
     .footer__brand { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    .footer__inner { grid-template-columns: 1fr; }
   }
 </style>

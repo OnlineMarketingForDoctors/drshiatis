@@ -8,6 +8,8 @@ export const site = {
   email: 'info@drshiatis.com',
   gmc: '7083196',
   hospital: 'Fitzrovia Hospital, London',
+  address: ['Sterling House, Fulbourne Road', 'Walthamstow, London E17 4EE'],
+  addressHref: 'https://maps.google.com/?q=Sterling+House+Fulbourne+Road+Walthamstow+London+E17+4EE',
   bookingHref: '/book-a-consultation',
   instagram: 'https://www.instagram.com/dr_shiatis/',
   instagramHandle: '@dr_shiatis',
