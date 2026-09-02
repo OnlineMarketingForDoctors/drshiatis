@@ -29,6 +29,13 @@ const VIDEO_ID = 'hLFJKqazyEQ';
     <p class="eyebrow eyebrow--light hero__eyebrow" data-hero-line>
       Consultant Plastic Surgeon <span aria-hidden="true">·</span> Breast and Body <span aria-hidden="true">·</span> London
     </p>
+
+    <button class="hero__play" type="button" data-lightbox-open={VIDEO_ID} data-hero-line>
+      <span class="hero__play-ring" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+      </span>
+      <span class="hero__play-label">Watch the film</span>
+    </button>
   </div>
 
   <a class="hero__scroll" href="#expertise" data-hero-line>
@@ -170,6 +177,40 @@ const VIDEO_ID = 'hLFJKqazyEQ';
   .hero__name { color: var(--ivory); opacity: 1; }
 
   [data-hero-line] { opacity: 0; transform: translateY(1rem); }
+
+  .hero__play {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: clamp(1.75rem, 4vh, 2.75rem);
+    color: var(--ivory);
+  }
+  .hero__play-ring {
+    width: 4.25rem;
+    height: 4.25rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(244, 238, 228, 0.7);
+    border-radius: 50%;
+    background: rgba(10, 42, 33, 0.25);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    transition: background-color 0.4s var(--ease-out), color 0.4s, transform 0.4s var(--ease-out), border-color 0.4s;
+  }
+  .hero__play-ring svg { width: 1.3rem; height: 1.3rem; margin-left: 0.15rem; }
+  .hero__play:hover .hero__play-ring,
+  .hero__play:focus-visible .hero__play-ring {
+    background: var(--ivory);
+    color: var(--emerald);
+    border-color: var(--ivory);
+    transform: scale(1.06);
+  }
+  .hero__play-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
 
   .hero__scroll {
     position: absolute;

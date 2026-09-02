@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let heroPlayer = null;
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -82,7 +83,7 @@ function initHeroVideo() {
     window.onYouTubeIframeAPIReady = () => {
       // The API swaps the mount element for the iframe, so the iframe lands
       // inside the styled container and inherits its cover sizing.
-      new window.YT.Player(mount, {
+      heroPlayer = new window.YT.Player(mount, {
         videoId: id,
         playerVars: {
           autoplay: 1,
@@ -432,6 +433,44 @@ function initBackToTop() {
 }
 
 /* ---------------------------------------------------------------------------
+   Video lightbox
+--------------------------------------------------------------------------- */
+function initLightbox() {
+  const root = $('[data-lightbox]');
+  const frame = $('[data-lightbox-frame]');
+  if (!root || !frame) return;
+  let lastFocus = null;
+
+  const close = () => {
+    root.classList.remove('is-open');
+    root.hidden = true;
+    frame.innerHTML = '';
+    document.body.classList.remove('menu-open');
+    try { heroPlayer?.playVideo?.(); } catch {}
+    lastFocus?.focus?.();
+  };
+
+  const open = (id) => {
+    lastFocus = document.activeElement;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+    iframe.title = 'Video';
+    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    iframe.allowFullscreen = true;
+    frame.replaceChildren(iframe);
+    root.hidden = false;
+    root.classList.add('is-open');
+    document.body.classList.add('menu-open');
+    try { heroPlayer?.pauseVideo?.(); } catch {}
+    $('[data-lightbox-close]:not(.lightbox__backdrop)', root)?.focus();
+  };
+
+  $$('[data-lightbox-open]').forEach((btn) => btn.addEventListener('click', () => open(btn.dataset.lightboxOpen)));
+  $$('[data-lightbox-close]', root).forEach((btn) => btn.addEventListener('click', close));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !root.hidden) close(); });
+}
+
+/* ---------------------------------------------------------------------------
    Boot
 --------------------------------------------------------------------------- */
 function boot() {
@@ -445,6 +484,7 @@ function boot() {
   initReviews();
   initTestimonial();
   initBackToTop();
+  initLightbox();
 
   // Images loading late can shift trigger positions.
   window.addEventListener('load', () => ScrollTrigger.refresh());

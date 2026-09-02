@@ -1,0 +1,74 @@
+---
+// Full-screen video lightbox. The iframe is created on open and removed on
+// close so playback stops and nothing loads until it is asked for.
+---
+
+<div class="lightbox" data-lightbox hidden role="dialog" aria-modal="true" aria-label="Video">
+  <button class="lightbox__backdrop" type="button" data-lightbox-close aria-label="Close video" tabindex="-1"></button>
+  <div class="lightbox__inner">
+    <button class="lightbox__close" type="button" data-lightbox-close aria-label="Close video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="lightbox__frame" data-lightbox-frame></div>
+  </div>
+</div>
+
+<style>
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    padding: clamp(1rem, 4vw, 4rem);
+  }
+  .lightbox[hidden] { display: none; }
+  .lightbox__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 42, 33, 0.92);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    cursor: default;
+  }
+  .lightbox__inner {
+    position: relative;
+    width: min(100%, 1200px);
+  }
+  .lightbox__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+  }
+  .lightbox__frame :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .lightbox__close {
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    margin-bottom: 0.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(244, 238, 228, 0.5);
+    border-radius: 50%;
+    color: var(--ivory);
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .lightbox__close:hover { background: var(--ivory); color: var(--emerald); }
+  .lightbox__close svg { width: 1.2rem; height: 1.2rem; }
+
+  .lightbox.is-open .lightbox__inner { animation: lightbox-in 0.5s var(--ease-out) both; }
+  @keyframes lightbox-in {
+    from { opacity: 0; transform: translateY(1rem) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  :global(.reduced-motion) .lightbox.is-open .lightbox__inner { animation: none; }
+</style>
