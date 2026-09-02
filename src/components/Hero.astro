@@ -1,5 +1,4 @@
 ---
-import Monogram from './Monogram.astro';
 import { site } from '../data/site.js';
 
 const VIDEO_ID = 'hLFJKqazyEQ';
@@ -11,15 +10,13 @@ const VIDEO_ID = 'hLFJKqazyEQ';
       <source media="(max-width: 700px)" srcset="/images/hero-poster-mobile.webp" />
       <img src="/images/hero-poster.webp" alt="" width="2400" height="1029" fetchpriority="high" decoding="async" />
     </picture>
-    <div class="hero__video" data-hero-video={VIDEO_ID}></div>
+    <div class="hero__video" data-hero-video={VIDEO_ID}>
+      <div data-yt-mount></div>
+    </div>
     <div class="hero__scrim" aria-hidden="true"></div>
   </div>
 
   <div class="hero__content container">
-    <div class="hero__mark" data-hero-mark>
-      <Monogram label={site.name} />
-    </div>
-
     <h1 class="hero__title display italic" data-hero-title>
       <span class="hero__line"><span>Unmistakably</span></span>
       <span class="hero__line"><span>you</span></span>
@@ -99,15 +96,8 @@ const VIDEO_ID = 'hLFJKqazyEQ';
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding-top: clamp(11rem, 22vh, 15rem);
-    padding-bottom: clamp(6rem, 12vh, 9rem);
-  }
-
-  .hero__mark {
-    width: clamp(6.5rem, 12vw, 10.5rem);
-    margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
-    opacity: 0;
-    filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.25));
+    padding-top: clamp(12rem, 26vh, 17rem);
+    padding-bottom: clamp(6rem, 13vh, 10rem);
   }
 
   .hero__title {
@@ -177,9 +167,7 @@ const VIDEO_ID = 'hLFJKqazyEQ';
     100% { transform: translateY(100%); }
   }
 
-  :global(.reduced-motion) .hero__mark,
   :global(.reduced-motion) [data-hero-line],
-  :global(.no-js) .hero__mark,
   :global(.no-js) [data-hero-line] { opacity: 1; transform: none; }
   :global(.reduced-motion) .hero__line > span,
   :global(.no-js) .hero__line > span { transform: none; }

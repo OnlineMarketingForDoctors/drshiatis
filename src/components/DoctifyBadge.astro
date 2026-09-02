@@ -1,0 +1,44 @@
+---
+// Doctify five-star badge. The wordmark is inlined so it takes the current
+// text colour (ivory over the hero, emerald in the compact bar).
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import Stars from './Stars.astro';
+import { site } from '../data/site.js';
+
+const mark = readFileSync(fileURLToPath(new URL('../../public/images/doctify-mono.svg', import.meta.url)), 'utf8')
+  .replace('<svg ', '<svg class="doctify-badge__mark" aria-hidden="true" focusable="false" ');
+---
+
+<a class="doctify-badge" href={site.doctify} target="_blank" rel="noopener" aria-label="Rated 5.0 on Doctify, read verified patient reviews">
+  <Fragment set:html={mark} />
+  <span class="doctify-badge__rating">
+    <Stars class="doctify-badge__stars" />
+    <span class="doctify-badge__score">5.0</span>
+  </span>
+</a>
+
+<style is:global>
+  .doctify-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: inherit;
+    opacity: 0.92;
+    transition: opacity 0.3s;
+  }
+  .doctify-badge:hover { opacity: 1; }
+  .doctify-badge__mark { height: 1.15rem; width: auto; }
+  .doctify-badge__rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .doctify-badge__stars { color: var(--gold-light); }
+  .doctify-badge__stars svg { width: 0.78rem; height: 0.78rem; }
+  .doctify-badge__score {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+</style>

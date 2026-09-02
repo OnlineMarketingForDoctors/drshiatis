@@ -1,6 +1,7 @@
 ---
 import Monogram from './Monogram.astro';
 import SocialIcons from './SocialIcons.astro';
+import DoctifyBadge from './DoctifyBadge.astro';
 import { site, nav } from '../data/site.js';
 ---
 
@@ -8,8 +9,8 @@ import { site, nav } from '../data/site.js';
 <header class="site-header" data-site-header>
   <div class="container site-header__inner">
     <div class="site-header__top">
-      <div class="site-header__social">
-        <SocialIcons />
+      <div class="site-header__badge">
+        <DoctifyBadge />
       </div>
 
       <a class="site-header__logo" href="/" aria-label={`${site.name} home`}>
@@ -23,7 +24,6 @@ import { site, nav } from '../data/site.js';
           <span>{site.phoneDisplay}</span>
         </a>
         <a class="btn btn--ivory" href={site.bookingHref}>Book a consultation</a>
-        <a class="btn btn--outline-light site-header__contact" href="/contact">Contact</a>
       </div>
 
       <button class="site-header__burger" type="button" aria-controls="mobile-menu" aria-expanded="false" data-menu-toggle>
@@ -88,6 +88,7 @@ import { site, nav } from '../data/site.js';
     <div class="mobile-menu__foot">
       <a class="btn btn--ivory" href={site.bookingHref}>Book a consultation</a>
       <a class="mobile-menu__phone" href={site.phoneHref}>{site.phoneDisplay}</a>
+      <DoctifyBadge />
       <div class="mobile-menu__social"><SocialIcons /></div>
     </div>
   </div>
@@ -109,7 +110,7 @@ import { site, nav } from '../data/site.js';
     gap: 1rem;
   }
 
-  .site-header__social { justify-self: start; }
+  .site-header__badge { justify-self: start; }
 
   .site-header__logo {
     display: flex;
@@ -295,14 +296,13 @@ import { site, nav } from '../data/site.js';
   body.menu-open { overflow: hidden; }
 
   @media (max-width: 1100px) {
-    .site-header__contact { display: none; }
     .site-header__phone span { display: none; }
     .site-bar__phone { display: none; }
   }
 
   @media (max-width: 900px) {
     .site-header__top { grid-template-columns: auto 1fr auto; }
-    .site-header__social { display: none; }
+    .site-header__badge { display: none; }
     .site-header__logo { justify-self: start; flex-direction: row; gap: 0.75rem; width: auto; }
     .site-header__logo :global(.monogram) { width: 3rem; }
     .site-header__actions { display: none; }

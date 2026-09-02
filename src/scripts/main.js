@@ -52,8 +52,7 @@ function initHero() {
 
   if (!reduceMotion) {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.15 });
-    tl.fromTo('[data-hero-mark]', { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 1.4, ease: 'expo.out' })
-      .to('.hero__line > span', { y: 0, duration: 1.2, stagger: 0.12, ease: 'expo.out' }, '-=0.9')
+    tl.to('.hero__line > span', { y: 0, duration: 1.2, stagger: 0.12, ease: 'expo.out' })
       .to('[data-hero-rule]', { scaleX: 1, duration: 1, ease: 'expo.inOut' }, '-=0.7')
       .to('[data-hero-line]', { opacity: 1, y: 0, duration: 0.9, stagger: 0.12 }, '-=0.6')
       .fromTo('.site-header', { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 1 }, '-=0.9');
@@ -70,9 +69,10 @@ function initHero() {
 }
 
 function initHeroVideo() {
-  const mount = $('[data-hero-video]');
-  if (!mount || reduceMotion) return;
-  const id = mount.dataset.heroVideo;
+  const container = $('[data-hero-video]');
+  const mount = container?.querySelector('[data-yt-mount]');
+  if (!container || !mount || reduceMotion) return;
+  const id = container.dataset.heroVideo;
   if (!id) return;
 
   // Save data on constrained connections: keep the poster.
@@ -81,9 +81,10 @@ function initHeroVideo() {
 
   const load = () => {
     window.onYouTubeIframeAPIReady = () => {
-      const player = new window.YT.Player(mount, {
+      // The API swaps the mount element for the iframe, so the iframe lands
+      // inside the styled container and inherits its cover sizing.
+      new window.YT.Player(mount, {
         videoId: id,
-        host: 'https://www.youtube-nocookie.com',
         playerVars: {
           autoplay: 1,
           mute: 1,
@@ -103,20 +104,11 @@ function initHeroVideo() {
             e.target.playVideo();
           },
           onStateChange: (e) => {
-            const el = e.target.getIframe();
-            if (e.data === window.YT.PlayerState.PLAYING) el.parentElement?.classList.add('is-playing') || el.classList.add('is-playing');
+            if (e.data === window.YT.PlayerState.PLAYING) container.classList.add('is-playing');
             if (e.data === window.YT.PlayerState.ENDED) e.target.playVideo();
           },
         },
       });
-      // The API replaces the mount element with the iframe; wrap classes accordingly.
-      const iframe = player.getIframe?.();
-      if (iframe) {
-        const wrap = document.createElement('div');
-        wrap.className = 'hero__video';
-        iframe.parentNode.insertBefore(wrap, iframe);
-        wrap.appendChild(iframe);
-      }
     };
     const s = document.createElement('script');
     s.src = 'https://www.youtube.com/iframe_api';
