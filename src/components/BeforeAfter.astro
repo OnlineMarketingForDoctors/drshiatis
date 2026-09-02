@@ -1,0 +1,169 @@
+---
+const cases = [
+  { title: 'Breast augmentation', note: 'Preservé short-scar technique' },
+  { title: 'Gynaecomastia surgery', note: 'Performed under local anaesthetic' },
+];
+---
+
+<section class="ba section bg-ivory" id="results" aria-labelledby="results-title">
+  <div class="container">
+    <header class="ba__head" data-reveal-group>
+      <div>
+        <p class="eyebrow eyebrow--gold" data-reveal>Results</p>
+        <h2 class="h2" id="results-title" data-reveal>Real patients, <em class="italic">real results</em></h2>
+      </div>
+      <p class="lead measure-narrow" data-reveal>The best way to judge a surgeon is to look at the results he has already achieved. Drag to compare.</p>
+    </header>
+
+    <div class="ba__grid">
+      {cases.map((c, i) => (
+        <figure class="ba__case" data-reveal>
+          <div class="ba__compare" data-compare style="--pos: 50%">
+            <div class="ba__panel ba__panel--before" aria-hidden="true">
+              <span class="ba__tag">Before</span>
+            </div>
+            <div class="ba__panel ba__panel--after" aria-hidden="true">
+              <span class="ba__tag">After</span>
+            </div>
+            <span class="ba__handle" aria-hidden="true">
+              <span class="ba__knob">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg>
+              </span>
+            </span>
+            <label class="sr-only" for={`compare-${i}`}>Compare before and after, {c.title}</label>
+            <input class="ba__range" id={`compare-${i}`} type="range" min="0" max="100" value="50" step="0.5" data-compare-input />
+          </div>
+          <figcaption class="ba__caption">
+            <span class="h3 italic">{c.title}</span>
+            <span class="small ba__note">{c.note}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <div class="ba__foot" data-reveal-group>
+      <p class="small ba__disclaimer" data-reveal>Placeholder frames. Patient photographs will be shown here with written consent, and results vary from person to person.</p>
+      <a class="link-rule" href="/before-and-after" data-reveal>View the gallery</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ba__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .ba__head .h2 { margin-top: 1rem; }
+
+  .ba__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 3vw, 3rem);
+  }
+
+  .ba__compare {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--ivory-2);
+    user-select: none;
+    touch-action: pan-y;
+  }
+  .ba__panel {
+    position: absolute;
+    inset: 0;
+    background: url('/images/marble.webp') center / cover;
+  }
+  .ba__panel--before::before,
+  .ba__panel--after::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .ba__panel--before::before { background: rgba(227, 205, 194, 0.55); }
+  .ba__panel--after::before { background: rgba(15, 59, 46, 0.12); }
+  .ba__panel--after { clip-path: inset(0 0 0 var(--pos)); }
+
+  .ba__tag {
+    position: absolute;
+    top: 1.25rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 0.5rem 0.8rem;
+    background: rgba(251, 248, 243, 0.85);
+    color: var(--emerald);
+  }
+  .ba__panel--before .ba__tag { left: 1.25rem; }
+  .ba__panel--after .ba__tag { right: 1.25rem; }
+
+  .ba__handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    width: 1px;
+    background: var(--gold);
+    transform: translateX(-0.5px);
+    pointer-events: none;
+  }
+  .ba__knob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3rem;
+    height: 3rem;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ivory);
+    color: var(--emerald);
+    border: 1px solid var(--gold);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+  .ba__knob svg { width: 1.1rem; height: 1.1rem; }
+
+  .ba__range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+  }
+  .ba__range:focus-visible + .ba__handle,
+  .ba__compare:focus-within .ba__handle { background: var(--emerald); }
+
+  .ba__caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-top: 1.1rem;
+    color: var(--emerald);
+  }
+  .ba__note { color: var(--ink-mute); text-align: right; }
+
+  .ba__foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(15, 59, 46, 0.12);
+    color: var(--emerald);
+  }
+  .ba__disclaimer { color: var(--ink-mute); max-width: 40em; }
+
+  @media (max-width: 700px) {
+    .ba__grid { grid-template-columns: 1fr; }
+  }
+</style>

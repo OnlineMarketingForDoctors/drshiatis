@@ -1,0 +1,31 @@
+---
+---
+
+<button class="to-top" type="button" data-to-top aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</button>
+
+<style>
+  .to-top {
+    position: fixed;
+    right: clamp(1rem, 2.5vw, 2rem);
+    bottom: clamp(1rem, 2.5vw, 2rem);
+    z-index: 25;
+    width: 3.2rem;
+    height: 3.2rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--emerald);
+    color: var(--ivory);
+    border: 1px solid rgba(216, 189, 124, 0.5);
+    box-shadow: 0 12px 30px rgba(10, 42, 33, 0.25);
+    opacity: 0;
+    transform: translateY(1rem);
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out), background-color 0.3s;
+  }
+  .to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+  .to-top:hover { background: var(--emerald-deep); }
+  .to-top svg { width: 1.1rem; height: 1.1rem; }
+</style>

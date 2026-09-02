@@ -1,0 +1,206 @@
+---
+import { site } from '../data/site.js';
+
+const ledger = [
+  ['Medical school', 'University of Nottingham'],
+  ['Fulbright Scholar', 'United States'],
+  ['Fellowship', 'Microsurgery, Imperial College NHS'],
+  ['Fellowship', 'Royal College of Surgeons, FRCS (Plast)'],
+  ['NHS Consultant', 'Barts Health, breast reconstruction'],
+  ['Private practice', 'Fitzrovia Hospital, with Pantheons Clinic'],
+];
+
+const values = [
+  { key: 'Listening', text: 'Taking time to understand what you are hoping to achieve, and why, before any plan is made.' },
+  { key: 'Precision', text: 'Complex reconstructive experience brought to every aesthetic procedure, with safety first.' },
+  { key: 'Honesty', text: 'Realistic expectations set clearly and kindly, including what surgery cannot do.' },
+];
+---
+
+<section class="meet on-dark" id="meet" aria-labelledby="meet-title">
+  <div class="meet__bg" aria-hidden="true" data-parallax data-parallax-strength="8">
+    <img src="/images/satin.webp" alt="" width="1800" height="1005" loading="lazy" decoding="async" />
+  </div>
+
+  <div class="meet__grid">
+    <div class="meet__media">
+      <div class="cover meet__portrait" data-img-reveal>
+        <img src="/images/meet-portrait.webp" alt="Mr Andreas Shiatis seated in an emerald armchair" width="1400" height="1867" loading="lazy" decoding="async" />
+      </div>
+      <figure class="meet__inset" data-reveal>
+        <img src="/images/barts.webp" alt="Mr Shiatis outside St Bartholomew's Hospital" width="800" height="1000" loading="lazy" decoding="async" />
+        <figcaption>NHS Consultant, Barts Health</figcaption>
+      </figure>
+    </div>
+
+    <div class="meet__content" data-reveal-group>
+      <p class="eyebrow" data-reveal>Meet your surgeon</p>
+      <h2 class="h2 meet__title" id="meet-title" data-reveal>
+        Mr Andreas Shiatis
+        <span class="meet__quals italic">FRCS (Plast)</span>
+      </h2>
+
+      <p class="lead" data-reveal>
+        A UK-trained Consultant Plastic Surgeon with more than 15 years in plastic surgery, and a philosophy centred on elegant, natural results that respect your own anatomy.
+      </p>
+      <p class="meet__text" data-reveal>
+        Alongside his private practice, Mr Shiatis is an NHS Consultant at Barts Health, specialising in microsurgical breast reconstruction and complex reconstructive surgery. Working with patients through life-changing circumstances taught him to listen carefully, communicate honestly and understand the person behind the procedure. That experience shapes every aesthetic consultation.
+      </p>
+
+      <dl class="meet__ledger" data-reveal>
+        {ledger.map(([k, v]) => (
+          <div class="meet__row">
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="meet__values" data-reveal data-values>
+        <div class="meet__tabs" role="tablist" aria-label="How Mr Shiatis works">
+          {values.map((v, i) => (
+            <button class="meet__tab" role="tab" type="button" id={`value-tab-${i}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`value-panel-${i}`} tabindex={i === 0 ? 0 : -1}>
+              <span class="italic">{v.key}</span>
+            </button>
+          ))}
+        </div>
+        {values.map((v, i) => (
+          <p class="meet__panel" role="tabpanel" id={`value-panel-${i}`} aria-labelledby={`value-tab-${i}`} hidden={i !== 0}>{v.text}</p>
+        ))}
+      </div>
+
+      <a class="link-rule meet__link" href="/about" data-reveal>About Mr Shiatis</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .meet {
+    position: relative;
+    background: var(--emerald);
+    color: var(--ivory);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .meet__bg {
+    position: absolute;
+    inset: -8% 0;
+    z-index: -2;
+    opacity: 0.55;
+  }
+  .meet__bg img { width: 100%; height: 100%; object-fit: cover; }
+  .meet::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to right, rgba(10, 42, 33, 0.2), rgba(10, 42, 33, 0.7));
+  }
+
+  .meet__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-height: 100vh;
+  }
+
+  .meet__media {
+    position: relative;
+  }
+  .meet__portrait {
+    height: 100%;
+    min-height: 60vh;
+  }
+  .meet__portrait > img {
+    position: absolute;
+    inset: 0;
+  }
+  .meet__inset {
+    position: absolute;
+    right: clamp(-2rem, -3vw, -3rem);
+    bottom: clamp(2rem, 6vh, 4.5rem);
+    width: clamp(8rem, 13vw, 12rem);
+    padding: 0.5rem 0.5rem 0.75rem;
+    background: var(--ivory);
+    color: var(--ink);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+    transform: rotate(-3deg);
+  }
+  .meet__inset img { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
+  .meet__inset figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  .meet__content {
+    padding: clamp(3.5rem, 8vw, 7rem) clamp(1.5rem, 6vw, 6.5rem) clamp(3.5rem, 8vw, 7rem) clamp(2rem, 6vw, 6rem);
+    align-self: center;
+    max-width: 42rem;
+  }
+  .meet__title { margin-top: 1rem; }
+  .meet__quals {
+    display: block;
+    font-size: 0.55em;
+    margin-top: 0.15em;
+    color: var(--gold-light);
+  }
+  .meet__content .lead { margin-top: 1.75rem; }
+  .meet__text { margin-top: 1.25rem; color: rgba(244, 238, 228, 0.78); }
+
+  .meet__ledger {
+    margin-top: 2.25rem;
+    border-top: 1px solid rgba(216, 189, 124, 0.4);
+  }
+  .meet__row {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(244, 238, 228, 0.14);
+    font-size: 0.92rem;
+  }
+  .meet__row dt {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    padding-top: 0.2em;
+  }
+  .meet__row dd { margin: 0; color: rgba(244, 238, 228, 0.9); }
+
+  .meet__values { margin-top: 2.25rem; }
+  .meet__tabs {
+    display: flex;
+    border: 1px solid rgba(244, 238, 228, 0.35);
+  }
+  .meet__tab {
+    flex: 1;
+    padding: 0.9rem 0.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+    color: rgba(244, 238, 228, 0.7);
+    transition: background-color 0.4s var(--ease-out), color 0.4s;
+  }
+  .meet__tab + .meet__tab { border-left: 1px solid rgba(244, 238, 228, 0.35); }
+  .meet__tab[aria-selected='true'] {
+    background: var(--ivory);
+    color: var(--emerald);
+  }
+  .meet__panel {
+    margin-top: 1rem;
+    min-height: 3.2em;
+    color: rgba(244, 238, 228, 0.85);
+  }
+  .meet__link { margin-top: 2.25rem; color: var(--gold-light); }
+
+  @media (max-width: 900px) {
+    .meet__grid { grid-template-columns: 1fr; }
+    .meet__portrait { min-height: 0; aspect-ratio: 4 / 5; }
+    .meet__inset { right: 1rem; bottom: -1.5rem; }
+    .meet__content { padding: 4rem var(--gutter) 4.5rem; }
+    .meet__row { grid-template-columns: 7rem 1fr; }
+  }
+</style>

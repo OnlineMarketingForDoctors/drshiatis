@@ -1,0 +1,78 @@
+---
+import { site } from '../data/site.js';
+import Stars from './Stars.astro';
+---
+
+<section class="affil bg-ivory" aria-label="Affiliations and credentials">
+  <div class="container affil__inner" data-reveal-group>
+    <p class="eyebrow affil__label" data-reveal>Consulting privately at</p>
+    <ul class="affil__list">
+      <li data-reveal>
+        <img src="/images/fitzrovia-hospital.png" alt="Fitzrovia Hospital" width="448" height="112" loading="lazy" decoding="async" class="affil__logo affil__logo--fitzrovia" />
+      </li>
+      <li data-reveal>
+        <a href={site.pantheons} target="_blank" rel="noopener">
+          <img src="/images/pantheons-clinic.png" alt="Pantheons Clinic" width="659" height="168" loading="lazy" decoding="async" class="affil__logo affil__logo--pantheons" />
+        </a>
+      </li>
+      <li class="affil__text" data-reveal>
+        <span class="affil__key">GMC</span> {site.gmc}
+      </li>
+      <li class="affil__text" data-reveal>
+        <span class="affil__key">FRCS</span> (Plast)
+      </li>
+      <li data-reveal>
+        <a class="affil__doctify" href={site.doctify} target="_blank" rel="noopener">
+          <img src="/images/doctify.svg" alt="Doctify" width="120" height="32" loading="lazy" decoding="async" />
+          <Stars />
+          <span class="affil__rating">5.0 rated</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .affil {
+    border-bottom: 1px solid rgba(15, 59, 46, 0.12);
+  }
+  .affil__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem clamp(2rem, 4vw, 4rem);
+    padding-block: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  .affil__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem clamp(2rem, 4vw, 4rem);
+  }
+  .affil__logo { height: 1.6rem; width: auto; opacity: 0.85; }
+  .affil__logo--fitzrovia { height: 1.75rem; }
+  .affil__text {
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+  .affil__key {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--ink);
+    margin-right: 0.2rem;
+  }
+  .affil__doctify {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .affil__doctify img { height: 1.35rem; width: auto; }
+  .affil__rating {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+</style>

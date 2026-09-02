@@ -1,0 +1,196 @@
+---
+import Monogram from './Monogram.astro';
+import { site } from '../data/site.js';
+
+const VIDEO_ID = 'hLFJKqazyEQ';
+---
+
+<section class="hero" data-hero>
+  <div class="hero__media" data-parallax data-parallax-strength="12">
+    <picture class="hero__poster">
+      <source media="(max-width: 700px)" srcset="/images/hero-poster-mobile.webp" />
+      <img src="/images/hero-poster.webp" alt="" width="2400" height="1029" fetchpriority="high" decoding="async" />
+    </picture>
+    <div class="hero__video" data-hero-video={VIDEO_ID}></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__content container">
+    <div class="hero__mark" data-hero-mark>
+      <Monogram label={site.name} />
+    </div>
+
+    <h1 class="hero__title display italic" data-hero-title>
+      <span class="hero__line"><span>Unmistakably</span></span>
+      <span class="hero__line"><span>you</span></span>
+    </h1>
+
+    <span class="rule rule--center hero__rule" data-hero-rule aria-hidden="true"></span>
+
+    <p class="hero__name" data-hero-line>
+      {site.surgeon} <span class="hero__quals">{site.qualifications}</span>
+    </p>
+    <p class="eyebrow eyebrow--light hero__eyebrow" data-hero-line>
+      Consultant Plastic Surgeon <span aria-hidden="true">·</span> Breast and Body <span aria-hidden="true">·</span> London
+    </p>
+  </div>
+
+  <a class="hero__scroll" href="#expertise" data-hero-line>
+    <span class="eyebrow eyebrow--light">Scroll</span>
+    <span class="hero__scroll-line" aria-hidden="true"></span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    align-items: end;
+    color: var(--ivory);
+    background: var(--emerald-deep);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: -6% 0;
+    z-index: -1;
+  }
+  .hero__poster,
+  .hero__poster img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__video {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-out);
+    pointer-events: none;
+  }
+  .hero__video.is-playing { opacity: 1; }
+  .hero__video :global(iframe) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 177.78vh);
+    height: max(100%, 56.25vw);
+    transform: translate(-50%, -50%);
+    border: 0;
+  }
+
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(10, 42, 33, 0.6) 0%, rgba(10, 42, 33, 0.38) 35%, rgba(10, 42, 33, 0.5) 65%, rgba(10, 42, 33, 0.88) 100%);
+  }
+
+  .hero__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: clamp(11rem, 22vh, 15rem);
+    padding-bottom: clamp(6rem, 12vh, 9rem);
+  }
+
+  .hero__mark {
+    width: clamp(6.5rem, 12vw, 10.5rem);
+    margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+    opacity: 0;
+    filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.25));
+  }
+
+  .hero__title {
+    text-shadow: 0 6px 40px rgba(0, 0, 0, 0.25);
+  }
+  .hero__line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .hero__line > span {
+    display: block;
+    transform: translateY(110%);
+  }
+
+  .hero__rule {
+    width: 5rem;
+    margin-block: clamp(1.4rem, 3vh, 2.2rem);
+    transform: scaleX(0);
+  }
+
+  .hero__name {
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+  .hero__quals {
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    opacity: 0.8;
+  }
+  .hero__eyebrow { margin-top: 0.9rem; }
+
+  [data-hero-line] { opacity: 0; transform: translateY(1rem); }
+
+  .hero__scroll {
+    position: absolute;
+    right: var(--gutter);
+    bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero__scroll .eyebrow { writing-mode: vertical-rl; }
+  .hero__scroll-line {
+    width: 1px;
+    height: 3.5rem;
+    background: rgba(244, 238, 228, 0.5);
+    overflow: hidden;
+    position: relative;
+  }
+  .hero__scroll-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold-light);
+    transform: translateY(-100%);
+    animation: scroll-drip 2.2s var(--ease-in-out) infinite;
+  }
+  @keyframes scroll-drip {
+    0% { transform: translateY(-100%); }
+    50% { transform: translateY(0); }
+    100% { transform: translateY(100%); }
+  }
+
+  :global(.reduced-motion) .hero__mark,
+  :global(.reduced-motion) [data-hero-line],
+  :global(.no-js) .hero__mark,
+  :global(.no-js) [data-hero-line] { opacity: 1; transform: none; }
+  :global(.reduced-motion) .hero__line > span,
+  :global(.no-js) .hero__line > span { transform: none; }
+  :global(.reduced-motion) .hero__rule,
+  :global(.no-js) .hero__rule { transform: none; }
+  :global(.reduced-motion) .hero__scroll-line::after { animation: none; transform: none; }
+
+  @media (max-width: 900px) {
+    .hero__content { padding-top: 8rem; }
+    .hero__scroll { display: none; }
+    .hero__name { font-size: 0.95rem; letter-spacing: 0.2em; }
+    .hero__quals { display: block; font-size: 0.85em; margin-top: 0.3rem; }
+  }
+</style>

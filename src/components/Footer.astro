@@ -1,0 +1,104 @@
+---
+import Monogram from './Monogram.astro';
+import { site, nav } from '../data/site.js';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer bg-emerald-deep on-dark">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a href="/" class="footer__logo" aria-label={`${site.name} home`}><Monogram /></a>
+      <p class="footer__wordmark">Andreas Shiatis</p>
+      <p class="eyebrow">Plastic Surgery</p>
+      <p class="footer__tag">Consultant Plastic Surgeon specialising in breast and body surgery, London.</p>
+    </div>
+
+    <nav class="footer__col" aria-label="Footer">
+      <p class="eyebrow footer__col-title">Navigate</p>
+      <ul>
+        <li><a href="/">Home</a></li>
+        {nav.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="footer__col">
+      <p class="eyebrow footer__col-title">Contact</p>
+      <ul>
+        <li><a href={site.phoneHref}>{site.phoneDisplay}</a></li>
+        <li><a href={site.whatsappHref} target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li class="footer__addr">{site.hospital}</li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <p class="eyebrow footer__col-title">Follow</p>
+      <ul>
+        <li><a href={site.instagram} target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href={site.tiktok} target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href={site.doctify} target="_blank" rel="noopener">Doctify reviews</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer__bottom">
+    <p class="small">© {year} {site.name}. Eumorphia Ltd. GMC {site.gmc}.</p>
+    <ul class="footer__legal small">
+      <li><a href="/privacy-policy">Privacy Policy</a></li>
+      <li>
+        Powered by <a href={site.agency.href} target="_blank" rel="noopener">{site.agency.name}</a>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 5rem);
+    padding-block: clamp(3.5rem, 7vw, 6rem) clamp(2.5rem, 5vw, 4rem);
+  }
+  .footer__logo { width: 3.5rem; display: block; }
+  .footer__wordmark {
+    margin-top: 1.1rem;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .footer__brand .eyebrow { margin-top: 0.25rem; }
+  .footer__tag {
+    margin-top: 1.25rem;
+    max-width: 22em;
+    font-size: var(--fs-small);
+    color: rgba(244, 238, 228, 0.65);
+  }
+
+  .footer__col-title { margin-bottom: 1.1rem; color: var(--gold-light); }
+  .footer__col li { padding-block: 0.3rem; font-size: 0.95rem; }
+  .footer__col a { color: rgba(244, 238, 228, 0.85); transition: color 0.3s; }
+  .footer__col a:hover { color: var(--ivory); }
+  .footer__addr { color: rgba(244, 238, 228, 0.65); }
+
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    padding-block: 1.5rem 2rem;
+    border-top: 1px solid rgba(244, 238, 228, 0.14);
+    color: rgba(244, 238, 228, 0.6);
+  }
+  .footer__legal { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; }
+  .footer__legal a { color: rgba(244, 238, 228, 0.85); border-bottom: 1px solid rgba(244, 238, 228, 0.25); }
+  .footer__legal a:hover { color: var(--ivory); }
+
+  @media (max-width: 900px) {
+    .footer__inner { grid-template-columns: 1fr 1fr; }
+    .footer__brand { grid-column: 1 / -1; }
+  }
+</style>

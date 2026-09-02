@@ -1,0 +1,147 @@
+---
+const steps = [
+  { n: '1', title: 'Enquiry', text: 'Tell us what you are considering. A patient coordinator calls you back to talk it through and arrange your first appointment.' },
+  { n: '2', title: 'First consultation', text: 'Meet Mr Shiatis at Fitzrovia Hospital. Examination, an honest discussion of the options, the risks, and what is realistic for you.' },
+  { n: '3', title: 'Second consultation', text: 'Time to reflect, then return with your questions. Your plan is finalised together and your pre-assessment arranged.' },
+  { n: '4', title: 'Surgery day', text: 'Surgery in a CQC-registered hospital. Most procedures are day cases under advanced recovery protocols, so you go home the same day.' },
+  { n: '5', title: 'Aftercare', text: 'Nurse-led post-operative appointments, then a review with Mr Shiatis himself.' },
+  { n: '6', title: 'Follow-up', text: 'Ongoing follow-up for as long as you need it. You are never discharged into silence.' },
+];
+---
+
+<section class="journey section bg-ivory-2" id="journey" aria-labelledby="journey-title">
+  <div class="journey__marble" aria-hidden="true">
+    <img src="/images/marble.webp" alt="" width="1800" height="1005" loading="lazy" decoding="async" />
+  </div>
+
+  <div class="container">
+    <header class="journey__head" data-reveal-group>
+      <p class="eyebrow eyebrow--gold" data-reveal>Your journey</p>
+      <h2 class="h2" id="journey-title" data-reveal>From first conversation <em class="italic">to full recovery</em></h2>
+      <p class="lead measure" data-reveal>Six steps, each with time built in to reflect and ask questions. Nothing is rushed and nothing is decided for you.</p>
+    </header>
+
+    <div class="journey__grid">
+      <ol class="journey__steps" data-journey>
+        <span class="journey__thread" aria-hidden="true"><span class="journey__thread-fill" data-journey-fill></span></span>
+        {steps.map((s) => (
+          <li class="journey__step" data-journey-step data-reveal>
+            <span class="journey__num italic" aria-hidden="true">{s.n}</span>
+            <div class="journey__body">
+              <h3 class="h3 journey__title">{s.title}</h3>
+              <p class="journey__text">{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <figure class="journey__figure">
+        <div class="journey__sticky">
+          <div class="cover journey__img" data-img-reveal>
+            <img src="/images/journey.webp" alt="Mr Shiatis showing a patient a 3D visualisation on a tablet" width="1200" height="1500" loading="lazy" decoding="async" />
+          </div>
+          <figcaption class="small journey__caption" data-reveal>3D imaging helps you picture the outcome before anything is decided.</figcaption>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .journey {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .journey__marble {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+  }
+  .journey__marble img { width: 100%; height: 100%; object-fit: cover; }
+
+  .journey__head {
+    max-width: 44rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .journey__head .h2 { margin-top: 1rem; }
+  .journey__head .lead { margin-top: 1.5rem; }
+
+  .journey__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2.5rem, 7vw, 8rem);
+    align-items: start;
+  }
+
+  .journey__steps {
+    position: relative;
+    padding-left: clamp(4.5rem, 7vw, 6.5rem);
+  }
+  .journey__thread {
+    position: absolute;
+    left: 1.6rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background: rgba(184, 150, 79, 0.3);
+  }
+  .journey__thread-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  .journey__step {
+    position: relative;
+    padding-block: clamp(1.5rem, 2.6vw, 2.4rem);
+    border-bottom: 1px solid rgba(28, 27, 24, 0.1);
+  }
+  .journey__step:first-child { padding-top: 0; }
+  .journey__step:last-child { border-bottom: 0; }
+
+  .journey__num {
+    position: absolute;
+    left: calc(-1 * clamp(4.5rem, 7vw, 6.5rem));
+    top: clamp(1.5rem, 2.6vw, 2.4rem);
+    width: 3.2rem;
+    height: 3.2rem;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--ink-mute);
+    background: var(--ivory-2);
+    border: 1px solid rgba(184, 150, 79, 0.45);
+    border-radius: 50%;
+    transition: color 0.5s, border-color 0.5s, background-color 0.5s;
+  }
+  .journey__step:first-child .journey__num { top: 0; }
+  .journey__step.is-active .journey__num {
+    color: var(--ivory);
+    background: var(--emerald);
+    border-color: var(--emerald);
+  }
+  .journey__title { color: var(--emerald); }
+  .journey__text { margin-top: 0.5rem; color: var(--ink-soft); max-width: 34em; }
+
+  .journey__sticky { position: sticky; top: 6rem; }
+  .journey__img { aspect-ratio: 4 / 5; }
+  .journey__img > img { position: absolute; inset: 0; }
+  .journey__caption { margin-top: 1rem; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .journey__grid { grid-template-columns: 1fr; }
+    .journey__figure { order: -1; }
+    .journey__sticky { position: static; }
+    .journey__img { aspect-ratio: 3 / 2; }
+    .journey__steps { padding-left: 4rem; }
+    .journey__thread { left: 1.35rem; }
+    .journey__num { left: -4rem; width: 2.7rem; height: 2.7rem; font-size: 1.25rem; }
+  }
+</style>

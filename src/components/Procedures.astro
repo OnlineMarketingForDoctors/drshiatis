@@ -1,0 +1,134 @@
+---
+const tiles = [
+  { label: 'Breast', href: '/surgical', img: '/images/tile-breast.webp', alt: 'Woman in an ivory silk blouse looking over her shoulder', pos: 'left' },
+  { label: 'Body', href: '/surgical', img: '/images/tile-body.webp', alt: 'Profile of a woman in an ivory bodysuit against blush marble', pos: 'left' },
+  { label: 'For men', href: '/for-men', img: '/images/tile-men.webp', alt: 'Man in a white linen shirt seated against an emerald wall', pos: 'right' },
+  { label: 'Face', href: '/surgical', img: '/images/tile-face.webp', alt: 'Close crop of a woman\'s eyes and brow', pos: 'right' },
+];
+---
+
+<section class="proc section" id="expertise" aria-labelledby="expertise-title">
+  <div class="container">
+    <div class="proc__grid">
+      {tiles.filter(t => t.pos === 'left').map((t) => (
+        <a class="proc__tile cover" href={t.href} data-img-reveal>
+          <img src={t.img} alt={t.alt} width="900" height="1350" loading="lazy" decoding="async" />
+          <span class="proc__tile-label">{t.label}</span>
+        </a>
+      ))}
+
+      <div class="proc__centre cover" data-img-reveal>
+        <img src="/images/mosaic-centre.webp" alt="Woman resting on emerald satin in soft light through window blinds" width="1800" height="1208" loading="lazy" decoding="async" />
+        <div class="proc__centre-content on-dark" data-reveal-group>
+          <p class="eyebrow" data-reveal>Areas of expertise</p>
+          <h2 class="h2 italic" id="expertise-title" data-reveal>Breast and body surgery</h2>
+          <p class="proc__copy" data-reveal>
+            Augmentation, reduction and uplift. Tummy tuck, liposuction and body contouring. Gynaecomastia surgery for men. Every plan is built around your anatomy, never a standard technique.
+          </p>
+          <a class="btn btn--ivory" href="/surgical" data-reveal>
+            Explore procedures
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      {tiles.filter(t => t.pos === 'right').map((t) => (
+        <a class="proc__tile cover" href={t.href} data-img-reveal>
+          <img src={t.img} alt={t.alt} width="900" height="1350" loading="lazy" decoding="async" />
+          <span class="proc__tile-label">{t.label}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .proc { padding-top: calc(var(--section) * 0.7); }
+
+  .proc__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.6fr) minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.75rem, 1.2vw, 1.25rem);
+    height: min(88vh, 62vw);
+    min-height: 34rem;
+  }
+
+  .proc__centre {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    align-items: flex-end;
+  }
+  .proc__centre::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 42, 33, 0.85) 0%, rgba(10, 42, 33, 0.35) 45%, rgba(10, 42, 33, 0) 75%);
+    pointer-events: none;
+  }
+  .proc__centre > img {
+    position: absolute;
+    inset: 0;
+    transition: transform 1.4s var(--ease-out);
+  }
+  .proc__centre-content {
+    position: relative;
+    z-index: 1;
+    padding: clamp(1.5rem, 3.5vw, 3.5rem);
+    max-width: 34rem;
+    color: var(--ivory);
+  }
+  .proc__centre-content .h2 { margin-top: 0.9rem; }
+  .proc__copy {
+    margin-block: 1.25rem 1.75rem;
+    max-width: 30em;
+    color: rgba(244, 238, 228, 0.85);
+  }
+
+  .proc__tile {
+    display: block;
+    color: var(--ivory);
+  }
+  .proc__tile > img {
+    position: absolute;
+    inset: 0;
+    transition: transform 1.2s var(--ease-out);
+  }
+  .proc__tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 42, 33, 0.7), rgba(10, 42, 33, 0) 55%);
+    transition: opacity 0.6s;
+  }
+  .proc__tile:hover > img { transform: scale(1.06); }
+  .proc__tile-label {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 1.4rem;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.5rem, 2.4vw, 2.3rem);
+    letter-spacing: 0.02em;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .proc__tile:hover .proc__tile-label { transform: translateY(-0.3rem); }
+
+  @media (max-width: 900px) {
+    .proc__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: auto repeat(2, 60vw);
+      height: auto;
+      min-height: 0;
+    }
+    .proc__centre {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      aspect-ratio: 4 / 5;
+    }
+    .proc__tile { grid-column: auto; grid-row: auto; }
+    .proc__tile-label { left: 1rem; bottom: 0.9rem; }
+  }
+</style>

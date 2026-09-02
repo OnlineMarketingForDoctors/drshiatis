@@ -1,0 +1,25 @@
+---
+// The AS monogram, vector-traced from the brand's logo file and inlined so it
+// takes its colour from the surrounding text.
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+interface Props {
+  class?: string;
+  label?: string;
+}
+
+const { class: className = '', label } = Astro.props;
+
+const svgPath = fileURLToPath(new URL('../../public/images/monogram.svg', import.meta.url));
+const raw = readFileSync(svgPath, 'utf8');
+const svg = raw
+  .replace('<svg ', `<svg class="monogram ${className}" aria-hidden="${label ? 'false' : 'true'}" ${label ? `role="img" aria-label="${label}"` : ''} `)
+  .replace('fill-rule="evenodd"', 'fill-rule="evenodd" focusable="false"');
+---
+
+<Fragment set:html={svg} />
+
+<style is:global>
+  .monogram { width: 100%; height: auto; }
+</style>

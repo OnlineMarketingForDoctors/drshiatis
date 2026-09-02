@@ -1,0 +1,112 @@
+---
+const points = [
+  {
+    title: 'UK trained, London refined',
+    text: 'University of Nottingham, a Fulbright Scholarship in the USA, specialist plastic surgery training in London teaching hospitals and a microsurgery fellowship at Imperial College NHS. Over 15 years in plastic surgery.',
+  },
+  {
+    title: 'Reconstructive precision, aesthetic judgement',
+    text: 'As an NHS Consultant at Barts Health, Mr Shiatis performs microsurgical breast reconstruction. The same standards of safety and precision go into every aesthetic procedure.',
+  },
+  {
+    title: 'Two consultations, never one',
+    text: 'You share your three biggest concerns before you arrive, so each consultation is built around what matters to you. 3D imaging is available where it helps you picture the outcome.',
+  },
+  {
+    title: 'Natural, proportional results',
+    text: 'No standard technique. Every plan respects your own anatomy, so the result looks refined rather than done, and still looks like you.',
+  },
+  {
+    title: 'Honest about what is possible',
+    text: 'Clear, realistic expectations from the first meeting, including what surgery cannot do. Patients say this is the thing they value most.',
+  },
+  {
+    title: 'A faster, gentler recovery',
+    text: 'Day-case protocols, gynaecomastia surgery under local anaesthetic, short-scar breast augmentation and ultrasound-assisted liposuction, so you get back to normal sooner.',
+  },
+];
+---
+
+<section class="why section bg-paper" id="why" aria-labelledby="why-title">
+  <div class="container">
+    <header class="why__head" data-reveal-group>
+      <p class="eyebrow eyebrow--gold" data-reveal>The difference</p>
+      <h2 class="h2" id="why-title" data-reveal>Why patients choose <em class="italic">Mr Shiatis</em></h2>
+    </header>
+
+    <div class="why__grid">
+      <figure class="why__figure">
+        <div class="why__sticky">
+          <div class="cover why__img" data-img-reveal>
+            <img src="/images/consult.webp" alt="Mr Shiatis listening to a patient across his desk" width="1800" height="1208" loading="lazy" decoding="async" />
+          </div>
+          <figcaption class="why__caption" data-reveal>
+            <span class="rule" aria-hidden="true"></span>
+            Every consultation is with Mr Shiatis himself, face to face, at Fitzrovia Hospital.
+          </figcaption>
+        </div>
+      </figure>
+
+      <ol class="why__list" data-reveal-group>
+        {points.map((p) => (
+          <li class="why__item" data-reveal>
+            <h3 class="h3 italic why__title">{p.title}</h3>
+            <p class="why__text">{p.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why__head {
+    max-width: 40rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  }
+  .why__head .h2 { margin-top: 1rem; }
+
+  .why__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 6vw, 7rem);
+    align-items: start;
+  }
+
+  .why__sticky {
+    position: sticky;
+    top: 6rem;
+  }
+  .why__img { aspect-ratio: 4 / 5; }
+  .why__img > img { position: absolute; inset: 0; }
+  .why__caption {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-top: 1.25rem;
+    max-width: 26em;
+    font-size: var(--fs-small);
+    color: var(--ink-soft);
+  }
+  .why__caption .rule { flex: none; margin-top: 0.7em; width: 2.5rem; }
+
+  .why__list {
+    counter-reset: none;
+  }
+  .why__item {
+    padding-block: clamp(1.5rem, 2.6vw, 2.4rem);
+    border-top: 1px solid rgba(184, 150, 79, 0.45);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+  }
+  .why__item:last-child { border-bottom: 1px solid rgba(184, 150, 79, 0.45); }
+  .why__title { color: var(--emerald); }
+  .why__text { color: var(--ink-soft); max-width: 36em; }
+
+  @media (max-width: 900px) {
+    .why__grid { grid-template-columns: 1fr; }
+    .why__sticky { position: static; }
+    .why__img { aspect-ratio: 3 / 2; }
+  }
+</style>

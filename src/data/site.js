@@ -1,0 +1,30 @@
+export const site = {
+  name: 'Andreas Shiatis Plastic Surgery',
+  surgeon: 'Mr Andreas Shiatis',
+  qualifications: 'FRCS (Plast)',
+  phoneDisplay: '+44 (0)20 8050 9669',
+  phoneHref: 'tel:+442080509669',
+  whatsappHref: 'https://wa.me/442080509669',
+  email: 'info@drshiatis.com',
+  gmc: '7083196',
+  hospital: 'Fitzrovia Hospital, London',
+  bookingHref: '/book-a-consultation',
+  instagram: 'https://www.instagram.com/dr_shiatis/',
+  instagramHandle: '@dr_shiatis',
+  tiktok: 'https://www.tiktok.com/@dr_shiatis',
+  linkedin: 'https://www.linkedin.com/in/andreas-e-shiatis',
+  doctify: 'https://www.doctify.com/uk/specialist/andreas-shiatis#reviews',
+  pantheons: 'https://www.pantheonsclinic.com/',
+  agency: { name: 'Online Marketing For Doctors', href: 'https://onlinemarketingfordoctors.com/' },
+};
+
+export const nav = [
+  { label: 'About us', href: '/about' },
+  { label: 'Surgical', href: '/surgical' },
+  { label: 'Non-Surgical', href: '/non-surgical' },
+  { label: 'Reconstructive', href: '/reconstructive' },
+  { label: 'For Men', href: '/for-men' },
+  { label: 'Before & After', href: '/before-and-after' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Blog', href: '/blog' },
+];
