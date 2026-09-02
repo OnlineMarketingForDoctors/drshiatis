@@ -56,7 +56,7 @@ const values = [
         ))}
       </dl>
 
-      <div class="meet__values" data-reveal data-values>
+      <div class="meet__values" data-reveal data-tabs>
         <div class="meet__tabs" role="tablist" aria-label="How Mr Shiatis works">
           {values.map((v, i) => (
             <button class="meet__tab" role="tab" type="button" id={`value-tab-${i}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`value-panel-${i}`} tabindex={i === 0 ? 0 : -1}>

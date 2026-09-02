@@ -1,13 +1,24 @@
 ---
 // Patient photographs supplied by the practice, shown with consent.
-const cases = [
-  { key: 'p1', title: 'Breast augmentation', note: 'Anatomical implants, subglandular plane' },
-  { key: 'p2', title: 'Breast augmentation', note: 'Anatomical implants, placed in front of the muscle' },
-  { key: 'p3', title: 'Implant exchange', note: '400cc implants exchanged for 450cc anatomical implants behind the muscle, correcting rupture and rippling' },
+// Add a case to a category by dropping its pair into public/images as
+// ba-<key>-before.webp and ba-<key>-after.webp and listing it here.
+const categories = [
+  { id: 'breast', label: 'Breast' },
+  { id: 'body', label: 'Body' },
+  { id: 'face', label: 'Face' },
+  { id: 'reconstruction', label: 'Reconstruction' },
 ];
+
+const cases = [
+  { key: 'p1', category: 'breast', title: 'Breast augmentation', note: 'Anatomical implants, subglandular plane' },
+  { key: 'p2', category: 'breast', title: 'Breast augmentation', note: 'Anatomical implants, placed in front of the muscle' },
+  { key: 'p3', category: 'breast', title: 'Implant exchange', note: '400cc implants exchanged for 450cc anatomical implants behind the muscle, correcting rupture and rippling' },
+];
+
+const byCategory = (id) => cases.filter((c) => c.category === id);
 ---
 
-<section class="ba section bg-ivory" id="results" aria-labelledby="results-title">
+<section class="ba section bg-ivory" id="results" aria-labelledby="results-title" data-tabs>
   <div class="container">
     <header class="ba__head" data-reveal-group>
       <div>
@@ -17,32 +28,57 @@ const cases = [
       <p class="lead measure-narrow" data-reveal>The best way to judge a surgeon is to look at the results he has already achieved. Drag to compare.</p>
     </header>
 
-    <div class="ba__grid">
-      {cases.map((c, i) => (
-        <figure class="ba__case" data-reveal>
-          <div class="ba__compare" data-compare style="--pos: 50%">
-            <div class="ba__panel ba__panel--before">
-              <img src={`/images/ba-${c.key}-before.webp`} alt={`${c.title}, before`} width="900" height="1125" loading="lazy" decoding="async" draggable="false" />
-              <span class="ba__tag">Before</span>
-            </div>
-            <div class="ba__panel ba__panel--after">
-              <img src={`/images/ba-${c.key}-after.webp`} alt={`${c.title}, after`} width="900" height="1125" loading="lazy" decoding="async" draggable="false" />
-              <span class="ba__tag">After</span>
-            </div>
-            <span class="ba__handle" aria-hidden="true">
-              <span class="ba__knob">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg>
-              </span>
-            </span>
-            <label class="sr-only" for={`compare-${i}`}>Compare before and after, {c.title}</label>
-            <input class="ba__range" id={`compare-${i}`} type="range" min="0" max="100" value="50" step="0.5" data-compare-input />
-          </div>
-          <figcaption class="ba__caption">
-            <span class="h3 italic">{c.title}</span>
-            <span class="small ba__note">{c.note}</span>
-          </figcaption>
-        </figure>
+    <div class="ba__tabs" role="tablist" aria-label="Result categories" data-reveal>
+      {categories.map((cat, i) => (
+        <button class="ba__tab" role="tab" type="button" id={`ba-tab-${cat.id}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`ba-panel-${cat.id}`} tabindex={i === 0 ? 0 : -1}>
+          {cat.label}
+        </button>
       ))}
+    </div>
+
+    <div class="ba__panels" data-tabs-panels>
+      {categories.map((cat, i) => {
+        const list = byCategory(cat.id);
+        return (
+          <div class="ba__panel-wrap" role="tabpanel" id={`ba-panel-${cat.id}`} aria-labelledby={`ba-tab-${cat.id}`} hidden={i !== 0}>
+            {list.length ? (
+              <div class="ba__grid">
+                {list.map((c) => (
+                  <figure class="ba__case">
+                    <div class="ba__compare" data-compare style="--pos: 50%">
+                      <div class="ba__panel ba__panel--before">
+                        <img src={`/images/ba-${c.key}-before.webp`} alt={`${c.title}, before`} width="900" height="1125" loading="lazy" decoding="async" draggable="false" />
+                        <span class="ba__tag">Before</span>
+                      </div>
+                      <div class="ba__panel ba__panel--after">
+                        <img src={`/images/ba-${c.key}-after.webp`} alt={`${c.title}, after`} width="900" height="1125" loading="lazy" decoding="async" draggable="false" />
+                        <span class="ba__tag">After</span>
+                      </div>
+                      <span class="ba__handle" aria-hidden="true">
+                        <span class="ba__knob">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg>
+                        </span>
+                      </span>
+                      <label class="sr-only" for={`compare-${c.key}`}>Compare before and after, {c.title}</label>
+                      <input class="ba__range" id={`compare-${c.key}`} type="range" min="0" max="100" value="50" step="0.5" data-compare-input />
+                    </div>
+                    <figcaption class="ba__caption">
+                      <span class="h3 italic">{c.title}</span>
+                      <span class="small ba__note">{c.note}</span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            ) : (
+              <div class="ba__empty">
+                <p class="h3 italic">{cat.label} results are being added</p>
+                <p class="ba__empty-text">Mr Shiatis can show you further {cat.label.toLowerCase()} cases at your consultation, and the gallery page will carry them once they are ready.</p>
+                <a class="link-rule" href="/book-a-consultation">Book a consultation</a>
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
 
     <div class="ba__foot" data-reveal-group>
@@ -63,11 +99,55 @@ const cases = [
   }
   .ba__head .h2 { margin-top: 1rem; }
 
+  .ba__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.25rem, 3vw, 3rem);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid rgba(15, 59, 46, 0.14);
+  }
+  .ba__tab {
+    position: relative;
+    padding: 0 0 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    transition: color 0.3s;
+  }
+  .ba__tab::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .ba__tab:hover { color: var(--emerald); }
+  .ba__tab[aria-selected='true'] { color: var(--emerald); }
+  .ba__tab[aria-selected='true']::after { transform: scaleX(1); }
+
   .ba__grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(1.25rem, 2.5vw, 2.5rem);
   }
+
+  .ba__empty {
+    display: grid;
+    justify-items: start;
+    gap: 1rem;
+    padding: clamp(2.5rem, 5vw, 4rem);
+    background: var(--paper);
+    border: 1px solid rgba(184, 150, 79, 0.35);
+    color: var(--emerald);
+  }
+  .ba__empty-text { max-width: 36em; color: var(--ink-soft); }
 
   .ba__compare {
     position: relative;

@@ -234,29 +234,31 @@ function initJourney() {
    Meet: value tabs
 --------------------------------------------------------------------------- */
 function initTabs() {
-  const root = $('[data-values]');
-  if (!root) return;
-  const tabs = $$('[role="tab"]', root);
-  const panels = $$('[role="tabpanel"]', root);
+  $$('[data-tabs]').forEach((root) => {
+    const tabs = $$('[role="tab"]', root);
+    const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls'))).filter(Boolean);
+    if (!tabs.length || panels.length !== tabs.length) return;
 
-  const select = (i) => {
-    tabs.forEach((t, j) => {
-      t.setAttribute('aria-selected', String(i === j));
-      t.tabIndex = i === j ? 0 : -1;
-    });
-    panels.forEach((p, j) => (p.hidden = i !== j));
-    if (!reduceMotion) gsap.fromTo(panels[i], { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
-  };
+    const select = (i) => {
+      tabs.forEach((t, j) => {
+        t.setAttribute('aria-selected', String(i === j));
+        t.tabIndex = i === j ? 0 : -1;
+      });
+      panels.forEach((p, j) => (p.hidden = i !== j));
+      if (!reduceMotion) gsap.fromTo(panels[i], { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+      ScrollTrigger.refresh();
+    };
 
-  tabs.forEach((t, i) => {
-    t.addEventListener('click', () => select(i));
-    t.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-        e.preventDefault();
-        const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
-        select(n);
-        tabs[n].focus();
-      }
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+          select(n);
+          tabs[n].focus();
+        }
+      });
     });
   });
 }
