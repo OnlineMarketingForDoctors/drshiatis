@@ -167,6 +167,9 @@ ul, ol { padding: 0; list-style: none; }
   padding-inline: var(--gutter);
 }
 
+/* Anchored sections must clear the fixed compact bar when jumped to. */
+section[id] { scroll-margin-top: 5.5rem; }
+
 .section { padding-block: var(--section); }
 .section--tight { padding-block: calc(var(--section) * 0.6); }
 

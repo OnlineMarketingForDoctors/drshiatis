@@ -9,9 +9,11 @@ import Lightbox from '../components/Lightbox.astro';
 interface Props {
   title: string;
   description: string;
+  variant?: 'overlay' | 'solid';
 }
 
-const { title, description } = Astro.props;
+const { title, description, variant = 'overlay' } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <!doctype html>
@@ -36,9 +38,9 @@ const { title, description } = Astro.props;
       }
     </script>
   </head>
-  <body>
+  <body class:list={[{ 'has-solid-header': variant === 'solid' }]}>
     <a class="skip-link" href="#main">Skip to content</a>
-    <Header />
+    <Header variant={variant} path={path} />
     <main id="main">
       <slot />
     </main>
@@ -64,4 +66,6 @@ const { title, description } = Astro.props;
     transition: transform 0.2s;
   }
   .skip-link:focus { transform: none; }
+  /* Push content clear of the fixed bar on interior pages. */
+  body.has-solid-header { padding-top: 4.25rem; }
 </style>

@@ -1,0 +1,154 @@
+---
+// Adoreal online booking calendar.
+// The widget is hosted on booking.adoreal.com and sizes itself by posting a
+// height back to the parent; the min-height below keeps it usable even if that
+// message never arrives.
+import { site } from '../data/site.js';
+
+const SRC = 'https://booking.adoreal.com/?organization=banwell-clinic&adorealTheme=true';
+---
+
+<section class="booking section" id="booking" aria-labelledby="booking-title">
+  <div class="container">
+    <header class="booking__head" data-reveal-group>
+      <div>
+        <p class="eyebrow eyebrow--gold" data-reveal>Choose a time</p>
+        <h2 class="h2" id="booking-title" data-reveal>Pick the slot <em class="italic">that suits you</em></h2>
+      </div>
+      <p class="lead measure-narrow" data-reveal>
+        Select a date and time below and you will get written confirmation straight away. If nothing suits, call the practice and we will find a time that does.
+      </p>
+    </header>
+
+    <div class="booking__frame" data-reveal>
+      <div class="booking__loading" data-booking-loading aria-hidden="true">
+        <span class="booking__spinner"></span>
+        <span class="small">Loading the calendar</span>
+      </div>
+
+      <!-- Booking Widget -->
+      <iframe
+        id="ad-booking-widget"
+        class="booking-widget"
+        src={SRC}
+        title="Book a consultation with Mr Andreas Shiatis"
+        data-cookieconsent="ignore"
+        data-booking-frame
+        allow="payment; clipboard-write"
+        width="100%"
+      ></iframe>
+      <!-- End Booking Widget -->
+    </div>
+
+    <p class="small booking__fallback" data-reveal>
+      If the calendar does not load, please call
+      <a href={site.phoneHref}>{site.phoneDisplay}</a>,
+      message us on <a href={site.whatsappHref} target="_blank" rel="noopener">WhatsApp</a>
+      or email <a href={`mailto:${site.email}`}>{site.email}</a> and we will book you in.
+    </p>
+  </div>
+</section>
+
+<style>
+  .booking { padding-block: clamp(3rem, 7vw, 6rem); }
+
+  .booking__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .booking__head .h2 { margin-top: 1rem; max-width: 11em; }
+
+  .booking__frame {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid rgba(184, 150, 79, 0.4);
+    min-height: 44rem;
+  }
+
+  .booking-widget {
+    display: block;
+    width: 100%;
+    /* Replaced by the height the widget posts back, when it sends one. */
+    height: 44rem;
+    border: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .booking__loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1rem;
+    color: var(--ink-mute);
+    transition: opacity 0.5s var(--ease-out);
+  }
+  .booking__loading.is-done { opacity: 0; }
+
+  .booking__spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid rgba(184, 150, 79, 0.4);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: booking-spin 0.9s linear infinite;
+  }
+  @keyframes booking-spin { to { transform: rotate(360deg); } }
+  :global(.reduced-motion) .booking__spinner { animation: none; }
+
+  .booking__fallback {
+    margin-top: 1.5rem;
+    color: var(--ink-mute);
+    max-width: 46em;
+  }
+  .booking__fallback a {
+    color: var(--emerald);
+    border-bottom: 1px solid rgba(15, 59, 46, 0.35);
+  }
+  .booking__fallback a:hover { border-bottom-color: var(--emerald); }
+
+  @media (max-width: 700px) {
+    .booking__frame { min-height: 40rem; }
+    .booking-widget { height: 40rem; }
+  }
+</style>
+
+<script>
+  const ORIGIN = 'https://booking.adoreal.com';
+  const frame = document.querySelector('[data-booking-frame]');
+  const loading = document.querySelector('[data-booking-loading]');
+  if (frame) {
+    frame.addEventListener('load', () => loading?.classList.add('is-done'));
+
+    // The widget reports its content height so the iframe can grow with the
+    // booking steps. Accept the shapes these widgets commonly post, and only
+    // from the booking origin.
+    const readHeight = (data) => {
+      if (typeof data === 'number') return data;
+      if (typeof data === 'string') {
+        const n = parseFloat(data.replace(/[^0-9.]/g, ''));
+        return Number.isFinite(n) ? n : 0;
+      }
+      if (data && typeof data === 'object') {
+        return readHeight(data.height ?? data.frameHeight ?? data.documentHeight ?? data.data ?? 0);
+      }
+      return 0;
+    };
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== ORIGIN) return;
+      const height = readHeight(event.data);
+      // Ignore nonsense values; keep the CSS minimum as the floor.
+      if (height > 300 && height < 20000) {
+        frame.style.height = `${Math.ceil(height)}px`;
+        loading?.classList.add('is-done');
+      }
+    });
+  }
+</script>

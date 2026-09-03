@@ -3,9 +3,20 @@ import Monogram from './Monogram.astro';
 import SocialIcons from './SocialIcons.astro';
 import DoctifyBadge from './DoctifyBadge.astro';
 import { site, nav } from '../data/site.js';
+
+interface Props {
+  // 'overlay' sits over the hero video; 'solid' is the always-visible bar
+  // used on interior pages, which have no hero behind the header.
+  variant?: 'overlay' | 'solid';
+  path?: string;
+}
+
+const { variant = 'overlay', path = '' } = Astro.props;
+const solid = variant === 'solid';
 ---
 
 <!-- Full header, laid over the hero video -->
+{!solid && (
 <header class="site-header" data-site-header>
   <div class="container site-header__inner">
     <div class="site-header__top">
@@ -42,9 +53,10 @@ import { site, nav } from '../data/site.js';
     </nav>
   </div>
 </header>
+)}
 
 <!-- Compact bar that slides in once the hero has scrolled away -->
-<div class="site-bar" data-site-bar>
+<div class="site-bar" class:list={[{ "is-visible": solid, "site-bar--solid": solid }]} data-site-bar>
   <div class="container site-bar__inner">
     <a class="site-bar__logo" href="/" aria-label={`${site.name} home`}>
       <Monogram />
@@ -52,7 +64,7 @@ import { site, nav } from '../data/site.js';
     <nav class="site-bar__nav" aria-label="Primary, compact">
       <ul>
         {nav.map((item) => (
-          <li><a href={item.href}>{item.label}</a></li>
+          <li><a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a></li>
         ))}
       </ul>
     </nav>
@@ -220,6 +232,9 @@ import { site, nav } from '../data/site.js';
     transition: transform 0.55s var(--ease-out);
   }
   .site-bar.is-visible { transform: none; }
+  /* Interior pages: the bar is the header, so it never animates in. */
+  .site-bar--solid { transition: none; background: var(--ivory); }
+  .site-bar__nav a[aria-current='page']::after { transform: scaleX(1); transform-origin: left; }
 
   .site-bar__inner {
     display: flex;

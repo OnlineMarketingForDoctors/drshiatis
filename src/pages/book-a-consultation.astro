@@ -1,0 +1,266 @@
+---
+import Base from '../layouts/Base.astro';
+import BookingWidget from '../components/BookingWidget.astro';
+import { site } from '../data/site.js';
+
+const steps = [
+  {
+    title: 'Choose your time',
+    text: 'Pick a date and time from the calendar below. You will get written confirmation and a reminder before the day.',
+  },
+  {
+    title: 'Meet Mr Shiatis',
+    text: 'Every consultation is face to face with Mr Shiatis himself at Fitzrovia Hospital, never a delegate or a video call.',
+  },
+  {
+    title: 'Take your time',
+    text: 'You will be offered a second consultation before any decision. Nothing is booked or paid for on the day you first meet.',
+  },
+];
+
+const bring = [
+  'The three things you would most like to change, in your own words',
+  'Any previous surgery, scans or letters relating to what you are asking about',
+  'A list of medicines, supplements and allergies',
+  'Your questions, written down, however small they seem',
+];
+---
+
+<Base
+  variant="solid"
+  title="Book a Consultation | Mr Andreas Shiatis, Consultant Plastic Surgeon"
+  description="Book a face to face consultation with Mr Andreas Shiatis, Consultant Plastic Surgeon, at Fitzrovia Hospital in London. Choose a time online, or call +44 (0)20 8050 9669."
+>
+  <!-- Page head -->
+  <section class="bhead on-dark" aria-labelledby="bhead-title">
+    <div class="bhead__bg" aria-hidden="true">
+      <img src="/images/satin.webp" alt="" width="1800" height="1005" fetchpriority="high" decoding="async" />
+    </div>
+
+    <div class="container bhead__inner">
+      <div class="bhead__copy">
+        <p class="eyebrow" data-reveal>Book a consultation</p>
+        <h1 class="h2 bhead__title" id="bhead-title" data-reveal>
+          Start with <em class="italic">a conversation</em>
+        </h1>
+        <p class="lead" data-reveal>
+          Two consultations before any decision, both with Mr Shiatis himself. Choose a time that suits you below, or speak to a patient coordinator if you would rather talk it through first.
+        </p>
+
+        <div class="bhead__actions" data-reveal>
+          <a class="btn btn--ivory" href="#booking">
+            Choose a time
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+          </a>
+          <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
+          <a class="btn btn--outline-light" href={site.whatsappHref} target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+
+        <dl class="bhead__meta" data-reveal>
+          <div>
+            <dt>Where</dt>
+            <dd>{site.hospital}</dd>
+          </div>
+          <div>
+            <dt>With</dt>
+            <dd>{site.surgeon} {site.qualifications}</dd>
+          </div>
+          <div>
+            <dt>GMC</dt>
+            <dd>{site.gmc}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="bsteps section--tight bg-ivory" aria-labelledby="bsteps-title">
+    <div class="container">
+      <h2 class="sr-only" id="bsteps-title">How booking works</h2>
+      <ol class="bsteps__list" data-reveal-group>
+        {steps.map((s, i) => (
+          <li class="bsteps__item" data-reveal>
+            <span class="bsteps__num italic" aria-hidden="true">{i + 1}</span>
+            <h3 class="h3 italic bsteps__title">{s.title}</h3>
+            <p class="bsteps__text">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- The calendar -->
+  <BookingWidget />
+
+  <!-- Preparing -->
+  <section class="bprep section--tight bg-paper" aria-labelledby="bprep-title">
+    <div class="container bprep__grid">
+      <div class="bprep__copy" data-reveal-group>
+        <p class="eyebrow eyebrow--gold" data-reveal>Before you come</p>
+        <h2 class="h2" id="bprep-title" data-reveal>What to <em class="italic">bring</em></h2>
+        <p class="lead" data-reveal>
+          The more Mr Shiatis knows, the more useful the hour will be. None of this is compulsory, and nothing is expected of you on the day beyond an honest conversation.
+        </p>
+      </div>
+
+      <ul class="bprep__list" data-reveal-group>
+        {bring.map((item) => (
+          <li data-reveal>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Prefer to talk -->
+  <section class="btalk bg-emerald on-dark" aria-labelledby="btalk-title">
+    <div class="container btalk__inner" data-reveal-group>
+      <div>
+        <p class="eyebrow" data-reveal>Prefer to talk first</p>
+        <h2 class="h2" id="btalk-title" data-reveal>We are happy <em class="italic">to help</em></h2>
+      </div>
+      <div class="btalk__actions" data-reveal>
+        <a class="btn btn--ivory" href={site.phoneHref}>Call {site.phoneDisplay}</a>
+        <a class="btn btn--outline-light" href={site.whatsappHref} target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn btn--outline-light" href={`mailto:${site.email}`}>Email us</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Page head */
+  .bhead {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+    background: var(--emerald);
+    color: var(--ivory);
+  }
+  .bhead__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    opacity: 0.5;
+  }
+  .bhead__bg img { width: 100%; height: 100%; object-fit: cover; }
+  .bhead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to right, rgba(10, 42, 33, 0.35), rgba(10, 42, 33, 0.8));
+  }
+
+  .bhead__inner { padding-block: clamp(3.5rem, 9vw, 7rem); }
+  .bhead__copy { max-width: 46rem; }
+  .bhead__title { margin-top: 1rem; }
+  .bhead__copy .lead { margin-top: 1.5rem; max-width: 34em; }
+
+  .bhead__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+  }
+  .bhead__actions svg { width: 0.9em; height: 0.9em; }
+  .bhead__actions .btn:hover svg { transform: translateY(3px); }
+
+  .bhead__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem clamp(2rem, 5vw, 4rem);
+    margin-top: clamp(2.25rem, 5vw, 3.5rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(216, 189, 124, 0.4);
+  }
+  .bhead__meta dt {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+  .bhead__meta dd {
+    margin: 0.4rem 0 0;
+    font-size: 0.95rem;
+    color: rgba(244, 238, 228, 0.9);
+  }
+
+  /* Steps */
+  .bsteps__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+  }
+  .bsteps__item {
+    display: grid;
+    gap: 0.6rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.45);
+  }
+  .bsteps__num {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--gold);
+  }
+  .bsteps__title { color: var(--emerald); }
+  .bsteps__text { color: var(--ink-soft); }
+
+  /* Preparation */
+  .bprep__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: start;
+  }
+  .bprep__copy .h2 { margin-top: 1rem; }
+  .bprep__copy .lead { margin-top: 1.5rem; }
+
+  .bprep__list { display: grid; gap: 0.25rem; }
+  .bprep__list li {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding-block: 1rem;
+    border-bottom: 1px solid rgba(28, 27, 24, 0.1);
+    color: var(--ink-soft);
+  }
+  .bprep__list li:first-child { border-top: 1px solid rgba(28, 27, 24, 0.1); }
+  .bprep__list svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.1rem;
+    color: var(--gold);
+  }
+
+  /* Prefer to talk */
+  .btalk__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+  }
+  .btalk__inner .h2 { margin-top: 1rem; }
+  .btalk__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  @media (max-width: 900px) {
+    .bsteps__list { grid-template-columns: 1fr; }
+    .bprep__grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .bhead__actions { flex-direction: column; align-items: stretch; }
+    .bhead__actions .btn { justify-content: center; }
+    /* One per row, so nothing runs under the floating buttons. */
+    .bhead__meta { flex-direction: column; gap: 1.1rem; }
+    .btalk__actions { flex-direction: column; align-items: stretch; width: 100%; }
+    .btalk__actions .btn { justify-content: center; }
+  }
+</style>
