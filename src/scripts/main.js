@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// The hero's muted background video, paused while the lightbox is open.
 let heroPlayer = null;
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -57,7 +58,7 @@ function initHeader() {
 }
 
 /* ---------------------------------------------------------------------------
-   Hero: entrance sequence and YouTube background
+   Hero: entrance sequence and muted background video
 --------------------------------------------------------------------------- */
 function initHero() {
   const hero = $('[data-hero]');
@@ -82,64 +83,52 @@ function initHero() {
 
 function initHeroVideo() {
   const container = $('[data-hero-video]');
-  const mount = container?.querySelector('[data-yt-mount]');
-  if (!container || !mount || reduceMotion) return;
-  const id = container.dataset.heroVideo;
-  if (!id) return;
+  const video = container?.querySelector('[data-hero-media]');
+  if (!container || !video) return;
 
-  // Save data on constrained connections: keep the poster.
+  heroPlayer = video;
+
+  // Reduced motion, or a connection the visitor is paying for by the megabyte:
+  // leave the poster in place and never fetch the video.
   const conn = navigator.connection;
-  if (conn && (conn.saveData || /2g/.test(conn.effectiveType || ''))) return;
+  const frugal = conn && (conn.saveData || /2g/.test(conn.effectiveType || ''));
+  if (reduceMotion || frugal) return;
 
-  const load = () => {
-    window.onYouTubeIframeAPIReady = () => {
-      // The API swaps the mount element for the iframe, so the iframe lands
-      // inside the styled container and inherits its cover sizing.
-      heroPlayer = new window.YT.Player(mount, {
-        videoId: id,
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          loop: 1,
-          playlist: id,
-          playsinline: 1,
-          rel: 0,
-          modestbranding: 1,
-          disablekb: 1,
-          iv_load_policy: 3,
-          cc_load_policy: 3,
-          fs: 0,
-        },
-        events: {
-          onReady: (e) => {
-            e.target.mute();
-            e.target.playVideo();
-          },
-          onStateChange: (e) => {
-            if (e.data === window.YT.PlayerState.PLAYING) {
-              container.classList.add('is-playing');
-              // YouTube switches captions on for muted autoplay. The module can
-              // only be unloaded once playback has started, so do it here.
-              try {
-                e.target.unloadModule('captions');
-                e.target.unloadModule('cc');
-                e.target.setOption('captions', 'track', {});
-              } catch {}
-            }
-            if (e.data === window.YT.PlayerState.ENDED) e.target.playVideo();
-          },
-        },
-      });
-    };
-    const s = document.createElement('script');
-    s.src = 'https://www.youtube.com/iframe_api';
-    s.async = true;
-    document.head.appendChild(s);
+  // Chrome dropped `media` on <source>, so the rendition is chosen here.
+  // VP9 first for the browsers that take it, H.264 as the universal fallback.
+  const stem = window.matchMedia('(max-width: 900px)').matches ? '/video/hero-mobile' : '/video/hero';
+  for (const [ext, type] of [['webm', 'video/webm'], ['mp4', 'video/mp4']]) {
+    const source = document.createElement('source');
+    source.src = `${stem}.${ext}`;
+    source.type = type;
+    video.appendChild(source);
+  }
+
+  video.addEventListener('playing', () => container.classList.add('is-playing'), { once: true });
+
+  const start = () => {
+    video.muted = true; // iOS only autoplays muted
+    const p = video.play();
+    // A rejected play promise is normal (a background tab, or a strict policy);
+    // the poster stays and nothing breaks.
+    if (p && typeof p.catch === 'function') p.catch(() => {});
   };
 
-  if (document.readyState === 'complete') setTimeout(load, 400);
-  else window.addEventListener('load', () => setTimeout(load, 400), { once: true });
+  video.load();
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
+
+  // Don't burn battery decoding a video nobody can see.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) video.pause();
+    else if (!document.querySelector('[data-lightbox]:not([hidden])')) start();
+  });
+  ScrollTrigger.create({
+    trigger: container,
+    start: 'top bottom',
+    end: 'bottom top',
+    onToggle: (self) => (self.isActive ? start() : video.pause()),
+  });
 }
 
 /* ---------------------------------------------------------------------------
@@ -458,7 +447,7 @@ function initLightbox() {
     root.hidden = true;
     frame.innerHTML = '';
     document.body.classList.remove('menu-open');
-    try { heroPlayer?.playVideo?.(); } catch {}
+    try { heroPlayer?.play?.()?.catch?.(() => {}); } catch {}
     lastFocus?.focus?.();
   };
 
@@ -473,7 +462,7 @@ function initLightbox() {
     root.hidden = false;
     root.classList.add('is-open');
     document.body.classList.add('menu-open');
-    try { heroPlayer?.pauseVideo?.(); } catch {}
+    try { heroPlayer?.pause?.(); } catch {}
     $('[data-lightbox-close]:not(.lightbox__backdrop)', root)?.focus();
   };
 
