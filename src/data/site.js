@@ -13,6 +13,10 @@ export const site = {
   address: ['Sterling House, Fulbourne Road', 'Walthamstow, London E17 4EE'],
   addressHref: 'https://maps.google.com/?q=Sterling+House+Fulbourne+Road+Walthamstow+London+E17+4EE',
   bookingHref: '/book-a-consultation',
+  // Paste the list provider's form POST URL here (Mailchimp, Brevo, Klaviyo and
+  // the rest all give you one). While it is empty the newsletter form falls
+  // back to opening a pre-filled email, so no address is ever silently lost.
+  newsletterAction: '',
   instagram: 'https://www.instagram.com/dr_shiatis/',
   instagramHandle: '@dr_shiatis',
   tiktok: 'https://www.tiktok.com/@dr_shiatis',

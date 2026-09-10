@@ -546,6 +546,37 @@ function initLightbox() {
 }
 
 /* ---------------------------------------------------------------------------
+   Newsletter
+--------------------------------------------------------------------------- */
+function initNewsletter() {
+  const form = $('[data-newsletter]');
+  if (!form) return;
+  const note = $('[data-newsletter-note]', form);
+  const trap = form.querySelector('input[name="company"]');
+
+  form.addEventListener('submit', (e) => {
+    // Bots fill the hidden field; people never see it.
+    if (trap && trap.value) { e.preventDefault(); return; }
+    // With a list provider configured the browser posts to it as normal.
+    if (form.getAttribute('action')) return;
+
+    // Without one, hand the address to the practice's inbox rather than
+    // swallowing it.
+    e.preventDefault();
+    const email = form.querySelector('input[name="EMAIL"]')?.value.trim();
+    if (!email) return;
+    const to = form.dataset.fallbackEmail;
+    const subject = encodeURIComponent('Newsletter signup');
+    const body = encodeURIComponent(`Please add this address to the newsletter: ${email}`);
+    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+    if (note) {
+      note.textContent = 'Opening your email app to confirm.';
+      note.classList.add('is-done');
+    }
+  });
+}
+
+/* ---------------------------------------------------------------------------
    Boot
 --------------------------------------------------------------------------- */
 function boot() {
@@ -560,6 +591,7 @@ function boot() {
   initTestimonial();
   initBackToTop();
   initLightbox();
+  initNewsletter();
 
   // Images loading late can shift trigger positions.
   window.addEventListener('load', () => ScrollTrigger.refresh());

@@ -1,0 +1,125 @@
+---
+import { site } from '../data/site.js';
+
+const action = site.newsletterAction;
+---
+
+<div class="news">
+  <div class="container news__inner" data-reveal-group>
+    <div class="news__copy">
+      <p class="eyebrow news__eyebrow" data-reveal>Newsletter</p>
+      <h2 class="h3 italic news__title" data-reveal>Occasional notes from the practice</h2>
+      <p class="news__blurb" data-reveal>
+        A few times a year: what is new in breast and body surgery, advice on recovery,
+        and news from the clinic. Unsubscribe whenever you like.
+      </p>
+    </div>
+
+    <form
+      class="news__form"
+      data-newsletter
+      data-fallback-email={site.email}
+      action={action || undefined}
+      method="post"
+      target={action ? '_blank' : undefined}
+      data-reveal
+    >
+      <label class="sr-only" for="news-email">Email address</label>
+      <input
+        class="news__input"
+        id="news-email"
+        type="email"
+        name="EMAIL"
+        autocomplete="email"
+        required
+        placeholder="Your email address"
+      />
+      <!-- Bots fill hidden fields; people do not. -->
+      <input class="news__trap" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button class="btn btn--ivory news__btn" type="submit">Sign up</button>
+
+      <p class="news__note" data-newsletter-note role="status">
+        We keep your address to ourselves. <a href="/privacy-policy">Privacy Policy</a>.
+      </p>
+    </form>
+  </div>
+</div>
+
+<style>
+  .news {
+    border-bottom: 1px solid rgba(216, 189, 124, 0.28);
+  }
+  .news__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(1.75rem, 5vw, 5rem);
+    align-items: center;
+    padding-block: clamp(2.5rem, 5vw, 3.75rem);
+  }
+
+  .news__eyebrow { color: var(--gold-light); }
+  .news__title { margin-top: 0.6rem; color: var(--ivory); }
+  .news__blurb {
+    margin-top: 0.85rem;
+    max-width: 34em;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgba(244, 238, 228, 0.72);
+  }
+
+  /* Underlined field rather than a box: the footer has no other panels. */
+  .news__form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: end;
+  }
+  .news__input {
+    width: 100%;
+    padding: 0.85rem 0 0.7rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--ivory);
+    background: none;
+    border: 0;
+    border-bottom: 1px solid rgba(216, 189, 124, 0.5);
+    border-radius: 0;
+    transition: border-color 0.3s;
+  }
+  .news__input::placeholder { color: rgba(244, 238, 228, 0.45); }
+  .news__input:focus { outline: none; border-bottom-color: var(--gold-light); }
+  .news__input:focus-visible { outline: none; }
+  /* The field has no box, so the focus ring goes on the line it does have. */
+  .news__input:focus-visible { border-bottom-width: 2px; border-bottom-color: var(--gold-light); }
+
+  .news__trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .news__btn { white-space: nowrap; }
+
+  .news__note {
+    grid-column: 1 / -1;
+    margin-top: 0.25rem;
+    font-size: 0.78rem;
+    color: rgba(244, 238, 228, 0.6);
+  }
+  .news__note a {
+    color: rgba(244, 238, 228, 0.85);
+    border-bottom: 1px solid rgba(216, 189, 124, 0.5);
+  }
+  .news__note a:hover { color: var(--ivory); border-color: var(--gold-light); }
+  .news__note.is-done { color: var(--gold-light); }
+
+  @media (max-width: 900px) {
+    .news__inner { grid-template-columns: 1fr; align-items: start; }
+  }
+  @media (max-width: 520px) {
+    .news__form { grid-template-columns: 1fr; align-items: stretch; }
+    .news__btn { justify-content: center; }
+  }
+</style>
