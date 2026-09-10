@@ -59,6 +59,12 @@ const families = [
 
 <section class="flag section" id="flagship" aria-label="Flagship procedures">
   <div class="container">
+    <div class="flag__intro" data-reveal-group>
+      <p data-reveal>
+        Most of the practice is breast and body surgery. These are the operations Mr Shiatis is asked for most often. Each one starts the same way: two consultations before any decision, and a plan built around your own anatomy rather than a technique applied to everyone.
+      </p>
+    </div>
+
     <div class="flag__index">
       {families.map((f) => (
         <div class="flag__family">
@@ -90,6 +96,16 @@ const families = [
 
 <style>
   .flag { background: var(--ivory-2); }
+
+  /* No heading here, so the intro carries the section: set larger than body
+     copy and in the emerald the procedure names use. */
+  .flag__intro {
+    max-width: 32em;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(1.1rem, 1.5vw, 1.45rem);
+    line-height: 1.5;
+    color: var(--emerald);
+  }
 
   /* Two columns, one per family, divided by the brand's gold hairline. */
   .flag__index {
