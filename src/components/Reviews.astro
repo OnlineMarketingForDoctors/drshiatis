@@ -24,11 +24,6 @@ import Stars from './Stars.astro';
             tabindex={copy === 1 ? -1 : undefined}
             hidden
           >Read more</button>
-          <footer class="reviews__meta small">
-            <span>Verified patient</span>
-            <span aria-hidden="true">·</span>
-            <time>{r.date}</time>
-          </footer>
         </li>
       )))}
     </ul>
@@ -42,7 +37,10 @@ import Stars from './Stars.astro';
     /* Shares the flagship index's ground so the two read as one run, which
        is also why the head is trimmed: the index above supplies the space. */
     background: var(--ivory-2);
+    /* Short at both ends: the index above supplies the head, and the
+       expertise section below opens with a full section padding of its own. */
     padding-top: clamp(1.5rem, 3vw, 2.75rem);
+    padding-bottom: clamp(1.5rem, 3vw, 2.75rem);
   }
 
   .reviews__viewport { position: relative; }
@@ -53,7 +51,7 @@ import Stars from './Stars.astro';
     scroll-padding-inline: var(--gutter);
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-block: 0.5rem 1.5rem;
+    padding-block: 0.5rem;
     cursor: grab;
   }
   .reviews__track.is-dragging { cursor: grabbing; }
@@ -115,9 +113,4 @@ import Stars from './Stars.astro';
     transition: color 0.3s, border-color 0.3s;
   }
   .reviews__more:hover { color: var(--emerald); border-color: var(--emerald); }
-  .reviews__meta {
-    display: flex;
-    gap: 0.5rem;
-    color: var(--ink-mute);
-  }
 </style>
