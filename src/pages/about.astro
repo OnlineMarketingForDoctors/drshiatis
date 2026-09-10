@@ -1,0 +1,891 @@
+---
+import Base from '../layouts/Base.astro';
+import Affiliations from '../components/Affiliations.astro';
+import Testimonial from '../components/Testimonial.astro';
+import Cta from '../components/Cta.astro';
+import { site } from '../data/site.js';
+
+const headMeta = [
+  ['Specialty', 'Aesthetic breast and body surgery'],
+  ['Qualification', 'FRCS (Plast), Royal College of Surgeons of England'],
+  ['GMC number', site.gmc],
+  ['Practice', 'Fitzrovia Hospital, with Pantheons Clinic'],
+];
+
+const commitments = [
+  {
+    key: 'Patient-centred',
+    text: 'The plan begins with what you would like to change, described in your own words, before any technique is discussed.',
+  },
+  {
+    key: 'Bespoke',
+    text: 'No off-the-shelf approach. Each operation is designed around your anatomy, your proportions and the result you are asking for.',
+  },
+  {
+    key: 'Transparent',
+    text: 'Honest about what surgery can achieve, and equally honest about what it cannot. Patients say this is what they value most.',
+  },
+];
+
+// Training and appointments, in the order they happened.
+const path = [
+  {
+    place: 'University of Nottingham',
+    role: 'Medical School',
+    text: 'Undergraduate medical training, followed by junior surgical posts in the UK.',
+  },
+  {
+    place: 'Boston University, USA',
+    role: 'Fulbright Scholar',
+    text: 'A period of study in the United States on a Fulbright Scholarship, one of the most competitive academic awards available to UK graduates.',
+  },
+  {
+    place: 'London Deanery',
+    role: 'Specialist plastic surgery training',
+    text: 'Higher surgical training across all the major London plastic surgery units, including Imperial College, the Royal Free Hospital, Guy’s and St Thomas’ Hospital and Chelsea and Westminster Hospital.',
+  },
+  {
+    place: 'Royal College of Surgeons of England',
+    role: 'FRCS (Plast)',
+    text: 'The UK specialist fellowship examination in plastic surgery, the qualification that marks the completion of consultant-level training.',
+  },
+  {
+    place: 'Imperial College Healthcare NHS Trust',
+    role: 'Microsurgery fellowship',
+    text: 'Advanced fellowship training in breast and head and neck reconstruction, working at the level of detail that free-tissue transfer demands.',
+  },
+  {
+    place: 'General Medical Council',
+    role: 'Specialist Register, 2021',
+    text: 'Entered on the GMC Specialist Register for Plastic Surgery, the formal recognition of consultant status in the UK.',
+  },
+  {
+    place: 'Barts Health NHS Trust',
+    role: 'NHS Consultant Plastic Surgeon',
+    text: 'Microsurgical breast reconstruction and complex reconstructive surgery, alongside his private practice.',
+  },
+  {
+    place: 'Fitzrovia Hospital, London',
+    role: 'Private practice, with Pantheons Clinic',
+    text: 'Aesthetic breast and body surgery, seeing private patients under the Pantheons Clinic in central London.',
+  },
+];
+
+const groups = [
+  {
+    title: 'Breast',
+    items: [
+      'Breast reduction',
+      'Breast augmentation',
+      'Breast uplift (mastopexy)',
+      'Uplift with implants (augmentation mastopexy)',
+      'Preserve short-scar augmentation',
+      'Breast implant revision',
+      'Correction of breast asymmetry',
+      'Fat transfer to the breast (lipomodelling)',
+      'Areolar and nipple reduction',
+    ],
+  },
+  {
+    title: 'Body',
+    items: [
+      'Abdominoplasty (tummy tuck)',
+      'Liposuction and 3D body contouring',
+      'Mummy makeover',
+      'Arm lift (brachioplasty)',
+      'Thigh lift',
+      'Body lift',
+      'Neck liposuction',
+      'Skin tightening',
+    ],
+  },
+  {
+    title: 'For men',
+    items: [
+      'Gynaecomastia surgery',
+      'Gynaecomastia under local anaesthetic',
+      'Male body contouring',
+      'Liposuction for men',
+    ],
+  },
+  {
+    title: 'Face and fine detail',
+    items: [
+      'Upper eyelid surgery (blepharoplasty)',
+      'Prominent ear correction',
+      'Earlobe reduction',
+    ],
+  },
+];
+
+const tech = [
+  {
+    title: '3D simulation before you decide',
+    text: 'Crisalix imaging, through the Adoreal patient platform, lets you see a simulated result on your own body. You also set out your three biggest concerns before you arrive, so the consultation starts where it matters to you.',
+  },
+  {
+    title: 'Preserve short-scar augmentation',
+    text: 'A short-scar approach to breast augmentation that can be performed under sedation, with the fastest return to normal activity of the techniques available.',
+  },
+  {
+    title: 'Gynaecomastia under local anaesthetic',
+    text: 'Extensive experience treating gynaecomastia without a general anaesthetic, which means a quicker recovery and a lower cost for the patient.',
+  },
+  {
+    title: 'Ultrasound-assisted liposuction',
+    text: 'Ultrasound-assisted and 3D contouring techniques for more even, more controlled fat removal and definition where it is wanted.',
+  },
+  {
+    title: 'Skin tightening',
+    text: 'Full training in the current skin-tightening technologies, including Renuvion, argon plasma and Ignite, used alongside contouring where skin quality calls for it.',
+  },
+  {
+    title: 'Advanced recovery protocols',
+    text: 'Enhanced recovery pathways allow most procedures to be carried out as day cases, so you recover at home rather than on a ward, at a lower cost.',
+  },
+];
+
+const regions = ['London', 'Surrey', 'Sussex', 'Hampshire', 'Hertfordshire', 'Kent', 'Essex'];
+---
+
+<Base
+  variant="solid"
+  title="About Mr Andreas Shiatis | Consultant Plastic Surgeon, London"
+  description="Mr Andreas Shiatis FRCS (Plast) is a UK-trained Consultant Plastic Surgeon in London specialising in aesthetic breast and body surgery, and an NHS Consultant in microsurgical breast reconstruction at Barts Health."
+>
+  <!-- Page head -->
+  <section class="ahead on-dark" aria-labelledby="ahead-title">
+    <div class="ahead__bg" aria-hidden="true">
+      <img src="/images/about-satin.webp" alt="" width="1800" height="1005" fetchpriority="high" decoding="async" />
+    </div>
+
+    <div class="container ahead__inner">
+      <div class="ahead__copy">
+        <p class="eyebrow" data-reveal>About</p>
+        <h1 class="h2 ahead__title" id="ahead-title" data-reveal>
+          Mr Andreas Shiatis
+          <span class="ahead__quals italic">FRCS (Plast)</span>
+        </h1>
+        <p class="lead" data-reveal>
+          A UK-trained Consultant Plastic Surgeon based in London, specialising in aesthetic breast and body surgery — and an NHS Consultant in microsurgical breast reconstruction at Barts Health.
+        </p>
+
+        <dl class="ahead__meta" data-reveal>
+          {headMeta.map(([k, v]) => (
+            <div>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="ahead__actions" data-reveal>
+          <a class="btn btn--ivory" href={site.bookingHref}>
+            Book a consultation
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
+        </div>
+      </div>
+
+      <figure class="ahead__figure">
+        <div class="cover ahead__img" data-img-reveal>
+          <img src="/images/about-portrait.webp" alt="Mr Andreas Shiatis, Consultant Plastic Surgeon, seated at his consulting desk" width="1200" height="1600" fetchpriority="high" decoding="async" />
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- The practice -->
+  <section class="intro section bg-ivory" aria-labelledby="intro-title">
+    <div class="container">
+      <header class="intro__head" data-reveal-group>
+        <p class="eyebrow eyebrow--gold" data-reveal>The practice</p>
+        <h2 class="h2" id="intro-title" data-reveal>Refined results, <em class="italic">honestly arrived at</em></h2>
+      </header>
+
+      <div class="intro__body" data-reveal-group>
+        <p class="lead" data-reveal>
+          Mr Shiatis’s practice is dedicated to delivering refined, natural-looking results through meticulous surgical technique, personalised treatment planning and an unwavering commitment to patient safety.
+        </p>
+        <div class="intro__cols" data-reveal>
+          <p>
+            His philosophy is centred on elegant, natural-looking results that enhance confidence while respecting each patient’s individual anatomy. Surgery is planned around proportion rather than a fixed idea of how a result should look, so that the outcome is refined rather than obvious — and still recognisably you.
+          </p>
+          <p>
+            He continues to refine his practice through leading national and international education, incorporating evidence-based innovations in breast and body contouring: advanced implant technologies, internal support techniques, ultrasound-assisted liposuction and skin-tightening technologies. A small number of facial procedures complement the surgical practice.
+          </p>
+        </div>
+      </div>
+
+      <ul class="intro__commitments" data-reveal-group>
+        {commitments.map((c, i) => (
+          <li data-reveal>
+            <span class="intro__num italic" aria-hidden="true">{`0${i + 1}`}</span>
+            <h3 class="h3 italic intro__key">{c.key}</h3>
+            <p class="intro__text">{c.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- In his own words -->
+  <section class="words on-dark" aria-labelledby="words-title">
+    <div class="words__grid">
+      <div class="words__media">
+        <div class="cover words__img" data-img-reveal>
+          <img src="/images/about-consult.webp" alt="Mr Shiatis in conversation with a patient across a consulting-room desk" width="1600" height="1067" loading="lazy" decoding="async" />
+        </div>
+      </div>
+
+      <div class="words__copy" data-reveal-group>
+        <p class="eyebrow" id="words-title" data-reveal>In his own words</p>
+        <blockquote class="words__quote" data-reveal>
+          <p class="italic">
+            “Aesthetic care is never simply about performing a procedure. It is about understanding why someone has come to see me, treating them as an individual, and helping them achieve a result that feels natural, considered and right for them.”
+          </p>
+        </blockquote>
+        <p class="words__text" data-reveal>
+          My passion for this profession comes from the combination of technical precision, creativity and, above all, the human connection involved in caring for patients.
+        </p>
+        <p class="words__text" data-reveal>
+          Working with patients through challenging, often life-changing circumstances taught me the importance of listening carefully, communicating honestly and understanding the person behind the procedure. The context of aesthetic surgery may be different, but the same principles remain central: taking time to understand what a patient hopes to achieve, setting realistic expectations, creating trust and making sure they feel genuinely heard.
+        </p>
+        <p class="words__attrib small" data-reveal>
+          <span class="rule" aria-hidden="true"></span>
+          Mr Andreas Shiatis
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Training -->
+  <section class="path section bg-ivory-2" id="training" aria-labelledby="path-title">
+    <div class="path__marble" aria-hidden="true">
+      <img src="/images/marble.webp" alt="" width="1800" height="1005" loading="lazy" decoding="async" />
+    </div>
+
+    <div class="container">
+      <header class="path__head" data-reveal-group>
+        <p class="eyebrow eyebrow--gold" data-reveal>Training and appointments</p>
+        <h2 class="h2" id="path-title" data-reveal>Where the <em class="italic">hands were trained</em></h2>
+        <p class="lead measure" data-reveal>
+          Fifteen years in plastic surgery, through the London teaching hospitals, a microsurgery fellowship and an NHS consultant post — before a single aesthetic result is planned.
+        </p>
+      </header>
+
+      <div class="path__grid">
+        <ol class="path__list" data-reveal-group>
+          {path.map((p) => (
+            <li class="path__item" data-reveal>
+              <div class="path__marker" aria-hidden="true"></div>
+              <div class="path__body">
+                <p class="path__role">{p.role}</p>
+                <h3 class="h3 path__place">{p.place}</h3>
+                <p class="path__text">{p.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <figure class="path__figure">
+          <div class="path__sticky">
+            <div class="cover path__img" data-img-reveal>
+              <img src="/images/about-scrubs.webp" alt="Mr Shiatis in surgical scrubs at the entrance to theatre" width="1000" height="1250" loading="lazy" decoding="async" />
+            </div>
+            <figcaption class="small path__caption" data-reveal>
+              Over 15 years in plastic surgery, across the NHS and private practice.
+            </figcaption>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two practices -->
+  <section class="dual section bg-paper" aria-labelledby="dual-title">
+    <div class="container">
+      <header class="dual__head" data-reveal-group>
+        <p class="eyebrow eyebrow--gold" data-reveal>NHS and private practice</p>
+        <h2 class="h2" id="dual-title" data-reveal>Two practices, <em class="italic">one standard</em></h2>
+        <p class="lead measure" data-reveal>
+          Reconstructive surgery and aesthetic surgery are usually spoken about separately. Mr Shiatis does both, and each makes the other better.
+        </p>
+      </header>
+
+      <div class="dual__grid">
+        <article class="dual__panel" data-reveal-group>
+          <div class="cover dual__img" data-img-reveal>
+            <img src="/images/about-safety.webp" alt="Mr Shiatis completing the theatre safety checklist before an operating list" width="1500" height="1000" loading="lazy" decoding="async" />
+          </div>
+          <p class="eyebrow eyebrow--gold dual__label" data-reveal>NHS</p>
+          <h3 class="h3 dual__title" data-reveal>Barts Health NHS Trust</h3>
+          <p class="dual__text" data-reveal>
+            As an NHS Consultant Plastic Surgeon, Mr Shiatis specialises in microsurgical breast reconstruction and complex reconstructive surgery — rebuilding the breast using a patient’s own tissue, with vessels joined under the microscope.
+          </p>
+          <p class="dual__text" data-reveal>
+            This advanced reconstructive background gives an exceptional understanding of anatomy, tissue handling and surgical precision, and it directly enhances the quality and safety of his aesthetic work.
+          </p>
+        </article>
+
+        <article class="dual__panel" data-reveal-group>
+          <div class="cover dual__img" data-img-reveal>
+            <img src="/images/about-lounge.webp" alt="Mr Shiatis seated in the private clinic lounge" width="1500" height="1000" loading="lazy" decoding="async" />
+          </div>
+          <p class="eyebrow eyebrow--gold dual__label" data-reveal>Private</p>
+          <h3 class="h3 dual__title" data-reveal>Fitzrovia Hospital, with Pantheons Clinic</h3>
+          <p class="dual__text" data-reveal>
+            Private patients are seen under the Pantheons Clinic, with consultations and surgery at Fitzrovia Hospital in central London. The setting is deliberately boutique: discreet, unhurried, and built around a single surgeon rather than a production line.
+          </p>
+          <p class="dual__text" data-reveal>
+            The same standards of precision, safety and aftercare apply to every aesthetic procedure. You meet Mr Shiatis himself, twice, before anything is decided.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- What he treats -->
+  <section class="treats section bg-ivory" id="procedures" aria-labelledby="treats-title">
+    <div class="container">
+      <header class="treats__head" data-reveal-group>
+        <p class="eyebrow eyebrow--gold" data-reveal>What he treats</p>
+        <h2 class="h2" id="treats-title" data-reveal>A focused <em class="italic">practice</em></h2>
+        <p class="lead measure" data-reveal>
+          Most of the practice is breast and body surgery, for patients after weight loss or pregnancy, for asymmetry, and for men with gynaecomastia.
+        </p>
+      </header>
+
+      <div class="treats__grid" data-reveal-group>
+        {groups.map((g) => (
+          <div class="treats__group" data-reveal>
+            <h3 class="h3 italic treats__title">{g.title}</h3>
+            <ul class="treats__list">
+              {g.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <p class="treats__note" data-reveal>
+        <span class="rule" aria-hidden="true"></span>
+        Mr Shiatis does not currently offer facelift or rhinoplasty surgery. Where something falls outside his practice, he will tell you so and point you towards the right surgeon.
+      </p>
+    </div>
+  </section>
+
+  <!-- Technique -->
+  <section class="tech section bg-emerald on-dark" aria-labelledby="tech-title">
+    <div class="container">
+      <div class="tech__grid">
+        <header class="tech__head" data-reveal-group>
+          <p class="eyebrow" data-reveal>Technique and technology</p>
+          <h2 class="h2" id="tech-title" data-reveal>The quiet part <em class="italic">that changes recovery</em></h2>
+          <p class="lead" data-reveal>
+            Technique choices are what decide how long you are in hospital, how visible the scar is and how quickly you get back to your life. These are the ones that matter most in this practice.
+          </p>
+          <div class="cover tech__img" data-img-reveal>
+            <img src="/images/about-theatre.webp" alt="Mr Shiatis in an operating theatre before a list" width="1500" height="1000" loading="lazy" decoding="async" />
+          </div>
+        </header>
+
+        <ul class="tech__list" data-reveal-group>
+          {tech.map((t) => (
+            <li class="tech__item" data-reveal>
+              <h3 class="h3 tech__title">{t.title}</h3>
+              <p class="tech__text">{t.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beyond the theatre -->
+  <section class="life section bg-paper" aria-labelledby="life-title">
+    <div class="container life__grid">
+      <figure class="life__figure">
+        <div class="cover life__img" data-img-reveal>
+          <img src="/images/about-outside.webp" alt="Mr Shiatis outdoors in a London square" width="1000" height="1250" loading="lazy" decoding="async" />
+        </div>
+      </figure>
+
+      <div class="life__copy" data-reveal-group>
+        <p class="eyebrow eyebrow--gold" data-reveal>Beyond the theatre</p>
+        <h2 class="h2" id="life-title" data-reveal>Balance, <em class="italic">deliberately kept</em></h2>
+        <p class="lead" data-reveal>
+          Away from the operating theatre, Mr Shiatis enjoys travelling, staying active and spending time with his family.
+        </p>
+        <p class="life__text" data-reveal>
+          He believes balance and wellbeing are integral to both personal and professional excellence — that a surgeon who is rested, curious and present is a better surgeon on the day. It is the same belief that shapes how his clinics are run: fewer patients, more time with each one.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Where he practises -->
+  <section class="where section--tight bg-ivory-2" aria-labelledby="where-title">
+    <div class="container where__grid">
+      <div class="where__copy" data-reveal-group>
+        <p class="eyebrow eyebrow--gold" data-reveal>Where he practises</p>
+        <h2 class="h2" id="where-title" data-reveal>Central London, <em class="italic">and the counties around it</em></h2>
+        <p class="lead" data-reveal>
+          Consultations and surgery take place at Fitzrovia Hospital, a CQC-registered hospital in central London, with patients travelling in from across the South East.
+        </p>
+        <ul class="where__regions" data-reveal>
+          {regions.map((r) => <li>{r}</li>)}
+        </ul>
+      </div>
+
+      <dl class="where__details" data-reveal-group>
+        <div data-reveal>
+          <dt>Hospital</dt>
+          <dd>{site.hospital}</dd>
+        </div>
+        <div data-reveal>
+          <dt>Practice</dt>
+          <dd>Pantheons Clinic</dd>
+        </div>
+        <div data-reveal>
+          <dt>Telephone</dt>
+          <dd><a href={site.phoneHref}>{site.phoneDisplay}</a></dd>
+        </div>
+        <div data-reveal>
+          <dt>Email</dt>
+          <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <Affiliations />
+  <Testimonial />
+  <Cta />
+</Base>
+
+<style>
+  /* ---------------------------------------------------------------------
+     Page head
+  --------------------------------------------------------------------- */
+  .ahead {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+    background: var(--emerald);
+    color: var(--ivory);
+  }
+  .ahead__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    opacity: 0.5;
+  }
+  .ahead__bg img { width: 100%; height: 100%; object-fit: cover; }
+  .ahead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to right, rgba(10, 42, 33, 0.4), rgba(10, 42, 33, 0.82));
+  }
+
+  .ahead__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+    padding-block: clamp(3.5rem, 9vw, 7rem);
+  }
+  .ahead__title { margin-top: 1rem; }
+  .ahead__quals {
+    display: block;
+    margin-top: 0.15em;
+    font-size: 0.5em;
+    color: var(--gold-light);
+  }
+  .ahead__copy .lead { margin-top: 1.5rem; max-width: 34em; }
+
+  .ahead__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem clamp(1.5rem, 4vw, 3rem);
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(216, 189, 124, 0.4);
+  }
+  .ahead__meta dt {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+  .ahead__meta dd {
+    margin: 0.4rem 0 0;
+    font-size: 0.95rem;
+    color: rgba(244, 238, 228, 0.9);
+  }
+
+  .ahead__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  .ahead__img { aspect-ratio: 3 / 4; }
+  .ahead__img > img { position: absolute; inset: 0; }
+
+  /* ---------------------------------------------------------------------
+     The practice
+  --------------------------------------------------------------------- */
+  .intro__head { max-width: 44rem; }
+  .intro__head .h2 { margin-top: 1rem; }
+
+  .intro__body {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: start;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .intro__cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    color: var(--ink-soft);
+  }
+
+  .intro__commitments {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding-top: clamp(2rem, 4vw, 3rem);
+    border-top: 1px solid rgba(184, 150, 79, 0.45);
+  }
+  .intro__num {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .intro__key { margin-top: 0.5rem; color: var(--emerald); }
+  .intro__text { margin-top: 0.6rem; color: var(--ink-soft); }
+
+  /* ---------------------------------------------------------------------
+     In his own words
+  --------------------------------------------------------------------- */
+  .words {
+    background: var(--emerald-deep);
+    color: var(--ivory);
+  }
+  .words__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: stretch;
+  }
+  .words__media { position: relative; }
+  .words__img { height: 100%; min-height: 100%; }
+  .words__img > img { position: absolute; inset: 0; }
+
+  .words__copy {
+    align-self: center;
+    max-width: 44rem;
+    padding: clamp(3.5rem, 8vw, 7rem) clamp(1.5rem, 6vw, 6rem);
+  }
+  .words__quote {
+    margin-top: 1.5rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    line-height: 1.22;
+    text-wrap: balance;
+    color: var(--ivory);
+  }
+  .words__text {
+    margin-top: 1.25rem;
+    color: rgba(244, 238, 228, 0.8);
+  }
+  .words__attrib {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+  .words__attrib .rule { flex: none; width: 2.5rem; }
+
+  /* ---------------------------------------------------------------------
+     Training
+  --------------------------------------------------------------------- */
+  .path {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+  }
+  .path__marble {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+  }
+  .path__marble img { width: 100%; height: 100%; object-fit: cover; }
+
+  .path__head {
+    max-width: 44rem;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .path__head .h2 { margin-top: 1rem; }
+  .path__head .lead { margin-top: 1.5rem; }
+
+  .path__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2.5rem, 7vw, 7rem);
+    align-items: start;
+  }
+
+  .path__list {
+    position: relative;
+    padding-left: clamp(1.75rem, 3vw, 2.5rem);
+    /* The thread the markers sit on. */
+    border-left: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .path__item {
+    position: relative;
+    padding-block: clamp(1.25rem, 2.2vw, 1.9rem);
+    border-bottom: 1px solid rgba(28, 27, 24, 0.1);
+  }
+  .path__item:first-child { padding-top: 0; }
+  .path__item:last-child { border-bottom: 0; padding-bottom: 0; }
+
+  .path__marker {
+    position: absolute;
+    left: calc(-1 * clamp(1.75rem, 3vw, 2.5rem) - 4px);
+    top: calc(clamp(1.25rem, 2.2vw, 1.9rem) + 0.55em);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .path__item:first-child .path__marker { top: 0.55em; }
+
+  .path__role {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .path__place { margin-top: 0.45rem; color: var(--emerald); }
+  .path__text { margin-top: 0.5rem; color: var(--ink-soft); max-width: 34em; }
+
+  .path__figure { align-self: stretch; }
+  .path__sticky { position: sticky; top: 6rem; }
+  .path__img { aspect-ratio: 4 / 5; max-height: min(calc(100vh - 11rem), 34rem); }
+  .path__img > img { position: absolute; inset: 0; }
+  .path__caption { margin-top: 1rem; color: var(--ink-soft); }
+
+  /* ---------------------------------------------------------------------
+     Two practices
+  --------------------------------------------------------------------- */
+  .dual__head {
+    max-width: 44rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .dual__head .h2 { margin-top: 1rem; }
+  .dual__head .lead { margin-top: 1.5rem; }
+
+  .dual__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 4.5rem);
+  }
+  .dual__img { aspect-ratio: 3 / 2; }
+  .dual__img > img { position: absolute; inset: 0; }
+  .dual__label { margin-top: 1.5rem; }
+  .dual__title { margin-top: 0.6rem; color: var(--emerald); }
+  .dual__text { margin-top: 0.9rem; color: var(--ink-soft); }
+
+  /* ---------------------------------------------------------------------
+     What he treats
+  --------------------------------------------------------------------- */
+  .treats__head {
+    max-width: 44rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .treats__head .h2 { margin-top: 1rem; }
+  .treats__head .lead { margin-top: 1.5rem; }
+
+  .treats__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+  .treats__group {
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.45);
+  }
+  .treats__title { color: var(--emerald); }
+  .treats__list {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.55rem;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  .treats__note {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    max-width: 46em;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    font-size: var(--fs-small);
+    color: var(--ink-soft);
+  }
+  .treats__note .rule { flex: none; margin-top: 0.7em; width: 2.5rem; }
+
+  /* ---------------------------------------------------------------------
+     Technique
+  --------------------------------------------------------------------- */
+  .tech__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+  }
+  .tech__head .h2 { margin-top: 1rem; }
+  .tech__head .lead { margin-top: 1.5rem; }
+  .tech__img {
+    aspect-ratio: 3 / 2;
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  .tech__img > img { position: absolute; inset: 0; }
+
+  .tech__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+  }
+  .tech__item {
+    padding: clamp(1.25rem, 2.2vw, 1.9rem) clamp(1rem, 2vw, 1.75rem);
+    border-top: 1px solid rgba(216, 189, 124, 0.35);
+  }
+  .tech__item:nth-child(2n) { border-left: 1px solid rgba(216, 189, 124, 0.35); }
+  .tech__title {
+    font-size: clamp(1.15rem, 1.5vw, 1.35rem);
+    color: var(--gold-light);
+  }
+  .tech__text {
+    margin-top: 0.6rem;
+    font-size: 0.95rem;
+    color: rgba(244, 238, 228, 0.8);
+  }
+
+  /* ---------------------------------------------------------------------
+     Beyond the theatre
+  --------------------------------------------------------------------- */
+  .life__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .life__img { aspect-ratio: 4 / 5; }
+  .life__img > img { position: absolute; inset: 0; }
+  .life__copy .h2 { margin-top: 1rem; }
+  .life__copy .lead { margin-top: 1.5rem; }
+  .life__text { margin-top: 1.25rem; color: var(--ink-soft); max-width: 34em; }
+
+  /* ---------------------------------------------------------------------
+     Where he practises
+  --------------------------------------------------------------------- */
+  .where__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .where__copy .h2 { margin-top: 1rem; }
+  .where__copy .lead { margin-top: 1.5rem; max-width: 34em; }
+
+  .where__regions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.75rem;
+  }
+  .where__regions li {
+    padding: 0.45rem 0.9rem;
+    border: 1px solid rgba(15, 59, 46, 0.25);
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    color: var(--emerald);
+  }
+
+  .where__details {
+    display: grid;
+    gap: 1.1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.45);
+  }
+  .where__details dt {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .where__details dd {
+    margin: 0.35rem 0 0;
+    color: var(--ink-soft);
+  }
+  .where__details a { border-bottom: 1px solid rgba(15, 59, 46, 0.3); color: var(--emerald); }
+
+  /* ---------------------------------------------------------------------
+     Responsive
+  --------------------------------------------------------------------- */
+  @media (max-width: 1100px) {
+    .treats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 900px) {
+    .ahead__inner { grid-template-columns: 1fr; }
+    .ahead__figure { order: -1; }
+    .ahead__img { aspect-ratio: 4 / 3; }
+
+    .intro__body { grid-template-columns: 1fr; }
+    .intro__cols { grid-template-columns: 1fr; }
+    .intro__commitments { grid-template-columns: 1fr; gap: 2rem; }
+
+    .words__grid { grid-template-columns: 1fr; }
+    .words__img { aspect-ratio: 3 / 2; min-height: 0; }
+    .words__copy { padding: 3.5rem var(--gutter) 4rem; }
+
+    .path__grid { grid-template-columns: 1fr; }
+    .path__figure { order: -1; align-self: auto; }
+    .path__sticky { position: static; }
+    .path__img { aspect-ratio: 3 / 2; max-height: none; }
+
+    .dual__grid { grid-template-columns: 1fr; }
+
+    .tech__grid { grid-template-columns: 1fr; }
+    .tech__list { grid-template-columns: 1fr; }
+    .tech__item:nth-child(2n) { border-left: 0; }
+    .tech__item { padding-inline: 0; }
+
+    .life__grid { grid-template-columns: 1fr; }
+    .life__figure { order: -1; }
+    .life__img { aspect-ratio: 3 / 2; }
+
+    .where__grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .ahead__meta { grid-template-columns: 1fr; }
+    .treats__grid { grid-template-columns: 1fr; }
+  }
+</style>
