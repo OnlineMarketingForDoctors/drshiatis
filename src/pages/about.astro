@@ -405,12 +405,6 @@ const regions = ['London', 'Surrey', 'Sussex', 'Hampshire', 'Hertfordshire', 'Ke
   <!-- Beyond the theatre -->
   <section class="life section bg-paper" aria-labelledby="life-title">
     <div class="container life__grid">
-      <figure class="life__figure">
-        <div class="cover life__img" data-img-reveal>
-          <img src="/images/about-outside.webp" alt="Mr Shiatis outdoors in a London square" width="1000" height="1250" loading="lazy" decoding="async" />
-        </div>
-      </figure>
-
       <div class="life__copy" data-reveal-group>
         <p class="eyebrow eyebrow--gold" data-reveal>Beyond the theatre</p>
         <h2 class="h2" id="life-title" data-reveal>Balance, <em class="italic">deliberately kept</em></h2>
@@ -421,6 +415,12 @@ const regions = ['London', 'Surrey', 'Sussex', 'Hampshire', 'Hertfordshire', 'Ke
           He believes balance and wellbeing are integral to both personal and professional excellence — that a surgeon who is rested, curious and present is a better surgeon on the day. It is the same belief that shapes how his clinics are run: fewer patients, more time with each one.
         </p>
       </div>
+
+      <figure class="life__figure">
+        <div class="cover life__img" data-img-reveal>
+          <img src="/images/about-outside.webp" alt="Mr Shiatis outdoors in a London square" width="1000" height="1250" loading="lazy" decoding="async" />
+        </div>
+      </figure>
     </div>
   </section>
 
@@ -791,7 +791,7 @@ const regions = ['London', 'Surrey', 'Sussex', 'Hampshire', 'Hertfordshire', 'Ke
   --------------------------------------------------------------------- */
   .life__grid {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     gap: clamp(2rem, 6vw, 6rem);
     align-items: center;
   }
