@@ -21,8 +21,9 @@ const VIDEO_ID = 'hLFJKqazyEQ';
     <span class="rule rule--center hero__rule" data-hero-rule aria-hidden="true"></span>
 
     <p class="hero__role" data-hero-line>Consultant Plastic &amp; Reconstructive Surgeon</p>
-    <p class="eyebrow eyebrow--light hero__eyebrow" data-hero-line>Breast and body surgery</p>
-    <p class="eyebrow eyebrow--light hero__eyebrow" data-hero-line>London</p>
+    <p class="eyebrow eyebrow--light hero__eyebrow" data-hero-line>
+      Breast and body surgery <span class="hero__sep" aria-hidden="true">|</span> London
+    </p>
 
     <button class="hero__play" type="button" data-lightbox-open={VIDEO_ID} data-hero-line>
       <span class="hero__play-ring" aria-hidden="true">
@@ -169,6 +170,11 @@ const VIDEO_ID = 'hLFJKqazyEQ';
     color: var(--ivory);
   }
   .hero__eyebrow { margin-top: 0.65rem; color: var(--ivory); }
+  .hero__sep {
+    display: inline-block;
+    margin-inline: 0.5em;
+    color: rgba(244, 238, 228, 0.45);
+  }
 
   [data-hero-line] { opacity: 0; transform: translateY(1rem); }
 

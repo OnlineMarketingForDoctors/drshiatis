@@ -18,7 +18,7 @@ const icon = {
     <div class="footer__brand">
       <a href="/" class="footer__logo" aria-label={`${site.name} home`}><Monogram /></a>
       <p class="footer__wordmark">Andreas Shiatis</p>
-      <p class="eyebrow">Plastic Surgery</p>
+      <p class="footer__sub">Plastic Surgery</p>
       <p class="footer__tag">Consultant Plastic Surgeon specialising in breast and body surgery, London.</p>
       <div class="footer__social"><SocialIcons /></div>
     </div>
@@ -103,14 +103,24 @@ const icon = {
     padding-block: clamp(3.5rem, 7vw, 6rem) clamp(2.5rem, 5vw, 4rem);
   }
   .footer__logo { width: 3.5rem; display: block; }
+  /* Same lockup as the header, in the logo's own typeface. */
   .footer__wordmark {
     margin-top: 1.1rem;
-    font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-family: var(--font-logo);
+    font-weight: 300;
+    font-size: 1.2rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
   }
-  .footer__brand .eyebrow { margin-top: 0.25rem; }
+  .footer__sub {
+    margin-top: 0.35rem;
+    font-family: var(--font-logo);
+    font-weight: 300;
+    font-size: 0.78rem;
+    letter-spacing: 0.21em;
+    text-transform: uppercase;
+    color: rgba(244, 238, 228, 0.82);
+  }
   .footer__tag {
     margin-top: 1.25rem;
     max-width: 22em;

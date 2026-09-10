@@ -26,7 +26,10 @@ const solid = variant === 'solid';
 
       <a class="site-header__logo" href="/" aria-label={`${site.name} home`}>
         <Monogram />
-        <span class="site-header__wordmark">Andreas Shiatis</span>
+        <span class="site-header__wordmark">
+          <span class="site-header__name">Andreas Shiatis</span>
+          <span class="site-header__sub">Plastic Surgery</span>
+        </span>
       </a>
 
       <div class="site-header__actions">
@@ -132,14 +135,29 @@ const solid = variant === 'solid';
     width: clamp(3.4rem, 5vw, 4.5rem);
   }
   .site-header__logo :global(.monogram) { width: 100%; }
+  /* The lockup from the supplied artwork: name over a smaller, wider-tracked
+     descriptor, both in the logo's own light geometric sans. */
   .site-header__wordmark {
+    display: block;
     font-family: var(--font-logo);
-    font-size: 0.64rem;
     font-weight: 300;
-    letter-spacing: 0.18em;
-    text-indent: 0.18em; /* balance the trailing letterspace under the monogram */
     text-transform: uppercase;
     white-space: nowrap;
+    text-align: center;
+  }
+  .site-header__name {
+    display: block;
+    font-size: 0.64rem;
+    letter-spacing: 0.18em;
+    text-indent: 0.18em; /* balance the trailing letterspace */
+  }
+  .site-header__sub {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.21em;
+    text-indent: 0.21em;
+    color: rgba(244, 238, 228, 0.82);
   }
 
   .site-header__actions {
@@ -326,7 +344,8 @@ const solid = variant === 'solid';
   @media (max-width: 900px) {
     .site-header__top { grid-template-columns: auto 1fr auto; }
     .site-header__badge { display: none; }
-    .site-header__logo { justify-self: start; flex-direction: row; gap: 0.75rem; width: auto; }
+    .site-header__logo { justify-self: start; flex-direction: row; align-items: center; gap: 0.75rem; width: auto; }
+    .site-header__wordmark { text-align: left; }
     .site-header__logo :global(.monogram) { width: 3rem; }
     .site-header__actions { display: none; }
     .site-header__burger { display: flex; }
