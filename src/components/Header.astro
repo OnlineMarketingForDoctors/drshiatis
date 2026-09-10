@@ -96,7 +96,7 @@ const solid = variant === 'solid';
     <nav aria-label="Mobile">
       <ul class="mobile-menu__list">
         {nav.map((item, i) => (
-          <li style={`--i:${i}`}><a href={item.href}>{item.label}</a></li>
+          <li style={`--i:${i}`}><a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a></li>
         ))}
       </ul>
     </nav>
@@ -324,6 +324,8 @@ const solid = variant === 'solid';
     text-transform: uppercase;
     line-height: 1.1;
   }
+  /* Mark where you are, the way the compact bar does. */
+  .mobile-menu__list a[aria-current='page'] { color: var(--gold-light); }
   .mobile-menu__foot {
     display: flex;
     flex-direction: column;
