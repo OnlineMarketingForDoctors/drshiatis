@@ -1,7 +1,7 @@
 export const site = {
   name: 'Andreas Shiatis Plastic Surgery',
   surgeon: 'Mr Andreas Shiatis',
-  qualifications: 'FRCS (Plast)',
+  qualifications: 'BA MBBS FRCS(Plast)',
   phoneDisplay: '+44 (0)20 8050 9669',
   phoneHref: 'tel:+442080509669',
   whatsappHref: 'https://wa.me/442080509669',
