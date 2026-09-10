@@ -17,7 +17,7 @@ const families = [
         note: 'Reshaping and lifting, with the shortest scar the lift allows',
         href: '/surgical',
         img: '/images/flag-breast-lift.webp',
-        alt: 'Ivory silk gathered into sculptural folds on blush marble',
+        alt: 'Close crop of an ivory silk camisole and decolletage against pale marble',
       },
       {
         name: 'Breast Reduction',
@@ -43,7 +43,7 @@ const families = [
         note: 'Chest contouring for men, often under local anaesthetic',
         href: '/for-men',
         img: '/images/flag-gynaecomastia.webp',
-        alt: 'Man in a white linen shirt against a deep emerald wall',
+        alt: 'A man\'s bare chest and shoulders against a deep emerald backdrop',
       },
       {
         name: 'Body Contouring / Liposuction',
@@ -57,13 +57,8 @@ const families = [
 ];
 ---
 
-<section class="flag section" id="flagship" aria-labelledby="flagship-title">
+<section class="flag section" id="flagship" aria-label="Flagship procedures">
   <div class="container">
-    <header class="flag__head" data-reveal-group>
-      <p class="eyebrow eyebrow--gold" data-reveal>Most requested</p>
-      <h2 class="h2" id="flagship-title" data-reveal>Flagship <em class="italic">procedures</em></h2>
-    </header>
-
     <div class="flag__index">
       {families.map((f) => (
         <div class="flag__family">
@@ -96,14 +91,10 @@ const families = [
 <style>
   .flag { background: var(--ivory-2); }
 
-  .flag__head { max-width: 40rem; }
-  .flag__head .h2 { margin-top: 1rem; color: var(--emerald); }
-
   /* Two columns, one per family, divided by the brand's gold hairline. */
   .flag__index {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: clamp(2.25rem, 5vw, 3.75rem);
   }
   .flag__family { padding-inline: clamp(1rem, 2.5vw, 2.75rem); }
   .flag__family:first-child { padding-left: 0; }
