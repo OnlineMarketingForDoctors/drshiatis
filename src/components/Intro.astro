@@ -1,10 +1,13 @@
 ---
+import Monogram from './Monogram.astro';
 import { site } from '../data/site.js';
 ---
 
 <!-- Opens the ivory run under the hero: who he is, and how the practice works. -->
 <section class="intro">
   <div class="container intro__inner" data-reveal-group>
+    <span class="intro__mark" data-reveal><Monogram /></span>
+
     <p class="intro__text" data-reveal>
       {site.surgeon} is a Consultant Plastic Surgeon in London, with an NHS reconstructive
       practice standing behind every aesthetic decision. Two consultations before anything is
@@ -20,7 +23,19 @@ import { site } from '../data/site.js';
     padding-block: clamp(3.5rem, 7vw, 6rem) clamp(3rem, 6vw, 5rem);
   }
 
-  .intro__inner { display: flex; justify-content: center; }
+  .intro__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* The mark from the logo, standing over the intro as an ornament. */
+  .intro__mark {
+    display: block;
+    width: clamp(2.75rem, 4.5vw, 3.75rem);
+    margin-bottom: clamp(1.5rem, 2.5vw, 2.25rem);
+    color: var(--gold);
+  }
 
   .intro__text {
     max-width: 46em;
