@@ -37,7 +37,10 @@ import Stars from './Stars.astro';
     /* Shares the flagship index's ground so the two read as one run, which
        is also why the head is trimmed: the index above supplies the space. */
     background: var(--ivory-2);
+    /* Short at both ends: the index above supplies the head, and the
+       expertise section below opens with a full section padding of its own. */
     padding-top: clamp(1.5rem, 3vw, 2.75rem);
+    padding-bottom: clamp(1.5rem, 3vw, 2.75rem);
   }
 
   .reviews__viewport { position: relative; }
@@ -48,7 +51,7 @@ import Stars from './Stars.astro';
     scroll-padding-inline: var(--gutter);
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding-block: 0.5rem 1.5rem;
+    padding-block: 0.5rem;
     cursor: grab;
   }
   .reviews__track.is-dragging { cursor: grabbing; }
