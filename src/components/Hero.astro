@@ -14,7 +14,7 @@ const VIDEO_ID = 'hLFJKqazyEQ';
 
   <div class="hero__content container">
     <h1 class="hero__title" data-hero-title>
-      <span class="hero__line"><span class="hero__name">{site.surgeon}</span></span>
+      <span class="hero__line"><span class="hero__name">{site.surgeonShort}</span></span>
       <span class="hero__line"><span class="hero__quals">{site.qualifications}</span></span>
     </h1>
 
@@ -130,14 +130,17 @@ const VIDEO_ID = 'hLFJKqazyEQ';
   /* Each line is masked for the entrance reveal. The padding gives the
      italic descenders and swashes room so nothing clips; the negative
      margins cancel it out of the layout. */
-  /* The logo's own sans, kept in sentence case: the three lines below it are
-     already letterspaced caps, and a fourth would flatten the whole stack. */
+  /* The logo's own sans, in its own caps: the hero lockup and the mark in
+     the header are then cut from the same cloth. Tracked wider than text
+     but far tighter than the small wordmark, which needs it to stay legible. */
   .hero__name {
     display: block;
     font-family: var(--font-logo);
     font-weight: 300;
-    font-size: clamp(1.75rem, 6.9vw, 6.2rem);
-    letter-spacing: 0.01em;
+    font-size: clamp(1.55rem, 5.9vw, 5.2rem);
+    letter-spacing: 0.07em;
+    text-indent: 0.07em; /* balance the trailing letterspace when centred */
+    text-transform: uppercase;
     line-height: 1.05;
     white-space: nowrap;
     color: var(--ivory);

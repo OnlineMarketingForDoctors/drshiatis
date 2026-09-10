@@ -395,7 +395,41 @@ function initReviews() {
   // Picks the position back up wherever a drag or a pause left it.
   const start = () => { if (!raf && visible && !paused) { last = 0; pos = track.scrollLeft; raf = requestAnimationFrame(tick); } };
   const pause = () => { paused = true; };
-  const resume = () => { paused = false; start(); };
+  // `held` is the number of reviews the visitor has expanded to read: while
+  // any is open the strip stays put, whatever the pointer does.
+  let held = 0;
+  const resume = () => { if (held) return; paused = false; start(); };
+
+  // Reveal the expander only on reviews the clamp is actually cutting off,
+  // and re-check on resize, where the same text may or may not overflow.
+  const cards = $$('[data-reviews-card]', track);
+  const syncExpanders = () => {
+    cards.forEach((card) => {
+      const text = card.querySelector('[data-review-text]');
+      const btn = card.querySelector('[data-review-more]');
+      if (!text || !btn) return;
+      if (card.classList.contains('is-open')) return;
+      btn.hidden = text.scrollHeight - text.clientHeight < 2;
+    });
+  };
+  syncExpanders();
+  window.addEventListener('load', syncExpanders, { once: true });
+  let resizeId = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeId);
+    resizeId = setTimeout(syncExpanders, 200);
+  });
+
+  track.addEventListener('click', (e) => {
+    const btn = e.target.closest?.('[data-review-more]');
+    if (!btn) return;
+    const card = btn.closest('[data-reviews-card]');
+    const open = card.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'Read less' : 'Read more';
+    if (open) { held += 1; pause(); }
+    else { held = Math.max(0, held - 1); resume(); }
+  });
 
   if (reduceMotion) return;
   root.addEventListener('pointerenter', pause);

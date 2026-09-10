@@ -1,6 +1,8 @@
 export const site = {
   name: 'Andreas Shiatis Plastic Surgery',
   surgeon: 'Mr Andreas Shiatis',
+  // Without the honorific, for the hero lockup.
+  surgeonShort: 'Andreas Shiatis',
   qualifications: 'BA MBBS FRCS(Plast)',
   phoneDisplay: '+44 (0)20 8050 9669',
   phoneHref: 'tel:+442080509669',
