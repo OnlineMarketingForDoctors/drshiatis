@@ -1,0 +1,185 @@
+---
+// The practice describes itself as breast and body surgery, so the index is
+// grouped that way rather than numbered: the split is real information, the
+// order is not.
+const families = [
+  {
+    label: 'Breast',
+    items: [
+      { name: 'Breast Augmentation', note: 'Implant or fat transfer, sized to your own proportions', href: '/surgical' },
+      { name: 'Breast Lift', note: 'Reshaping and lifting, with the shortest scar the lift allows', href: '/surgical' },
+      { name: 'Breast Reduction', note: 'Relief from the weight, shape considered as closely as size', href: '/surgical' },
+    ],
+  },
+  {
+    label: 'Body',
+    items: [
+      { name: 'Tummy Tuck', note: 'Skin and muscle repair after pregnancy or weight loss', href: '/surgical' },
+      { name: 'Gynaecomastia Surgery', note: 'Chest contouring for men, often under local anaesthetic', href: '/for-men' },
+      { name: 'Body Contouring / Liposuction', note: 'Ultrasound-assisted, working with the shape you have', href: '/surgical' },
+    ],
+  },
+];
+---
+
+<section class="flag section" id="flagship" aria-labelledby="flagship-title">
+  <div class="container">
+    <header class="flag__head" data-reveal-group>
+      <p class="eyebrow eyebrow--gold" data-reveal>Most requested</p>
+      <h2 class="h2" id="flagship-title" data-reveal>Flagship <em class="italic">procedures</em></h2>
+    </header>
+
+    <div class="flag__index">
+      {families.map((f) => (
+        <div class="flag__family">
+          <h3 class="flag__rail"><span>{f.label}</span></h3>
+
+          <ul class="flag__rows" data-reveal-group>
+            {f.items.map((p) => (
+              <li data-reveal>
+                <a class="flag__row" href={p.href}>
+                  <span class="flag__name">{p.name}</span>
+                  <span class="flag__note">{p.note}</span>
+                  <span class="flag__arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .flag { background: var(--ivory-2); }
+
+  .flag__head { max-width: 40rem; }
+  .flag__head .h2 { margin-top: 1rem; color: var(--emerald); }
+
+  .flag__index { margin-top: clamp(2.5rem, 6vw, 4.5rem); }
+
+  /* A standing label per family, with a gold spine tying its rows together.
+     Two spines, one for breast and one for body: the way the practice
+     describes itself. */
+  .flag__family {
+    display: grid;
+    grid-template-columns: clamp(4.5rem, 7vw, 7.5rem) minmax(0, 1fr);
+  }
+  .flag__family + .flag__family { margin-top: clamp(2rem, 3.6vw, 3rem); }
+
+  .flag__rail {
+    display: grid;
+    place-items: center;
+    padding-right: clamp(1rem, 2vw, 1.75rem);
+    border-right: 1px solid rgba(184, 150, 79, 0.4);
+    font-family: var(--font-body);
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .flag__rail span {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-indent: 0.32em;
+  }
+
+  .flag__row {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem) 2.25rem;
+    align-items: baseline;
+    column-gap: clamp(1rem, 2.5vw, 2.5rem);
+    padding: clamp(1rem, 1.7vw, 1.45rem) clamp(1rem, 2vw, 1.75rem);
+    border-bottom: 1px solid rgba(184, 150, 79, 0.35);
+  }
+  .flag__rows > li:first-child .flag__row { border-top: 1px solid rgba(184, 150, 79, 0.35); }
+
+  /* Signature: emerald sweeps across the row from the spine outwards. */
+  .flag__row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--emerald);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.42s var(--ease-out);
+  }
+  .flag__row:hover::before,
+  .flag__row:focus-visible::before { transform: scaleX(1); }
+
+  .flag__name {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 144;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.4rem, 2.8vw, 2.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: var(--emerald);
+    /* Delayed so the wash leads the recolour rather than racing it. */
+    transition: color 0.28s var(--ease-out) 0.16s;
+  }
+  .flag__note {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    transition: color 0.28s var(--ease-out) 0.16s;
+  }
+  .flag__arrow {
+    justify-self: end;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateX(-0.6rem);
+    transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out), color 0.4s;
+  }
+  .flag__arrow svg { width: 1.5rem; height: 1.5rem; }
+
+  .flag__row:hover .flag__name,
+  .flag__row:focus-visible .flag__name { color: var(--ivory); }
+  .flag__row:hover .flag__note,
+  .flag__row:focus-visible .flag__note { color: rgba(244, 238, 228, 0.78); }
+  .flag__row:hover .flag__arrow,
+  .flag__row:focus-visible .flag__arrow {
+    opacity: 1;
+    transform: none;
+    color: var(--gold-light);
+  }
+
+  :global(.reduced-motion) .flag__row::before,
+  :global(.reduced-motion) .flag__arrow { transition: none; }
+
+  @media (max-width: 900px) {
+    /* The spine lies down: label above its rows, hairline beneath it. */
+    .flag__family { grid-template-columns: 1fr; }
+    .flag__rail {
+      place-items: start;
+      padding: 0 0 0.75rem;
+      border-right: 0;
+      border-bottom: 1px solid rgba(184, 150, 79, 0.4);
+      margin-bottom: 0.25rem;
+    }
+    .flag__rail span { writing-mode: horizontal-tb; transform: none; }
+    .flag__rows > li:first-child .flag__row { border-top: 0; }
+
+    .flag__row {
+      grid-template-columns: minmax(0, 1fr) 1.75rem;
+      grid-template-areas: 'name arrow' 'note arrow';
+      align-items: center;
+      row-gap: 0.4rem;
+      padding-inline: 0;
+    }
+    .flag__name { grid-area: name; }
+    .flag__note { grid-area: note; }
+    .flag__arrow { grid-area: arrow; opacity: 1; transform: none; }
+    .flag__arrow svg { width: 1.25rem; height: 1.25rem; }
+    /* No hover on touch, so the sweep would only ever half-fire. */
+    .flag__row::before { display: none; }
+  }
+</style>
