@@ -40,7 +40,7 @@ import Stars from './Stars.astro';
   .reviews__viewport { position: relative; }
   .reviews__track {
     display: flex;
-    gap: clamp(1rem, 1.6vw, 1.5rem);
+    gap: clamp(2rem, 3.5vw, 3.5rem);
     overflow-x: auto;
     scroll-padding-inline: var(--gutter);
     scrollbar-width: none;
@@ -51,16 +51,14 @@ import Stars from './Stars.astro';
   .reviews__track.is-dragging { cursor: grabbing; }
   .reviews__track::-webkit-scrollbar { display: none; }
 
-  /* No frame: each review is a column of type opened by a gold hairline,
-     the same rule that runs through the credentials and the index. */
+  /* No frame and no rule: each review is a plain column of type, held apart
+     by the gap alone, so the run reads as quiet as it is. */
   .reviews__card {
     position: relative;
     flex: 0 0 clamp(17rem, 25vw, 23rem);
     display: flex;
     flex-direction: column;
     gap: 0.85rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(184, 150, 79, 0.45);
   }
   .reviews__card-top {
     display: flex;
