@@ -342,27 +342,14 @@ function initReviews() {
   const root = $('[data-reviews]');
   const track = $('[data-reviews-track]');
   if (!root || !track) return;
-  const cards = $$('[data-reviews-card]', track);
-  const prev = $('[data-reviews-prev]');
-  const next = $('[data-reviews-next]');
 
   // The cards are rendered twice; loopWidth is the width of one full set.
   const loopWidth = () => track.scrollWidth / 2;
-  const step = () => (cards[0]?.getBoundingClientRect().width || 320) + parseFloat(getComputedStyle(track).gap || '16');
   const wrap = () => {
     const half = loopWidth();
     if (track.scrollLeft >= half) track.scrollLeft -= half;
     else if (track.scrollLeft < 0) track.scrollLeft += half;
   };
-
-  // Arrows: nudge by one card, then let the marquee carry on.
-  const go = (dir) => {
-    pause();
-    track.scrollBy({ left: dir * step(), behavior: 'smooth' });
-    setTimeout(() => { wrap(); resume(); }, 700);
-  };
-  prev?.addEventListener('click', () => go(-1));
-  next?.addEventListener('click', () => go(1));
 
   // Drag to scroll with a mouse.
   let down = false, startX = 0, startLeft = 0, moved = false;
@@ -391,15 +378,22 @@ function initReviews() {
   // Continuous marquee, paused while the visitor hovers, touches or focuses.
   const SPEED = 0.4; // px per frame at 60fps, a slow continuous drift
   let raf = null, paused = false, visible = false, last = 0;
+  // The position is carried here rather than on the element: the browser
+  // snaps scrollLeft to whole pixels, so `scrollLeft += 0.4` reads back
+  // unchanged every frame and the drift never accumulates.
+  let pos = 0;
   const tick = (t) => {
     if (!visible || paused) { raf = null; return; }
     const dt = last ? Math.min(t - last, 50) : 16.7;
     last = t;
-    track.scrollLeft += SPEED * (dt / 16.7);
-    wrap();
+    pos += SPEED * (dt / 16.7);
+    const half = loopWidth();
+    if (half > 0 && pos >= half) pos -= half;
+    track.scrollLeft = pos;
     raf = requestAnimationFrame(tick);
   };
-  const start = () => { if (!raf && visible && !paused) { last = 0; raf = requestAnimationFrame(tick); } };
+  // Picks the position back up wherever a drag or a pause left it.
+  const start = () => { if (!raf && visible && !paused) { last = 0; pos = track.scrollLeft; raf = requestAnimationFrame(tick); } };
   const pause = () => { paused = true; };
   const resume = () => { paused = false; start(); };
 
@@ -410,12 +404,18 @@ function initReviews() {
   root.addEventListener('focusout', resume);
   root.addEventListener('touchstart', pause, { passive: true });
   root.addEventListener('touchend', () => setTimeout(resume, 1500), { passive: true });
-  ScrollTrigger.create({
-    trigger: root,
-    start: 'top 95%',
-    end: 'bottom 5%',
-    onToggle: (self) => { visible = self.isActive; visible ? start() : (raf && cancelAnimationFrame(raf), raf = null); },
-  });
+  // An observer rather than a ScrollTrigger: this one only needs to know
+  // whether the strip is on screen, and it re-measures itself as lazy images
+  // below change the page height, which cached trigger positions do not.
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) start();
+      else if (raf) { cancelAnimationFrame(raf); raf = null; }
+    },
+    { rootMargin: '10% 0px' },
+  );
+  io.observe(root);
 }
 
 /* ---------------------------------------------------------------------------

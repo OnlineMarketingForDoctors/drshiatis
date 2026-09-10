@@ -1,0 +1,33 @@
+---
+import { site } from '../data/site.js';
+---
+
+<!-- Opens the ivory run under the hero: who he is, and how the practice works. -->
+<section class="intro">
+  <div class="container intro__inner" data-reveal-group>
+    <p class="intro__text" data-reveal>
+      {site.surgeon} is a Consultant Plastic Surgeon in London, with an NHS reconstructive
+      practice standing behind every aesthetic decision. Two consultations before anything is
+      booked, a straight answer about what surgery can and cannot do, and a plan shaped by
+      your own anatomy.
+    </p>
+  </div>
+</section>
+
+<style>
+  .intro {
+    background: var(--ivory-2);
+    padding-block: clamp(3.5rem, 7vw, 6rem) clamp(3rem, 6vw, 5rem);
+  }
+
+  .intro__inner { display: flex; justify-content: center; }
+
+  .intro__text {
+    max-width: 46em;
+    text-align: center;
+    text-wrap: pretty;
+    font-size: clamp(1.1rem, 1.5vw, 1.45rem);
+    line-height: 1.5;
+    color: var(--emerald);
+  }
+</style>
