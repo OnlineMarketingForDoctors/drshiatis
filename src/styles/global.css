@@ -9,9 +9,17 @@
   --ivory: #f4eee4;
   --ivory-2: #ebe3d6;
   --paper: #fbf8f3;
-  --emerald: #0f3b2e;
-  --emerald-deep: #0a2a21;
-  --emerald-soft: #1b5241;
+  /* Royal Navy blue, matched to the emerald it replaces for lightness so the
+     ivory and gold on top keep their contrast. The --emerald names stay as
+     aliases: every component still asks for them, and this branch only has to
+     answer differently. */
+  --navy: #12315b;
+  --navy-deep: #091d38;
+  --navy-soft: #22507f;
+
+  --emerald: var(--navy);
+  --emerald-deep: var(--navy-deep);
+  --emerald-soft: var(--navy-soft);
   --gold: #b8964f;
   --gold-light: #d8bd7c;
   --blush: #e3cdc2;
@@ -217,7 +225,7 @@ section[id] { scroll-margin-top: 5.5rem; }
 }
 .btn--ivory:hover { background: var(--paper); }
 
-.btn--outline { background: transparent; color: var(--emerald); border-color: rgba(15, 59, 46, 0.4); }
+.btn--outline { background: transparent; color: var(--emerald); border-color: rgba(18, 49, 91, 0.4); }
 .btn--outline:hover { border-color: var(--emerald); }
 
 .btn--outline-light { background: transparent; color: var(--ivory); border-color: rgba(244, 238, 228, 0.45); }
