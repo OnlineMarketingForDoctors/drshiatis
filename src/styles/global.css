@@ -22,7 +22,7 @@
 
   --font-display: 'Fraunces', 'Didot', 'Bodoni 72', Georgia, serif;
   --font-body: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
-  --font-logo: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --font-logo: 'Montserrat', 'Futura', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
 
   --fs-display: clamp(3.4rem, 8.2vw, 7.3rem);
   --fs-h2: clamp(2.3rem, 4.5vw, 4.3rem);

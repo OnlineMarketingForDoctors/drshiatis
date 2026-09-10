@@ -134,12 +134,10 @@ const solid = variant === 'solid';
   .site-header__logo :global(.monogram) { width: 100%; }
   .site-header__wordmark {
     font-family: var(--font-logo);
-    /* Low optical size keeps the Didone hairlines from dropping out at 10px. */
-    font-variation-settings: 'opsz' 8;
-    font-size: 0.66rem;
-    font-weight: 500;
-    letter-spacing: 0.3em;
-    text-indent: 0.3em; /* balance the trailing letterspace under the monogram */
+    font-size: 0.64rem;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-indent: 0.18em; /* balance the trailing letterspace under the monogram */
     text-transform: uppercase;
     white-space: nowrap;
   }
