@@ -44,7 +44,7 @@ const tiles = [
       ))}
 
       <div class="proc__centre cover" data-img-reveal>
-        <img src="/images/mosaic-centre.webp" alt="Mr Shiatis talking a patient through the options at his desk" width="1490" height="1000" loading="lazy" decoding="async" />
+        <img src="/images/mosaic-centre.webp" alt="Mr Shiatis in surgical scrubs at the entrance to theatre" width="1200" height="1520" loading="lazy" decoding="async" />
         <div class="proc__centre-content on-dark" data-reveal-group>
           <p class="eyebrow" data-reveal>Most of the practice</p>
           <h3 class="h2 italic" data-reveal>Breast and body surgery</h3>
@@ -216,6 +216,11 @@ const tiles = [
       grid-column: 1 / -1;
       grid-row: 1;
       aspect-ratio: 4 / 5;
+    }
+    /* The panel is shorter here and the copy fills nearly all of it, so the
+       scrim has to reach the top instead of fading out three quarters up. */
+    .proc__centre::after {
+      background: linear-gradient(to top, rgba(9, 29, 56, 0.9) 0%, rgba(9, 29, 56, 0.62) 55%, rgba(9, 29, 56, 0.42) 100%);
     }
     .proc__tile { grid-column: auto; grid-row: auto; }
     .proc__tile-body { left: 1rem; right: 1rem; bottom: 0.9rem; }
