@@ -24,11 +24,6 @@ import Stars from './Stars.astro';
             tabindex={copy === 1 ? -1 : undefined}
             hidden
           >Read more</button>
-          <footer class="reviews__meta small">
-            <span>Verified patient</span>
-            <span aria-hidden="true">·</span>
-            <time>{r.date}</time>
-          </footer>
         </li>
       )))}
     </ul>
@@ -115,9 +110,4 @@ import Stars from './Stars.astro';
     transition: color 0.3s, border-color 0.3s;
   }
   .reviews__more:hover { color: var(--emerald); border-color: var(--emerald); }
-  .reviews__meta {
-    display: flex;
-    gap: 0.5rem;
-    color: var(--ink-mute);
-  }
 </style>
