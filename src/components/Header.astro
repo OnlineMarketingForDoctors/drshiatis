@@ -63,6 +63,7 @@ const solid = variant === 'solid';
   <div class="container site-bar__inner">
     <a class="site-bar__logo" href="/" aria-label={`${site.name} home`}>
       <Monogram />
+      <span class="site-bar__wordmark" aria-hidden="true">Andreas Shiatis</span>
     </a>
     <nav class="site-bar__nav" aria-label="Primary, compact">
       <ul>
@@ -263,7 +264,21 @@ const solid = variant === 'solid';
     gap: 1.5rem;
     height: 4.25rem;
   }
-  .site-bar__logo { width: 2.4rem; flex: none; }
+  .site-bar__logo {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .site-bar__logo :global(.monogram) { width: 2.4rem; flex: none; }
+  .site-bar__wordmark {
+    font-family: var(--font-logo);
+    font-weight: 300;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
   .site-bar__nav ul { display: flex; gap: clamp(0.8rem, 1.4vw, 1.5rem); }
   .site-bar__nav a { font-size: 0.68rem; letter-spacing: 0.12em; }
   .site-bar__actions { display: flex; align-items: center; gap: 1rem; }
@@ -354,6 +369,7 @@ const solid = variant === 'solid';
     .site-header__nav { display: none; }
     .site-bar__nav { display: none; }
     .site-bar__burger { display: flex; }
+    .site-bar__wordmark { font-size: 0.6rem; letter-spacing: 0.14em; }
     .site-bar__actions .btn { display: none; }
   }
 </style>

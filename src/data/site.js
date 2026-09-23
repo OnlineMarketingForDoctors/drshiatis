@@ -6,6 +6,7 @@ export const site = {
   qualifications: 'BA MBBS FRCS(Plast)',
   phoneDisplay: '+44 (0)20 8050 9669',
   phoneHref: 'tel:+442080509669',
+  // WhatsApp is off the site; the href stays in case it comes back.
   whatsappHref: 'https://wa.me/442080509669',
   email: 'info@drshiatis.com',
   gmc: '7083196',

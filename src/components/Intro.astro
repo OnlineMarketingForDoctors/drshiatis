@@ -10,9 +10,14 @@ import { site } from '../data/site.js';
 
     <p class="intro__text" data-reveal>
       {site.surgeon} is a Consultant Plastic Surgeon in London, with an NHS reconstructive
-      practice standing behind every aesthetic decision. Two consultations before anything is
-      booked, a straight answer about what surgery can and cannot do, and a plan shaped by
-      your own anatomy.
+      practice standing behind every aesthetic decision. Privately he operates at
+      <a href={site.pantheons} target="_blank" rel="noopener">Pantheons Clinic</a>, a boutique
+      practice built around innovation, offering cutting-edge treatment in an elegant and
+      comfortable space in Central London.
+    </p>
+    <p class="intro__text intro__text--after" data-reveal>
+      Two consultations before anything is booked, a straight answer about what surgery can
+      and cannot do, and a plan shaped by your own anatomy.
     </p>
   </div>
 </section>
@@ -36,6 +41,13 @@ import { site } from '../data/site.js';
     margin-bottom: clamp(1.5rem, 2.5vw, 2.25rem);
     color: var(--gold);
   }
+
+  .intro__text a {
+    border-bottom: 1px solid rgba(184, 150, 79, 0.55);
+    transition: border-color 0.3s;
+  }
+  .intro__text a:hover { border-color: var(--gold); }
+  .intro__text--after { margin-top: 1.1rem; }
 
   .intro__text {
     max-width: 46em;

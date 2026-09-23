@@ -7,21 +7,21 @@ const families = [
     items: [
       {
         name: 'Breast Augmentation',
-        note: 'Implant or fat transfer, sized to your own proportions',
+        note: 'Breast harmonisation through traditional augmentation, and the latest tissue preservation technique, Preserve',
         href: '/surgical',
         img: '/images/flag-breast-augmentation.webp',
         alt: 'Shoulder and collarbone in an ivory silk camisole against blush marble',
       },
       {
         name: 'Breast Lift',
-        note: 'Reshaping and lifting, with the shortest scar the lift allows',
+        note: 'Reshaping and lifting through the smallest possible scar, for a youthful, natural breast',
         href: '/surgical',
         img: '/images/flag-breast-lift.webp',
         alt: 'Close crop of an ivory silk camisole and decolletage against pale marble',
       },
       {
         name: 'Breast Reduction',
-        note: 'Relief from the weight, shape considered as closely as size',
+        note: 'An advanced recovery protocol: drainless, day-case surgery, for the function as well as the shape',
         href: '/surgical',
         img: '/images/flag-breast-reduction.webp',
         alt: 'Woman standing in profile in a loose ivory linen shirt by a window',
@@ -33,21 +33,21 @@ const families = [
     items: [
       {
         name: 'Tummy Tuck',
-        note: 'Skin and muscle repair after pregnancy or weight loss',
+        note: 'Advanced techniques after weight loss or pregnancy, combined with liposculpting',
         href: '/surgical',
         img: '/images/flag-tummy-tuck.webp',
         alt: 'Waist in high-waisted ivory silk trousers against pale marble',
       },
       {
         name: 'Gynaecomastia Surgery',
-        note: 'Chest contouring for men, often under local anaesthetic',
+        note: 'High-volume experience and the latest technology to minimise downtime, often under local anaesthetic',
         href: '/for-men',
         img: '/images/flag-gynaecomastia.webp',
         alt: 'A man\'s bare chest and shoulders against a deep emerald backdrop',
       },
       {
         name: 'Body Contouring / Liposuction',
-        note: 'Ultrasound-assisted, working with the shape you have',
+        note: 'Cutting-edge liposuction with the power of skin tightening, for the sharpest result possible',
         href: '/surgical',
         img: '/images/flag-body-contouring.webp',
         alt: 'Pale plaster torso sculpture on a stone plinth in raking light',
@@ -57,8 +57,12 @@ const families = [
 ];
 ---
 
-<section class="flag section" id="flagship" aria-label="Flagship procedures">
+<section class="flag section" id="flagship" aria-labelledby="flagship-title">
   <div class="container">
+    <header class="flag__head" data-reveal-group>
+      <h2 class="h2" id="flagship-title" data-reveal>Flagship <em class="italic">treatments</em></h2>
+    </header>
+
     <div class="flag__index">
       {families.map((f) => (
         <div class="flag__family">
@@ -89,6 +93,9 @@ const families = [
 </section>
 
 <style>
+  .flag__head { margin-bottom: clamp(2rem, 4vw, 3.25rem); }
+  .flag__head .h2 { color: var(--emerald); }
+
   .flag {
     background: var(--ivory-2);
     /* The intro above and the reviews below share this ground and sit
