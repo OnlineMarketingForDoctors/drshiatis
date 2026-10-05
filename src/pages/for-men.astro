@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import ProcedureGrid from '../components/ProcedureGrid.astro';
+import PageCta from '../components/PageCta.astro';
+import { site } from '../data/site.js';
+import { procedures } from '../data/formen.js';
+---
+
+<Base
+  variant="solid"
+  title="Surgery for Men | Mr Andreas Shiatis, Consultant Plastic Surgeon"
+  description="Procedures for men with Mr Andreas Shiatis, Consultant Plastic Surgeon in London: gynaecomastia surgery, abdominal 3D liposculpting and hair loss prevention."
+>
+  <PageHead
+    eyebrow="For men"
+    title="Discreet, and"
+    titleEm="to the point"
+    id="fmhead-title"
+    lead="A man's chest and abdomen are shaped differently and want a different result, so they are planned differently. Most men who come in have put it off for years, know exactly what bothers them, and want to hear plainly whether it can be fixed and what it will cost them in time."
+  >
+    <div class="phead__actions" data-reveal>
+      <a class="btn btn--ivory" href={site.bookingHref}>
+        Book a consultation
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
+    </div>
+  </PageHead>
+
+  <!-- The three things men ask about most -->
+  <section class="fmnote section" aria-labelledby="fmnote-title">
+    <div class="container fmnote__grid" data-reveal-group>
+      <h2 class="h3 fmnote__title" id="fmnote-title" data-reveal>What that means in practice</h2>
+      <div class="fmnote__body">
+        <p data-reveal>
+          Short downtime matters more to most men than anything else, so the techniques are
+          chosen with that in mind. Gynaecomastia is frequently done under local anaesthetic as a
+          day case, and liposculpting of the abdomen and flanks is planned so you can be back at a
+          desk inside a week.
+        </p>
+        <p data-reveal>
+          Consultations are in a private room at a discreet address, and nothing is booked at the
+          first appointment. If an operation is not the answer, Mr Shiatis will tell you that
+          rather than sell you one.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <ProcedureGrid items={procedures} label="Procedures for men" />
+
+  <PageCta
+    eyebrow="No obligation"
+    title="Ask the"
+    titleEm="awkward question"
+    id="fmend-title"
+    lead="Whatever you have been putting off asking, it is almost certainly something Mr Shiatis is asked every week. Call or book a consultation and find out where you stand."
+  />
+</Base>
+
+<style>
+  .fmnote {
+    background: var(--ivory-2);
+    border-block: 1px solid rgba(184, 150, 79, 0.28);
+  }
+  .fmnote__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+    gap: clamp(1.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .fmnote__title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    color: var(--emerald);
+    text-wrap: balance;
+  }
+  .fmnote__body { display: grid; gap: 1.1rem; max-width: 38em; color: var(--ink-soft); }
+
+  @media (max-width: 860px) {
+    .fmnote__grid { grid-template-columns: 1fr; }
+  }
+</style>

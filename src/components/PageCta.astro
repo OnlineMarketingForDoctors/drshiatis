@@ -1,0 +1,45 @@
+---
+import { site } from '../data/site.js';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  titleEm?: string;
+  lead: string;
+  id?: string;
+}
+const { eyebrow, title, titleEm, lead, id = 'pagecta-title' } = Astro.props;
+---
+
+<section class="pcta bg-emerald on-dark" aria-labelledby={id}>
+  <div class="container pcta__inner" data-reveal-group>
+    <div>
+      <p class="eyebrow" data-reveal>{eyebrow}</p>
+      <h2 class="h2" id={id} data-reveal>{title}{titleEm && <> <em class="italic">{titleEm}</em></>}</h2>
+      <p class="lead measure" data-reveal>{lead}</p>
+    </div>
+    <div class="pcta__actions" data-reveal>
+      <a class="btn btn--ivory" href={site.bookingHref}>Book a consultation</a>
+      <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pcta__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2.5rem;
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+  }
+  .pcta__inner .h2 { margin-top: 1rem; }
+  .pcta__inner .lead { margin-top: 1.25rem; }
+  .pcta__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  @media (max-width: 640px) {
+    .pcta__actions { flex-direction: column; align-items: stretch; width: 100%; }
+    .pcta__actions .btn { justify-content: center; }
+  }
+</style>

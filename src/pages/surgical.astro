@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site } from '../data/site.js';
+import PageHead from '../components/PageHead.astro';
+import PageCta from '../components/PageCta.astro';
 import { areas } from '../data/surgical.js';
 
 const total = areas.reduce((n, a) => n + a.items.length, 0);
@@ -11,32 +12,19 @@ const total = areas.reduce((n, a) => n + a.items.length, 0);
   title="Surgical Procedures | Mr Andreas Shiatis, Consultant Plastic Surgeon"
   description="Surgical procedures with Mr Andreas Shiatis, Consultant Plastic Surgeon in London: breast, body, face and reconstructive surgery."
 >
-  <!-- Page head -->
-  <section class="suhead on-dark" aria-labelledby="suhead-title">
-    <div class="suhead__bg" aria-hidden="true">
-      <img src="/images/satin.webp" alt="" width="1800" height="1005" fetchpriority="high" decoding="async" />
-    </div>
-
-    <div class="container suhead__inner">
-      <div class="suhead__copy">
-        <p class="eyebrow" data-reveal>Surgical</p>
-        <h1 class="h2 suhead__title" id="suhead-title" data-reveal>
-          What Mr Shiatis <em class="italic">operates on</em>
-        </h1>
-        <p class="lead" data-reveal>
-          Breast and body surgery is most of the practice, alongside smaller facial procedures
-          and the reconstructive work he does for the NHS. Every plan is built around your own
-          anatomy, and nothing is decided before a second consultation.
-        </p>
-
-        <nav class="suhead__jump" aria-label="Areas" data-reveal>
-          {areas.map((a) => (
-            <a href={`#${a.slug}`}>{a.label}<span aria-hidden="true"> ({a.items.length})</span></a>
-          ))}
-        </nav>
-      </div>
-    </div>
-  </section>
+  <PageHead
+    eyebrow="Surgical"
+    title="What Mr Shiatis"
+    titleEm="operates on"
+    id="suhead-title"
+    lead="Breast and body surgery is most of the practice, alongside smaller facial procedures and the reconstructive work he does for the NHS. Every plan is built around your own anatomy, and nothing is decided before a second consultation."
+  >
+    <nav class="suhead__jump" aria-label="Areas" data-reveal>
+      {areas.map((a) => (
+        <a href={`#${a.slug}`}>{a.label}<span aria-hidden="true"> ({a.items.length})</span></a>
+      ))}
+    </nav>
+  </PageHead>
 
   <!-- One section per area -->
   {areas.map((area, i) => (
@@ -65,53 +53,28 @@ const total = areas.reduce((n, a) => n + a.items.length, 0);
               </li>
             ))}
           </ul>
+
+          {area.more && (
+            <a class="suarea__more" href={area.more.href} data-reveal>
+              {area.more.label}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          )}
         </div>
       </div>
     </section>
   ))}
 
-  <!-- Closing -->
-  <section class="suend bg-emerald on-dark" aria-labelledby="suend-title">
-    <div class="container suend__inner" data-reveal-group>
-      <div>
-        <p class="eyebrow" data-reveal>{total} procedures</p>
-        <h2 class="h2" id="suend-title" data-reveal>Not sure <em class="italic">which one</em></h2>
-        <p class="lead measure" data-reveal>
-          Most people arrive describing a result rather than an operation, which is the right way
-          round. Tell us what you would like to change and Mr Shiatis will tell you honestly what
-          surgery can and cannot do about it.
-        </p>
-      </div>
-      <div class="suend__actions" data-reveal>
-        <a class="btn btn--ivory" href={site.bookingHref}>Book a consultation</a>
-        <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
-      </div>
-    </div>
-  </section>
+  <PageCta
+    eyebrow={`${total} procedures`}
+    title="Not sure"
+    titleEm="which one"
+    id="suend-title"
+    lead="Most people arrive describing a result rather than an operation, which is the right way round. Tell us what you would like to change and Mr Shiatis will tell you honestly what surgery can and cannot do about it."
+  />
 </Base>
 
-<style>
-  .suhead {
-    position: relative;
-    overflow: clip;
-    isolation: isolate;
-    background: var(--emerald);
-    color: var(--ivory);
-  }
-  .suhead__bg { position: absolute; inset: 0; z-index: -2; opacity: 0.5; }
-  .suhead__bg img { width: 100%; height: 100%; object-fit: cover; }
-  .suhead::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(to right, rgba(9, 29, 56, 0.35), rgba(9, 29, 56, 0.8));
-  }
-  .suhead__inner { padding-block: clamp(3.5rem, 9vw, 7rem); }
-  .suhead__copy { max-width: 46rem; }
-  .suhead__title { margin-top: 1rem; }
-  .suhead__copy .lead { margin-top: 1.5rem; max-width: 36em; }
-
+<style is:global>
   /* Four areas, one page: the jump links save a long scroll. */
   .suhead__jump {
     display: flex;
@@ -133,6 +96,9 @@ const total = areas.reduce((n, a) => n + a.items.length, 0);
   }
   .suhead__jump a span { color: var(--gold-light); }
   .suhead__jump a:hover { color: var(--gold-light); border-color: var(--gold-light); }
+</style>
+
+<style>
 
   /* Area: image one side, procedures the other, sides alternating */
   .suarea__grid {
@@ -158,6 +124,23 @@ const total = areas.reduce((n, a) => n + a.items.length, 0);
 
   .suarea__list { margin-top: clamp(1.75rem, 3.5vw, 2.5rem); }
   .suarea__list li:last-child .suitem { border-bottom: 1px solid rgba(184, 150, 79, 0.4); }
+
+  .suarea__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.6rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid rgba(184, 150, 79, 0.5);
+    padding-bottom: 0.15rem;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .suarea__more svg { width: 0.85rem; height: 0.85rem; }
+  .suarea__more:hover { color: var(--emerald); border-color: var(--emerald); }
 
   .suitem {
     display: flex;
@@ -190,19 +173,6 @@ const total = areas.reduce((n, a) => n + a.items.length, 0);
   .suitem:hover .suitem__name,
   .suitem:focus-visible .suitem__name { color: var(--navy-soft); }
 
-  /* Closing */
-  .suend__inner {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2.5rem;
-    padding-block: clamp(3rem, 6vw, 4.5rem);
-  }
-  .suend__inner .h2 { margin-top: 1rem; }
-  .suend__inner .lead { margin-top: 1.25rem; }
-  .suend__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-
   @media (max-width: 900px) {
     .suarea__grid { grid-template-columns: 1fr; }
     .suarea__figure--right { order: 0; }
@@ -211,8 +181,4 @@ const total = areas.reduce((n, a) => n + a.items.length, 0);
     .suitem__arrow { opacity: 1; transform: none; }
   }
 
-  @media (max-width: 640px) {
-    .suend__actions { flex-direction: column; align-items: stretch; width: 100%; }
-    .suend__actions .btn { justify-content: center; }
-  }
 </style>

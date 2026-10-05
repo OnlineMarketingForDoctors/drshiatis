@@ -65,6 +65,7 @@ export const areas = [
     alt: 'A woman’s hands resting quietly in her lap against deep navy',
     intro:
       'The NHS side of the practice, and the training that stands behind every aesthetic decision: rebuilding after cancer, using your own tissue.',
+    more: { label: 'More on reconstructive surgery', href: '/reconstructive' },
     items: [
       ['Breast Reconstruction', 'breast-reconstruction'],
       ['Reconstruction after Skin Cancer', 'reconstruction-after-skin-cancer'],

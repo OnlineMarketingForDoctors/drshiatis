@@ -1,5 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import ProcedureGrid from '../components/ProcedureGrid.astro';
+import PageCta from '../components/PageCta.astro';
 import { site } from '../data/site.js';
 import { treatments } from '../data/nonsurgical.js';
 ---
@@ -9,196 +12,29 @@ import { treatments } from '../data/nonsurgical.js';
   title="Non-Surgical Treatments | Mr Andreas Shiatis, Consultant Plastic Surgeon"
   description="Non-surgical treatments with Mr Andreas Shiatis, Consultant Plastic Surgeon in London: anti-wrinkle injections, Profhilo, polynucleotides and treatment for excessive sweating."
 >
-  <!-- Page head -->
-  <section class="nshead on-dark" aria-labelledby="nshead-title">
-    <div class="nshead__bg" aria-hidden="true">
-      <img src="/images/satin.webp" alt="" width="1800" height="1005" fetchpriority="high" decoding="async" />
+  <PageHead
+    eyebrow="Non-surgical"
+    title="Treatment"
+    titleEm="without surgery"
+    id="nshead-title"
+    lead="A short list, deliberately. Injectable treatments for the skin, for the muscles beneath it, and for excessive sweating. All are done in clinic, most in under half an hour, and you go back to your day afterwards. They are offered in their own right, not as a step towards an operation."
+  >
+    <div class="phead__actions" data-reveal>
+      <a class="btn btn--ivory" href={site.bookingHref}>
+        Book a consultation
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
     </div>
+  </PageHead>
 
-    <div class="container nshead__inner">
-      <div class="nshead__copy">
-        <p class="eyebrow" data-reveal>Non-surgical</p>
-        <h1 class="h2 nshead__title" id="nshead-title" data-reveal>
-          Treatment <em class="italic">without surgery</em>
-        </h1>
-        <p class="lead" data-reveal>
-          A short list, deliberately. Injectable treatments for the skin, for the muscles beneath
-          it, and for excessive sweating. All are done in clinic, most in under half an hour, and
-          you go back to your day afterwards. They are offered in their own right, not as a step
-          towards an operation.
-        </p>
+  <ProcedureGrid items={treatments} label="Treatments" columns={2} more="More on this treatment" />
 
-        <div class="nshead__actions" data-reveal>
-          <a class="btn btn--ivory" href={site.bookingHref}>
-            Book a consultation
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-          <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- The treatments -->
-  <section class="nslist section" aria-label="Treatments">
-    <div class="container">
-      <ul class="nslist__grid" data-reveal-group>
-        {treatments.map((t) => (
-          <li class="nscard" data-reveal>
-            <div class="cover nscard__img" data-img-reveal>
-              <img src={t.img} alt={t.alt} width="1800" height="1208" loading="lazy" decoding="async" />
-            </div>
-
-            <div class="nscard__body">
-              <p class="eyebrow eyebrow--gold nscard__kind">{t.kind}</p>
-              <h2 class="nscard__name">{t.name}</h2>
-              <p class="nscard__note">{t.note}</p>
-
-              <dl class="nscard__meta">
-                <div><dt>Where</dt><dd>{t.areas}</dd></div>
-                <div><dt>What to expect</dt><dd>{t.detail}</dd></div>
-              </dl>
-
-              <a class="nscard__more" href={t.href} target="_blank" rel="noopener">
-                More on this treatment
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-              </a>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- Closing -->
-  <section class="nsend bg-emerald on-dark" aria-labelledby="nsend-title">
-    <div class="container nsend__inner" data-reveal-group>
-      <div>
-        <p class="eyebrow" data-reveal>Not sure which</p>
-        <h2 class="h2" id="nsend-title" data-reveal>Start with <em class="italic">a conversation</em></h2>
-        <p class="lead measure" data-reveal>
-          Several of these do similar things by different routes, and what people ask for is not
-          always what suits their skin. Come in and we will work out which, if any, is right
-          for you.
-        </p>
-      </div>
-      <div class="nsend__actions" data-reveal>
-        <a class="btn btn--ivory" href={site.bookingHref}>Book a consultation</a>
-        <a class="btn btn--outline-light" href={`mailto:${site.email}`}>Email us</a>
-      </div>
-    </div>
-  </section>
+  <PageCta
+    eyebrow="Not sure which"
+    title="Start with"
+    titleEm="a conversation"
+    id="nsend-title"
+    lead="Several of these do similar things by different routes, and what people ask for is not always what suits their skin. Come in and we will work out which, if any, is right for you."
+  />
 </Base>
-
-<style>
-  /* Page head, the same construction the booking page uses */
-  .nshead {
-    position: relative;
-    overflow: clip;
-    isolation: isolate;
-    background: var(--emerald);
-    color: var(--ivory);
-  }
-  .nshead__bg { position: absolute; inset: 0; z-index: -2; opacity: 0.5; }
-  .nshead__bg img { width: 100%; height: 100%; object-fit: cover; }
-  .nshead::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(to right, rgba(9, 29, 56, 0.35), rgba(9, 29, 56, 0.8));
-  }
-  .nshead__inner { padding-block: clamp(3.5rem, 9vw, 7rem); }
-  .nshead__copy { max-width: 46rem; }
-  .nshead__title { margin-top: 1rem; }
-  .nshead__copy .lead { margin-top: 1.5rem; max-width: 36em; }
-  .nshead__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
-  .nshead__actions svg { width: 0.9em; height: 0.9em; }
-
-  /* Four treatments, so a pair of pairs rather than a long column. */
-  .nslist__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4vw, 4rem);
-  }
-
-  .nscard__img { aspect-ratio: 3 / 2; }
-  .nscard__body { padding-top: clamp(1.25rem, 2vw, 1.75rem); }
-  .nscard__kind { color: var(--gold); }
-  .nscard__name {
-    margin-top: 0.6rem;
-    font-family: var(--font-display);
-    font-variation-settings: 'opsz' 72;
-    font-style: italic;
-    font-weight: 500;
-    font-size: var(--fs-h3);
-    line-height: 1.1;
-    color: var(--emerald);
-  }
-  .nscard__note {
-    margin-top: 0.85rem;
-    max-width: 34em;
-    color: var(--ink-soft);
-  }
-
-  .nscard__meta {
-    display: grid;
-    gap: 0.9rem;
-    margin-top: 1.35rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(184, 150, 79, 0.4);
-  }
-  .nscard__meta dt {
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-  .nscard__meta dd {
-    margin: 0.3rem 0 0;
-    font-size: 0.92rem;
-    color: var(--ink-soft);
-  }
-
-  .nscard__more {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1.35rem;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--gold);
-    border-bottom: 1px solid rgba(184, 150, 79, 0.5);
-    padding-bottom: 0.15rem;
-    transition: color 0.3s, border-color 0.3s;
-  }
-  .nscard__more svg { width: 0.8rem; height: 0.8rem; }
-  .nscard__more:hover { color: var(--emerald); border-color: var(--emerald); }
-
-  /* Closing */
-  .nsend__inner {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2.5rem;
-    padding-block: clamp(3rem, 6vw, 4.5rem);
-  }
-  .nsend__inner .h2 { margin-top: 1rem; }
-  .nsend__inner .lead { margin-top: 1.25rem; }
-  .nsend__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-
-  @media (max-width: 760px) {
-    .nslist__grid { grid-template-columns: 1fr; }
-  }
-
-  @media (max-width: 640px) {
-    .nshead__actions { flex-direction: column; align-items: stretch; }
-    .nshead__actions .btn { justify-content: center; }
-    .nsend__actions { flex-direction: column; align-items: stretch; width: 100%; }
-    .nsend__actions .btn { justify-content: center; }
-  }
-</style>

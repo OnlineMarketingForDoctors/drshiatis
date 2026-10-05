@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import ProcedureGrid from '../components/ProcedureGrid.astro';
+import PageCta from '../components/PageCta.astro';
+import { site } from '../data/site.js';
+import { procedures } from '../data/reconstructive.js';
+---
+
+<Base
+  variant="solid"
+  title="Reconstructive Surgery | Mr Andreas Shiatis, Consultant Plastic Surgeon"
+  description="Reconstructive surgery with Mr Andreas Shiatis, Consultant Plastic Surgeon in London: breast reconstruction after mastectomy, reconstruction after skin cancer and breast symmetrisation."
+>
+  <PageHead
+    eyebrow="Reconstructive"
+    title="Putting back"
+    titleEm="what was taken"
+    id="rchead-title"
+    lead="Reconstruction is where Mr Shiatis trained and where he still spends part of every week, as an NHS consultant at Barts Health with a microsurgery fellowship behind him. The aim is not a perfect result but your own shape returned to you, so that what happened stops announcing itself."
+  >
+    <div class="phead__actions" data-reveal>
+      <a class="btn btn--ivory" href={site.bookingHref}>
+        Book a consultation
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
+    </div>
+  </PageHead>
+
+  <!-- Why this is handled differently from cosmetic work -->
+  <section class="rcnote section" aria-labelledby="rcnote-title">
+    <div class="container rcnote__grid" data-reveal-group>
+      <h2 class="h3 rcnote__title" id="rcnote-title" data-reveal>Reconstruction is rarely one operation</h2>
+      <div class="rcnote__body">
+        <p data-reveal>
+          Most reconstructions are built in stages, with months between them, and the plan is
+          written around your cancer treatment rather than the other way round. Radiotherapy,
+          chemotherapy and the timing of your surgery all change what is sensible to do and when.
+        </p>
+        <p data-reveal>
+          That is why the first consultation is largely listening. Mr Shiatis will set out the
+          routes open to you, what each asks of you in recovery, and what each is realistically
+          able to give back. Where reconstruction is better done through the NHS, he will say so.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <ProcedureGrid items={procedures} label="Reconstructive procedures" />
+
+  <PageCta
+    eyebrow="Where to start"
+    title="Bring your"
+    titleEm="questions"
+    id="rcend-title"
+    lead="You do not need a decision before you come. Bring your diagnosis, your treatment dates and whatever you have been told so far, and we will work out together what is possible and when."
+  />
+</Base>
+
+<style>
+  .rcnote {
+    background: var(--ivory-2);
+    border-block: 1px solid rgba(184, 150, 79, 0.28);
+  }
+  .rcnote__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+    gap: clamp(1.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .rcnote__title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    color: var(--emerald);
+    text-wrap: balance;
+  }
+  .rcnote__body { display: grid; gap: 1.1rem; max-width: 38em; color: var(--ink-soft); }
+
+  @media (max-width: 860px) {
+    .rcnote__grid { grid-template-columns: 1fr; }
+  }
+</style>
