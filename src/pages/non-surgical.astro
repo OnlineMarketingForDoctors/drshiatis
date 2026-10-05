@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site.js';
-import { areas } from '../data/nonsurgical.js';
+import { treatments } from '../data/nonsurgical.js';
 ---
 
 <Base
@@ -22,9 +22,10 @@ import { areas } from '../data/nonsurgical.js';
           Treatment <em class="italic">without surgery</em>
         </h1>
         <p class="lead" data-reveal>
-          Injectable treatments for the skin, the muscles beneath it, and for excessive sweating.
-          All are done in clinic, most in under half an hour, and you go back to your day afterwards.
-          They are offered in their own right, not as a step towards an operation.
+          A short list, deliberately. Injectable treatments for the skin, for the muscles beneath
+          it, and for excessive sweating. All are done in clinic, most in under half an hour, and
+          you go back to your day afterwards. They are offered in their own right, not as a step
+          towards an operation.
         </p>
 
         <div class="nshead__actions" data-reveal>
@@ -38,52 +39,47 @@ import { areas } from '../data/nonsurgical.js';
     </div>
   </section>
 
-  <!-- One section per area -->
-  {areas.map((area, i) => (
-    <section class={`nsarea section ${i % 2 ? 'bg-ivory-2' : ''}`} id={area.slug} aria-labelledby={`${area.slug}-title`}>
-      <div class="container nsarea__grid" data-reveal-group>
-        <figure class={`nsarea__figure ${i % 2 ? 'nsarea__figure--right' : ''}`}>
-          <div class="cover nsarea__img" data-img-reveal>
-            <img src={area.img} alt={area.alt} width="1800" height="1208" loading="lazy" decoding="async" />
-          </div>
-        </figure>
+  <!-- The treatments -->
+  <section class="nslist section" aria-label="Treatments">
+    <div class="container">
+      <ul class="nslist__grid" data-reveal-group>
+        {treatments.map((t) => (
+          <li class="nscard" data-reveal>
+            <div class="cover nscard__img" data-img-reveal>
+              <img src={t.img} alt={t.alt} width="1800" height="1208" loading="lazy" decoding="async" />
+            </div>
 
-        <div class="nsarea__body">
-          <p class="eyebrow eyebrow--gold" data-reveal>{area.label}</p>
-          <h2 class="h2 nsarea__title" id={`${area.slug}-title`} data-reveal>{area.title}</h2>
-          <p class="nsarea__intro" data-reveal>{area.intro}</p>
+            <div class="nscard__body">
+              <p class="eyebrow eyebrow--gold nscard__kind">{t.kind}</p>
+              <h2 class="nscard__name">{t.name}</h2>
+              <p class="nscard__note">{t.note}</p>
 
-          <ul class="nsarea__list">
-            {area.items.map((t) => (
-              <li class="nsitem" data-reveal>
-                <h3 class="nsitem__name">{t.name}</h3>
-                <p class="nsitem__note">{t.note}</p>
-                <dl class="nsitem__meta">
-                  <div><dt>Where</dt><dd>{t.areas}</dd></div>
-                  <div><dt>What to expect</dt><dd>{t.detail}</dd></div>
-                </dl>
-                <a class="nsitem__more" href={t.href} target="_blank" rel="noopener">
-                  More on this treatment
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </section>
-  ))}
+              <dl class="nscard__meta">
+                <div><dt>Where</dt><dd>{t.areas}</dd></div>
+                <div><dt>What to expect</dt><dd>{t.detail}</dd></div>
+              </dl>
 
-  <!-- Closing note -->
+              <a class="nscard__more" href={t.href} target="_blank" rel="noopener">
+                More on this treatment
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+              </a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Closing -->
   <section class="nsend bg-emerald on-dark" aria-labelledby="nsend-title">
     <div class="container nsend__inner" data-reveal-group>
       <div>
         <p class="eyebrow" data-reveal>Not sure which</p>
         <h2 class="h2" id="nsend-title" data-reveal>Start with <em class="italic">a conversation</em></h2>
         <p class="lead measure" data-reveal>
-          Some of what people ask for turns out not to be what they need, and a few of these
-          treatments do similar things by different routes. Come in and we will work out which,
-          if any, is right for you.
+          Several of these do similar things by different routes, and what people ask for is not
+          always what suits their skin. Come in and we will work out which, if any, is right
+          for you.
         </p>
       </div>
       <div class="nsend__actions" data-reveal>
@@ -119,36 +115,18 @@ import { areas } from '../data/nonsurgical.js';
   .nshead__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
   .nshead__actions svg { width: 0.9em; height: 0.9em; }
 
-  /* Area: image one side, treatments the other, sides alternating */
-  .nsarea__grid {
+  /* Four treatments, so a pair of pairs rather than a long column. */
+  .nslist__grid {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: start;
-  }
-  .nsarea__figure--right { order: 2; }
-  .nsarea__img {
-    position: sticky;
-    top: 6.5rem;
-    aspect-ratio: 3 / 4;
-  }
-  .nsarea__title { margin-top: 1rem; color: var(--emerald); }
-  .nsarea__intro {
-    margin-top: 1.25rem;
-    max-width: 34em;
-    font-size: var(--fs-lead);
-    line-height: 1.55;
-    color: var(--ink-soft);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4vw, 4rem);
   }
 
-  .nsarea__list { margin-top: clamp(2rem, 4vw, 3rem); }
-  .nsitem {
-    padding-block: clamp(1.5rem, 2.6vw, 2.25rem);
-    border-top: 1px solid rgba(184, 150, 79, 0.4);
-  }
-  .nsitem:last-child { border-bottom: 1px solid rgba(184, 150, 79, 0.4); }
-
-  .nsitem__name {
+  .nscard__img { aspect-ratio: 3 / 2; }
+  .nscard__body { padding-top: clamp(1.25rem, 2vw, 1.75rem); }
+  .nscard__kind { color: var(--gold); }
+  .nscard__name {
+    margin-top: 0.6rem;
     font-family: var(--font-display);
     font-variation-settings: 'opsz' 72;
     font-style: italic;
@@ -157,36 +135,37 @@ import { areas } from '../data/nonsurgical.js';
     line-height: 1.1;
     color: var(--emerald);
   }
-  .nsitem__note {
-    margin-top: 0.75rem;
-    max-width: 38em;
+  .nscard__note {
+    margin-top: 0.85rem;
+    max-width: 34em;
     color: var(--ink-soft);
   }
 
-  .nsitem__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem clamp(1.5rem, 4vw, 3rem);
-    margin-top: 1.25rem;
+  .nscard__meta {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1.35rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
   }
-  .nsitem__meta dt {
+  .nscard__meta dt {
     font-size: 0.68rem;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--gold);
   }
-  .nsitem__meta dd {
-    margin: 0.35rem 0 0;
+  .nscard__meta dd {
+    margin: 0.3rem 0 0;
     font-size: 0.92rem;
     color: var(--ink-soft);
   }
 
-  .nsitem__more {
+  .nscard__more {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1.25rem;
+    margin-top: 1.35rem;
     font-size: 0.72rem;
     font-weight: 500;
     letter-spacing: 0.16em;
@@ -196,8 +175,8 @@ import { areas } from '../data/nonsurgical.js';
     padding-bottom: 0.15rem;
     transition: color 0.3s, border-color 0.3s;
   }
-  .nsitem__more svg { width: 0.8rem; height: 0.8rem; }
-  .nsitem__more:hover { color: var(--emerald); border-color: var(--emerald); }
+  .nscard__more svg { width: 0.8rem; height: 0.8rem; }
+  .nscard__more:hover { color: var(--emerald); border-color: var(--emerald); }
 
   /* Closing */
   .nsend__inner {
@@ -212,11 +191,8 @@ import { areas } from '../data/nonsurgical.js';
   .nsend__inner .lead { margin-top: 1.25rem; }
   .nsend__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 
-  @media (max-width: 900px) {
-    .nsarea__grid { grid-template-columns: 1fr; }
-    /* Stacked, the image leads whichever side it was on. */
-    .nsarea__figure--right { order: 0; }
-    .nsarea__img { position: static; aspect-ratio: 3 / 2; }
+  @media (max-width: 760px) {
+    .nslist__grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 640px) {
