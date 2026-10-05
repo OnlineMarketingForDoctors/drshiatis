@@ -577,6 +577,142 @@ function initNewsletter() {
 }
 
 /* ---------------------------------------------------------------------------
+   The notice in front of the before and after photographs. Clinical nudity
+   should not arrive unannounced, so the gallery stays behind it until the
+   visitor says go. Remembered for the tab, not for the browser: the next
+   visit gets the notice again.
+--------------------------------------------------------------------------- */
+function initBeforeAfterGate() {
+  const guard = document.querySelector('[data-ba-guard]');
+  if (!guard) return;
+  const btn = guard.querySelector('[data-ba-enter]');
+
+  const open = () => {
+    guard.classList.add('is-open');
+    try { sessionStorage.setItem('ba-seen', '1'); } catch { /* private mode */ }
+  };
+
+  let seen = false;
+  try { seen = sessionStorage.getItem('ba-seen') === '1'; } catch { /* private mode */ }
+  if (seen) guard.classList.add('is-open');
+
+  btn?.addEventListener('click', open);
+}
+
+/* ---------------------------------------------------------------------------
+   Before and after gallery
+   Panel per procedure, scroll-snap slider inside each. The markup ships with
+   every panel visible, so without this the photographs are still all there.
+--------------------------------------------------------------------------- */
+function initBeforeAfter() {
+  initBeforeAfterGate();
+
+  const root = document.querySelector('[data-ba-root]');
+  if (!root) return;
+
+  const tabs = [...root.querySelectorAll('[data-ba-tab]')];
+  const panels = [...root.querySelectorAll('[data-ba-panel]')];
+  if (!tabs.length || !panels.length) return;
+
+  /* --- one slider --- */
+  const wireSlider = (panel) => {
+    const track = panel.querySelector('[data-ba-track]');
+    const slides = [...panel.querySelectorAll('[data-ba-slide]')];
+    const controls = panel.querySelector('[data-ba-controls]');
+    if (!track || slides.length < 2 || !controls) return null;
+
+    const prev = controls.querySelector('[data-ba-prev]');
+    const next = controls.querySelector('[data-ba-next]');
+    const counter = controls.querySelector('[data-ba-counter]');
+    controls.hidden = false;
+
+    let index = 0;
+    const draw = () => {
+      counter.textContent = `${index + 1} / ${slides.length}`;
+      prev.disabled = index === 0;
+      next.disabled = index === slides.length - 1;
+    };
+    const go = (i) => {
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      // scrollLeft rather than scrollIntoView: the latter also scrolls the
+      // page to bring the slide into view, which yanks you down the document.
+      track.scrollTo({ left: slides[index].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+      draw();
+    };
+
+    prev.addEventListener('click', () => go(index - 1));
+    next.addEventListener('click', () => go(index + 1));
+
+    // Swiping moves the track without going through go(), so read it back.
+    let settle = null;
+    track.addEventListener('scroll', () => {
+      clearTimeout(settle);
+      settle = setTimeout(() => {
+        const mid = track.scrollLeft + track.clientWidth / 2;
+        let best = 0;
+        let bestD = Infinity;
+        slides.forEach((s, i) => {
+          const c = s.offsetLeft - track.offsetLeft + s.offsetWidth / 2;
+          const d = Math.abs(c - mid);
+          if (d < bestD) { bestD = d; best = i; }
+        });
+        if (best !== index) { index = best; draw(); }
+      }, 90);
+    }, { passive: true });
+
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+    });
+
+    draw();
+    return { reset: () => { index = 0; track.scrollLeft = 0; draw(); } };
+  };
+
+  const sliders = new Map();
+  panels.forEach((p) => {
+    const s = wireSlider(p);
+    if (s) sliders.set(p.dataset.baPanel, s);
+  });
+
+  /* --- switching --- */
+  const show = (slug, { focus = false } = {}) => {
+    const panel = panels.find((p) => p.dataset.baPanel === slug);
+    if (!panel) return false;
+    panels.forEach((p) => p.classList.toggle('is-active', p === panel));
+    tabs.forEach((t) => {
+      if (t.dataset.baTab === slug) t.setAttribute('aria-current', 'true');
+      else t.removeAttribute('aria-current');
+    });
+    sliders.get(slug)?.reset();
+    if (focus) panel.querySelector('.bapanel__title')?.focus();
+    return true;
+  };
+
+  panels.forEach((p) => {
+    const h = p.querySelector('.bapanel__title');
+    if (h) h.tabIndex = -1;
+  });
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', (e) => {
+      e.preventDefault();
+      const slug = tab.dataset.baTab;
+      if (!show(slug, { focus: true })) return;
+      history.replaceState(null, '', `#${slug}`);
+      // On a phone the list sits above the panel, so bring the panel up.
+      if (window.matchMedia('(max-width: 900px)').matches) {
+        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  root.classList.add('is-live');
+  const fromHash = decodeURIComponent(location.hash.slice(1));
+  if (!fromHash || !show(fromHash)) show(tabs[0].dataset.baTab);
+}
+
+/* ---------------------------------------------------------------------------
    Boot
 --------------------------------------------------------------------------- */
 function boot() {
@@ -592,6 +728,7 @@ function boot() {
   initBackToTop();
   initLightbox();
   initNewsletter();
+  initBeforeAfter();
 
   // Images loading late can shift trigger positions.
   window.addEventListener('load', () => ScrollTrigger.refresh());

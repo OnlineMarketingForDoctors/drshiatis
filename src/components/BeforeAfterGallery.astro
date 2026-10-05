@@ -1,0 +1,335 @@
+---
+// Left: the procedure list. Right: one slider per procedure, a before and
+// after pair to a slide, caption underneath.
+//
+// Built to work without JavaScript: every panel is in the document and the
+// track is a scroll-snap row, so the photographs are reachable and swipeable
+// on their own. The script only adds the panel switching, the arrows and the
+// counter, and it marks the root with .is-live before hiding anything.
+import { procedures, angleLabels, pairsFor } from '../data/beforeafter.js';
+
+const panels = procedures.map((p) => ({ ...p, pairs: pairsFor(p) }));
+const totalPairs = panels.reduce((n, p) => n + p.pairs.length, 0);
+const totalPatients = panels.reduce((n, p) => n + p.cases.length, 0);
+---
+
+<section class="bagal section" aria-labelledby="bagal-title">
+  <div class="container">
+    <h2 class="sr-only" id="bagal-title">Before and after photographs</h2>
+
+    <div class="bagal__layout" data-ba-root>
+      <!-- Left: procedures -->
+      <nav class="banav" aria-label="Procedures">
+        <p class="banav__label">Procedures</p>
+        <ul class="banav__list">
+          {panels.map((p, i) => (
+            <li>
+              <a
+                class="banav__item"
+                href={`#${p.slug}`}
+                data-ba-tab={p.slug}
+                aria-current={i === 0 ? 'true' : undefined}
+              >
+                <span class="banav__name">{p.label}</span>
+                <span class="banav__count" aria-hidden="true">{p.pairs.length}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="banav__total">
+          {totalPatients} patients, {totalPairs} pairs. Every photograph is of Mr Shiatis&rsquo;
+          own patient, published with consent and untouched beyond cropping.
+        </p>
+      </nav>
+
+      <!-- Right: one slider per procedure -->
+      <div class="bapanels">
+        {panels.map((p, pi) => (
+          <section
+            class="bapanel"
+            id={p.slug}
+            data-ba-panel={p.slug}
+            aria-labelledby={`${p.slug}-h`}
+          >
+            <header class="bapanel__head">
+              <h3 class="bapanel__title" id={`${p.slug}-h`}>{p.label}</h3>
+              <p class="bapanel__blurb">{p.blurb}</p>
+              {p.note && <p class="bapanel__note">{p.note}</p>}
+            </header>
+
+            <div class="baslider" data-ba-slider>
+              <ul class="baslider__track" data-ba-track tabindex="0" aria-label={`${p.label}, before and after photographs`}>
+                {p.pairs.map((pair, si) => (
+                  <li class="baslide" data-ba-slide>
+                    <div class="baslide__pair">
+                      <figure class="bashot">
+                        <img
+                          src={`${pair.dir}/before-${pair.angle}.webp`}
+                          alt={`${p.label}, patient ${pair.n}, ${angleLabels[pair.angle].toLowerCase()} view, before surgery`}
+                          width="1200" height="1500"
+                          loading={pi === 0 && si === 0 ? 'eager' : 'lazy'}
+                          decoding="async"
+                        />
+                        {!pair.labelled && <figcaption class="bashot__tag">Before</figcaption>}
+                      </figure>
+                      <figure class="bashot">
+                        <img
+                          src={`${pair.dir}/after-${pair.angle}.webp`}
+                          alt={`${p.label}, patient ${pair.n}, ${angleLabels[pair.angle].toLowerCase()} view, after surgery`}
+                          width="1200" height="1500"
+                          loading={pi === 0 && si === 0 ? 'eager' : 'lazy'}
+                          decoding="async"
+                        />
+                        {!pair.labelled && <figcaption class="bashot__tag bashot__tag--after">After</figcaption>}
+                      </figure>
+                    </div>
+
+                    <div class="baslide__caption">
+                      <p class="baslide__who">
+                        <span class="baslide__patient">Patient {pair.n}</span>
+                        <span class="baslide__sep" aria-hidden="true">/</span>
+                        <span class="baslide__angle">{angleLabels[pair.angle]} view</span>
+                      </p>
+                      {pair.note && <p class="baslide__note">{pair.note}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <div class="baslider__controls" data-ba-controls hidden>
+                <button class="baslider__arrow" type="button" data-ba-prev aria-label={`Previous, ${p.label}`}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+                </button>
+                <p class="baslider__counter" data-ba-counter aria-live="polite">1 / {p.pairs.length}</p>
+                <button class="baslider__arrow" type="button" data-ba-next aria-label={`Next, ${p.label}`}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bagal__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    /* Both columns hold a horizontal scroller, and a grid item defaults to
+       min-width:auto, so without this the scrollers push the page wide. */
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .banav,
+  .bapanels,
+  .baslider,
+  .baslider__track { min-width: 0; }
+
+  /* Left nav */
+  .banav { position: sticky; top: 6.5rem; }
+  .banav__label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .banav__item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.7rem;
+    border-bottom: 1px solid rgba(184, 150, 79, 0.22);
+    color: var(--ink-soft);
+    transition: color 0.3s;
+  }
+  .banav__name { font-size: 0.95rem; line-height: 1.3; }
+  .banav__count {
+    flex: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+  .banav__item:hover { color: var(--emerald); }
+  .banav__item[aria-current='true'] {
+    color: var(--emerald);
+    font-weight: 500;
+  }
+  .banav__item[aria-current='true'] .banav__name {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-size: 1.08rem;
+  }
+  .banav__total {
+    margin-top: 1.5rem;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    opacity: 0.8;
+  }
+
+  /* Panel head */
+  .bapanel + .bapanel { margin-top: clamp(3.5rem, 7vw, 5.5rem); }
+  .bapanel__title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+    color: var(--emerald);
+  }
+  .bapanel__blurb { margin-top: 0.85rem; max-width: 42em; color: var(--ink-soft); }
+  .bapanel__note {
+    margin-top: 1rem;
+    max-width: 42em;
+    padding: 0.85rem 1.1rem;
+    border-left: 2px solid var(--gold);
+    background: rgba(184, 150, 79, 0.08);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* Slider */
+  .baslider { margin-top: clamp(1.75rem, 3.5vw, 2.5rem); }
+  .baslider__track {
+    display: flex;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Room for the focus ring, which the overflow would otherwise clip. */
+    padding: 3px;
+    margin: -3px;
+  }
+  .baslider__track::-webkit-scrollbar { display: none; }
+  .baslide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+  }
+
+  .baslide__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .bashot { position: relative; background: var(--ivory-2); }
+  .bashot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  .bashot__tag {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 0.45rem 0.9rem;
+    background: rgba(9, 29, 56, 0.82);
+    color: var(--ivory);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .bashot__tag--after { background: var(--gold); color: var(--emerald-deep); }
+
+  .baslide__caption { margin-top: 1.1rem; }
+  .baslide__who {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--emerald);
+  }
+  .baslide__sep { color: var(--gold); }
+  .baslide__angle { color: var(--ink-soft); }
+  .baslide__note {
+    margin-top: 0.6rem;
+    max-width: 44em;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .baslider__controls {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .baslider__arrow {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid rgba(184, 150, 79, 0.5);
+    border-radius: 50%;
+    color: var(--emerald);
+    transition: background 0.3s, color 0.3s, border-color 0.3s, opacity 0.3s;
+  }
+  .baslider__arrow svg { width: 1rem; height: 1rem; }
+  .baslider__arrow:hover:not(:disabled) {
+    background: var(--emerald);
+    border-color: var(--emerald);
+    color: var(--ivory);
+  }
+  .baslider__arrow:disabled { opacity: 0.3; cursor: default; }
+  .baslider__counter {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Only once the script is running does anything get hidden. */
+  .bagal__layout.is-live .bapanel { display: none; }
+  .bagal__layout.is-live .bapanel.is-active { display: block; }
+  .bagal__layout.is-live .bapanel + .bapanel { margin-top: 0; }
+
+  @media (max-width: 900px) {
+    .bagal__layout { grid-template-columns: minmax(0, 1fr); }
+    /* The list becomes a scrolling row of chips above the photographs. */
+    .banav { position: static; }
+    .banav__label, .banav__total { display: none; }
+    .banav__list {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 0.25rem;
+    }
+    .banav__list::-webkit-scrollbar { display: none; }
+    .banav__item {
+      padding: 0.6rem 0.9rem;
+      border: 1px solid rgba(184, 150, 79, 0.4);
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .banav__item[aria-current='true'] {
+      background: var(--emerald);
+      border-color: var(--emerald);
+      color: var(--ivory);
+    }
+    .banav__item[aria-current='true'] .banav__name {
+      font-family: inherit;
+      font-style: normal;
+      font-size: 0.95rem;
+    }
+    .banav__item[aria-current='true'] .banav__count { color: var(--gold-light); }
+    .bapanel__head { margin-top: 2rem; }
+  }
+</style>

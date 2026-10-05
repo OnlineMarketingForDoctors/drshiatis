@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import PageCta from '../components/PageCta.astro';
+import BeforeAfterGallery from '../components/BeforeAfterGallery.astro';
+import { site } from '../data/site.js';
+import { procedures, pairsFor } from '../data/beforeafter.js';
+
+const pairs = procedures.reduce((n, p) => n + pairsFor(p).length, 0);
+const patients = procedures.reduce((n, p) => n + p.cases.length, 0);
+---
+
+<Base
+  variant="solid"
+  title="Before & After | Mr Andreas Shiatis, Consultant Plastic Surgeon"
+  description={`${pairs} before and after photographs from ${patients} of Mr Andreas Shiatis' own patients, across ${procedures.length} procedures.`}
+>
+  <PageHead
+    eyebrow="Before and after"
+    title="His own patients,"
+    titleEm="his own results"
+    id="bahead-title"
+    lead={`${pairs} matched pairs from ${patients} patients across ${procedures.length} procedures, photographed in clinic from the same angles before and after. Nothing here is a stock photograph and nothing has been retouched. Pick a procedure to see its cases.`}
+  >
+    <div class="phead__actions" data-reveal>
+      <a class="btn btn--ivory" href={site.bookingHref}>
+        Book a consultation
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
+    </div>
+  </PageHead>
+
+  <div class="baguard" data-ba-guard>
+    <!-- These are clinical photographs, so nobody meets them unannounced. -->
+    <div class="bagate" data-ba-gate>
+      <div class="container bagate__inner">
+        <p class="eyebrow eyebrow--gold">Please read first</p>
+        <h2 class="bagate__title">These are clinical photographs</h2>
+        <p class="bagate__body">
+          The gallery contains unretouched surgical photographs, including nudity, taken for
+          medical records. They are published with each patient&rsquo;s written consent. Results
+          vary from person to person, and nothing here is a prediction of your own.
+        </p>
+        <button class="btn btn--solid bagate__btn" type="button" data-ba-enter>
+          I understand, show the gallery
+        </button>
+      </div>
+    </div>
+
+    <div class="baguard__content">
+      <BeforeAfterGallery />
+    </div>
+  </div>
+
+  <noscript>
+    <style>
+      .bagate { display: none !important; }
+      .baguard__content { display: block !important; }
+    </style>
+  </noscript>
+
+  <PageCta
+    eyebrow="Your own case"
+    title="What these"
+    titleEm="cannot tell you"
+    id="baend-title"
+    lead="No photograph of someone else predicts your result, because no two people start from the same place. Bring the ones that look like you to a consultation and Mr Shiatis will tell you how close your own anatomy can get."
+  />
+</Base>
+
+<style>
+  .baguard__content { display: none; }
+  .baguard.is-open .baguard__content { display: block; }
+  .baguard.is-open .bagate { display: none; }
+
+  .bagate { background: var(--ivory-2); border-bottom: 1px solid rgba(184, 150, 79, 0.3); }
+  .bagate__inner {
+    max-width: 44rem;
+    padding-block: clamp(3rem, 7vw, 5rem);
+    text-align: center;
+  }
+  .bagate__title {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+    color: var(--emerald);
+  }
+  .bagate__body {
+    margin-top: 1.1rem;
+    color: var(--ink-soft);
+  }
+  .bagate__btn { margin-top: 2rem; }
+</style>
