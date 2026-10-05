@@ -6,15 +6,10 @@ const VIDEO_ID = 'hLFJKqazyEQ';
 
 <section class="hero" data-hero>
   <div class="hero__media" data-parallax data-parallax-strength="12">
-    <img
-      class="hero__poster"
-      src="/images/hero-poster.webp"
-      alt=""
-      width="2000"
-      height="848"
-      fetchpriority="high"
-      decoding="async"
-    />
+    <picture class="hero__poster">
+      <source media="(max-width: 700px)" srcset="/images/hero-poster-mobile.webp" width="1400" height="2100" />
+      <img src="/images/hero-poster.webp" alt="" width="3840" height="1629" fetchpriority="high" decoding="async" />
+    </picture>
     <div class="hero__video" data-hero-video={VIDEO_ID}>
       <div data-yt-mount></div>
     </div>
@@ -70,7 +65,8 @@ const VIDEO_ID = 'hLFJKqazyEQ';
 
   /* What the hero shows before the film has loaded, and whenever it will not
      play at all: reduced motion, a metered connection, a blocked embed. */
-  .hero__poster {
+  .hero__poster,
+  .hero__poster img {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -281,11 +277,15 @@ const VIDEO_ID = 'hLFJKqazyEQ';
   :global(.reduced-motion) .hero__scroll-line::after { animation: none; transform: none; }
 
   @media (max-width: 900px) {
-    /* A phone crops this to a tall sliver, so hold the window on him. */
-    .hero__poster { object-position: 62% center; }
+    /* Narrow, but still the wide frame: hold the window on him. */
+    .hero__poster img { object-position: 62% center; }
     .hero__content { padding-top: 8rem; }
     .hero__scroll { display: none; }
     .hero__role { font-size: 0.9rem; letter-spacing: 0.18em; }
     .hero__quals { letter-spacing: 0.24em; }
+  }
+  /* Below this the portrait cut is served, already framed on him. */
+  @media (max-width: 700px) {
+    .hero__poster img { object-position: center; }
   }
 </style>
