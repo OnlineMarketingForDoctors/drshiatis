@@ -614,11 +614,11 @@ function initBeforeAfter() {
   const panels = [...root.querySelectorAll('[data-ba-panel]')];
   if (!tabs.length || !panels.length) return;
 
-  /* --- one slider --- */
-  const wireSlider = (panel) => {
-    const track = panel.querySelector('[data-ba-track]');
-    const slides = [...panel.querySelectorAll('[data-ba-slide]')];
-    const controls = panel.querySelector('[data-ba-controls]');
+  /* --- one patient's angles --- */
+  const wireSlider = (slider) => {
+    const track = slider.querySelector('[data-ba-track]');
+    const slides = [...slider.querySelectorAll('[data-ba-slide]')];
+    const controls = slider.querySelector('[data-ba-controls]');
     if (!track || slides.length < 2 || !controls) return null;
 
     const prev = controls.querySelector('[data-ba-prev]');
@@ -666,13 +666,14 @@ function initBeforeAfter() {
     });
 
     draw();
-    return { reset: () => { index = 0; track.scrollLeft = 0; draw(); } };
+    return () => { index = 0; track.scrollLeft = 0; draw(); };
   };
 
-  const sliders = new Map();
+  // A procedure holds one slider per patient, so resets go to all of them.
+  const resets = new Map();
   panels.forEach((p) => {
-    const s = wireSlider(p);
-    if (s) sliders.set(p.dataset.baPanel, s);
+    const list = [...p.querySelectorAll('[data-ba-slider]')].map(wireSlider).filter(Boolean);
+    resets.set(p.dataset.baPanel, list);
   });
 
   /* --- switching --- */
@@ -684,7 +685,7 @@ function initBeforeAfter() {
       if (t.dataset.baTab === slug) t.setAttribute('aria-current', 'true');
       else t.removeAttribute('aria-current');
     });
-    sliders.get(slug)?.reset();
+    resets.get(slug)?.forEach((reset) => reset());
     if (focus) panel.querySelector('.bapanel__title')?.focus();
     return true;
   };
