@@ -7,13 +7,26 @@ interface Props {
   titleEm?: string;
   id?: string;
   lead?: string;
+  /* The band's backdrop. The satin is the house default; a page with a
+     photograph of its own passes it here, with the focal point it wants held
+     as the gradient darkens towards the right. */
+  img?: string;
+  imgPosition?: string;
 }
-const { eyebrow, title, titleEm, id = 'pagehead-title', lead } = Astro.props;
+const {
+  eyebrow,
+  title,
+  titleEm,
+  id = 'pagehead-title',
+  lead,
+  img = '/images/satin.webp',
+  imgPosition = 'center',
+} = Astro.props;
 ---
 
 <section class="phead on-dark" aria-labelledby={id}>
   <div class="phead__bg" aria-hidden="true">
-    <img src="/images/satin.webp" alt="" width="1800" height="1005" fetchpriority="high" decoding="async" />
+    <img src={img} alt="" width="1800" height="1005" style={`object-position:${imgPosition}`} fetchpriority="high" decoding="async" />
   </div>
 
   <div class="container phead__inner">
