@@ -1,0 +1,228 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site.js';
+import { areas } from '../data/nonsurgical.js';
+---
+
+<Base
+  variant="solid"
+  title="Non-Surgical Treatments | Mr Andreas Shiatis, Consultant Plastic Surgeon"
+  description="Non-surgical treatments with Mr Andreas Shiatis, Consultant Plastic Surgeon in London: anti-wrinkle injections, Profhilo, polynucleotides and treatment for excessive sweating."
+>
+  <!-- Page head -->
+  <section class="nshead on-dark" aria-labelledby="nshead-title">
+    <div class="nshead__bg" aria-hidden="true">
+      <img src="/images/satin.webp" alt="" width="1800" height="1005" fetchpriority="high" decoding="async" />
+    </div>
+
+    <div class="container nshead__inner">
+      <div class="nshead__copy">
+        <p class="eyebrow" data-reveal>Non-surgical</p>
+        <h1 class="h2 nshead__title" id="nshead-title" data-reveal>
+          Treatment <em class="italic">without surgery</em>
+        </h1>
+        <p class="lead" data-reveal>
+          Injectable treatments for the skin, the muscles beneath it, and for excessive sweating.
+          All are done in clinic, most in under half an hour, and you go back to your day afterwards.
+          They are offered in their own right, not as a step towards an operation.
+        </p>
+
+        <div class="nshead__actions" data-reveal>
+          <a class="btn btn--ivory" href={site.bookingHref}>
+            Book a consultation
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- One section per area -->
+  {areas.map((area, i) => (
+    <section class={`nsarea section ${i % 2 ? 'bg-ivory-2' : ''}`} id={area.slug} aria-labelledby={`${area.slug}-title`}>
+      <div class="container nsarea__grid" data-reveal-group>
+        <figure class={`nsarea__figure ${i % 2 ? 'nsarea__figure--right' : ''}`}>
+          <div class="cover nsarea__img" data-img-reveal>
+            <img src={area.img} alt={area.alt} width="1800" height="1208" loading="lazy" decoding="async" />
+          </div>
+        </figure>
+
+        <div class="nsarea__body">
+          <p class="eyebrow eyebrow--gold" data-reveal>{area.label}</p>
+          <h2 class="h2 nsarea__title" id={`${area.slug}-title`} data-reveal>{area.title}</h2>
+          <p class="nsarea__intro" data-reveal>{area.intro}</p>
+
+          <ul class="nsarea__list">
+            {area.items.map((t) => (
+              <li class="nsitem" data-reveal>
+                <h3 class="nsitem__name">{t.name}</h3>
+                <p class="nsitem__note">{t.note}</p>
+                <dl class="nsitem__meta">
+                  <div><dt>Where</dt><dd>{t.areas}</dd></div>
+                  <div><dt>What to expect</dt><dd>{t.detail}</dd></div>
+                </dl>
+                <a class="nsitem__more" href={t.href} target="_blank" rel="noopener">
+                  More on this treatment
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- Closing note -->
+  <section class="nsend bg-emerald on-dark" aria-labelledby="nsend-title">
+    <div class="container nsend__inner" data-reveal-group>
+      <div>
+        <p class="eyebrow" data-reveal>Not sure which</p>
+        <h2 class="h2" id="nsend-title" data-reveal>Start with <em class="italic">a conversation</em></h2>
+        <p class="lead measure" data-reveal>
+          Some of what people ask for turns out not to be what they need, and a few of these
+          treatments do similar things by different routes. Come in and we will work out which,
+          if any, is right for you.
+        </p>
+      </div>
+      <div class="nsend__actions" data-reveal>
+        <a class="btn btn--ivory" href={site.bookingHref}>Book a consultation</a>
+        <a class="btn btn--outline-light" href={`mailto:${site.email}`}>Email us</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Page head, the same construction the booking page uses */
+  .nshead {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+    background: var(--emerald);
+    color: var(--ivory);
+  }
+  .nshead__bg { position: absolute; inset: 0; z-index: -2; opacity: 0.5; }
+  .nshead__bg img { width: 100%; height: 100%; object-fit: cover; }
+  .nshead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to right, rgba(9, 29, 56, 0.35), rgba(9, 29, 56, 0.8));
+  }
+  .nshead__inner { padding-block: clamp(3.5rem, 9vw, 7rem); }
+  .nshead__copy { max-width: 46rem; }
+  .nshead__title { margin-top: 1rem; }
+  .nshead__copy .lead { margin-top: 1.5rem; max-width: 36em; }
+  .nshead__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
+  .nshead__actions svg { width: 0.9em; height: 0.9em; }
+
+  /* Area: image one side, treatments the other, sides alternating */
+  .nsarea__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .nsarea__figure--right { order: 2; }
+  .nsarea__img {
+    position: sticky;
+    top: 6.5rem;
+    aspect-ratio: 3 / 4;
+  }
+  .nsarea__title { margin-top: 1rem; color: var(--emerald); }
+  .nsarea__intro {
+    margin-top: 1.25rem;
+    max-width: 34em;
+    font-size: var(--fs-lead);
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .nsarea__list { margin-top: clamp(2rem, 4vw, 3rem); }
+  .nsitem {
+    padding-block: clamp(1.5rem, 2.6vw, 2.25rem);
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .nsitem:last-child { border-bottom: 1px solid rgba(184, 150, 79, 0.4); }
+
+  .nsitem__name {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+    color: var(--emerald);
+  }
+  .nsitem__note {
+    margin-top: 0.75rem;
+    max-width: 38em;
+    color: var(--ink-soft);
+  }
+
+  .nsitem__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem clamp(1.5rem, 4vw, 3rem);
+    margin-top: 1.25rem;
+  }
+  .nsitem__meta dt {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .nsitem__meta dd {
+    margin: 0.35rem 0 0;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+
+  .nsitem__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid rgba(184, 150, 79, 0.5);
+    padding-bottom: 0.15rem;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .nsitem__more svg { width: 0.8rem; height: 0.8rem; }
+  .nsitem__more:hover { color: var(--emerald); border-color: var(--emerald); }
+
+  /* Closing */
+  .nsend__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2.5rem;
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+  }
+  .nsend__inner .h2 { margin-top: 1rem; }
+  .nsend__inner .lead { margin-top: 1.25rem; }
+  .nsend__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  @media (max-width: 900px) {
+    .nsarea__grid { grid-template-columns: 1fr; }
+    /* Stacked, the image leads whichever side it was on. */
+    .nsarea__figure--right { order: 0; }
+    .nsarea__img { position: static; aspect-ratio: 3 / 2; }
+  }
+
+  @media (max-width: 640px) {
+    .nshead__actions { flex-direction: column; align-items: stretch; }
+    .nshead__actions .btn { justify-content: center; }
+    .nsend__actions { flex-direction: column; align-items: stretch; width: 100%; }
+    .nsend__actions .btn { justify-content: center; }
+  }
+</style>
