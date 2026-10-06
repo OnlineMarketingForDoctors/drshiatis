@@ -1,0 +1,163 @@
+---
+// The main menu for both desktop bars. Categories with procedures carry a
+// panel that opens on hover or keyboard focus; the procedure links go to the
+// old site, so they open in a new tab.
+import { menu } from '../data/menu.js';
+
+interface Props {
+  path?: string;
+  // 'header' is the roomy overlay bar on the home page, 'bar' the compact one.
+  variant?: 'header' | 'bar';
+}
+const { path = '', variant = 'header' } = Astro.props;
+---
+
+<ul class:list={['navlist', `navlist--${variant}`]}>
+  {menu.map((item) => (
+    <li class:list={['navlist__item', item.columns && 'navlist__item--has-menu']}>
+      <a class="navlist__top" href={item.href} aria-current={path === item.href ? 'page' : undefined}>
+        {item.label}
+        {item.columns && (
+          <svg class="navlist__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        )}
+      </a>
+
+      {item.columns && (
+        <div class="dropdown">
+          <div class="dropdown__inner" style={`--cols:${item.columns.length}`}>
+            {item.columns.map((col) => (
+              <div class="dropdown__col">
+                {col.title && <p class="dropdown__heading">{col.title}</p>}
+                <ul class="dropdown__list">
+                  {col.items.map((p) => (
+                    <li><a href={p.href} target="_blank" rel="noopener">{p.name}</a></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .navlist { display: flex; }
+  .navlist--header { justify-content: center; gap: clamp(1.1rem, 2.4vw, 2.6rem); }
+  .navlist--bar { gap: clamp(0.7rem, 1.2vw, 1.3rem); }
+
+  .navlist__item { position: relative; }
+
+  .navlist__top {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding-bottom: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .navlist--bar .navlist__top { font-size: 0.68rem; letter-spacing: 0.12em; }
+
+  /* The rule that sweeps in under the current and hovered item. */
+  .navlist__top::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .navlist__top:hover::after,
+  .navlist__top[aria-current='page']::after { transform: scaleX(1); transform-origin: left; }
+
+  .navlist__chev {
+    width: 0.6em;
+    height: 0.6em;
+    opacity: 0.6;
+    transition: rotate 0.3s var(--ease-out);
+  }
+  .navlist__item--has-menu:hover .navlist__chev,
+  .navlist__item--has-menu:focus-within .navlist__chev { rotate: 180deg; }
+
+  /* The panel */
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    /* Aligned to the item's own left edge rather than centred on it: the
+       surgical panel is wide enough that centring pushed it off the screen. */
+    left: 0;
+    z-index: 5;
+    /* A gap would break the hover as the pointer crosses it, so the padding
+       does the spacing and stays part of the hit area. */
+    padding-top: 0.9rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.4rem);
+    transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out), visibility 0s linear 0.25s;
+  }
+  .navlist__item--has-menu:hover .dropdown,
+  .navlist__item--has-menu:focus-within .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  .dropdown__inner {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 1), minmax(10.5rem, 1fr));
+    gap: 1.75rem 2.25rem;
+    width: max-content;
+    max-width: min(calc(100vw - 2rem), 56rem);
+    padding: 1.5rem 1.75rem;
+    background: var(--ivory);
+    border-top: 2px solid var(--gold);
+    box-shadow: 0 1.5rem 3rem rgba(9, 29, 56, 0.18);
+    color: var(--emerald);
+    text-align: left;
+  }
+
+  .dropdown__heading {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(184, 150, 79, 0.35);
+  }
+  .dropdown__list { display: grid; gap: 0.1rem; }
+  .dropdown__list a {
+    display: block;
+    padding: 0.32rem 0;
+    font-size: 0.84rem;
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink-soft);
+    transition: color 0.25s;
+  }
+  .dropdown__list a:hover,
+  .dropdown__list a:focus-visible { color: var(--emerald); }
+
+  /* Four columns need a wide screen. Below that the surgical panel folds to
+     two, which keeps it clear of the right edge. */
+  @media (max-width: 1250px) {
+    .dropdown__inner { grid-template-columns: repeat(min(var(--cols, 1), 2), minmax(10.5rem, 1fr)); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dropdown { transition: none; }
+    .navlist__chev { transition: none; }
+  }
+</style>

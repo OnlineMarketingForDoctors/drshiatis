@@ -58,6 +58,30 @@ function initHeader() {
 }
 
 /* ---------------------------------------------------------------------------
+   Menu submenus
+   The desktop panels are CSS, on hover and focus-within. These are the mobile
+   ones, where a category's procedures fold away until asked for.
+--------------------------------------------------------------------------- */
+function initSubmenus() {
+  $$('[data-sub-toggle]').forEach((btn) => {
+    const panel = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!panel) return;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
+    });
+  });
+
+  // Escape closes a desktop panel, which focus-within alone cannot do.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const open = document.activeElement?.closest('.navlist__item--has-menu');
+    if (open) open.querySelector('.navlist__top')?.blur();
+  });
+}
+
+/* ---------------------------------------------------------------------------
    Hero: entrance sequence and muted background video
 --------------------------------------------------------------------------- */
 function initHero() {
@@ -925,6 +949,7 @@ function initConsent() {
 --------------------------------------------------------------------------- */
 function boot() {
   initHeader();
+  initSubmenus();
   initHero();
   initReveals();
   initParallax();

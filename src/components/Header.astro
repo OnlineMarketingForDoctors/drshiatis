@@ -3,6 +3,8 @@ import Monogram from './Monogram.astro';
 import SocialIcons from './SocialIcons.astro';
 import DoctifyBadge from './DoctifyBadge.astro';
 import { site, nav } from '../data/site.js';
+import NavList from './NavList.astro';
+import { menu } from '../data/menu.js';
 
 interface Props {
   // 'overlay' sits over the hero video; 'solid' is the always-visible bar
@@ -53,11 +55,7 @@ const solid = variant === 'solid';
     </div>
 
     <nav class="site-header__nav" aria-label="Primary">
-      <ul>
-        {nav.map((item) => (
-          <li><a href={item.href}>{item.label}</a></li>
-        ))}
-      </ul>
+      <NavList path={path} variant="header" />
     </nav>
   </div>
 </header>
@@ -71,11 +69,7 @@ const solid = variant === 'solid';
       <span class="site-bar__wordmark" aria-hidden="true">Andreas Shiatis</span>
     </a>
     <nav class="site-bar__nav" aria-label="Primary, compact">
-      <ul>
-        {nav.map((item) => (
-          <li><a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a></li>
-        ))}
-      </ul>
+      <NavList path={path} variant="bar" />
     </nav>
     <div class="site-bar__actions">
       <a class="site-bar__phone" href={site.phoneHref}>{site.phoneDisplay}</a>
@@ -109,8 +103,39 @@ const solid = variant === 'solid';
     </div>
     <nav aria-label="Mobile">
       <ul class="mobile-menu__list">
-        {nav.map((item, i) => (
-          <li style={`--i:${i}`}><a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a></li>
+        {menu.map((item, i) => (
+          <li style={`--i:${i}`}>
+            <div class="mobile-menu__row">
+              <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>
+              {item.columns && (
+                <button
+                  class="mobile-menu__toggle"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls={`msub-${item.href.replace(/\//g, '')}`}
+                  data-sub-toggle
+                >
+                  <span class="sr-only">{`Show ${item.label} procedures`}</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+              )}
+            </div>
+
+            {item.columns && (
+              <div class="mobile-menu__sub" id={`msub-${item.href.replace(/\//g, '')}`} hidden>
+                {item.columns.map((col) => (
+                  <div>
+                    {col.title && <p class="mobile-menu__subhead">{col.title}</p>}
+                    <ul>
+                      {col.items.map((p) => (
+                        <li><a href={p.href} target="_blank" rel="noopener">{p.name}</a></li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
+          </li>
         ))}
       </ul>
     </nav>
@@ -197,42 +222,6 @@ const solid = variant === 'solid';
     padding-top: clamp(0.9rem, 1.6vw, 1.4rem);
     border-top: 1px solid rgba(244, 238, 228, 0.28);
   }
-  .site-header__nav ul {
-    display: flex;
-    justify-content: center;
-    gap: clamp(1.4rem, 3vw, 3.2rem);
-  }
-  .site-header__nav a,
-  .site-bar__nav a {
-    position: relative;
-    display: inline-block;
-    padding-bottom: 0.35rem;
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .site-header__nav a::after,
-  .site-bar__nav a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 1px;
-    background: currentColor;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.4s var(--ease-out);
-  }
-  .site-header__nav a:hover::after,
-  .site-bar__nav a:hover::after,
-  .site-header__nav a[aria-current='page']::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
   /* Burger */
   /* Shown wherever the written number has had to go. Sized to the burger it
      sits beside so the pair reads as one control group. */
@@ -296,7 +285,6 @@ const solid = variant === 'solid';
   .site-bar.is-visible { transform: none; }
   /* Interior pages: the bar is the header, so it never animates in. */
   .site-bar--solid { transition: none; background: var(--ivory); }
-  .site-bar__nav a[aria-current='page']::after { transform: scaleX(1); transform-origin: left; }
 
   .site-bar__inner {
     display: flex;
@@ -320,8 +308,6 @@ const solid = variant === 'solid';
     text-transform: uppercase;
     white-space: nowrap;
   }
-  .site-bar__nav ul { display: flex; gap: clamp(0.8rem, 1.4vw, 1.5rem); }
-  .site-bar__nav a { font-size: 0.68rem; letter-spacing: 0.12em; }
   .site-bar__actions { display: flex; align-items: center; gap: 1rem; }
   .site-bar__book-short { display: none; }
   .site-bar__phone { font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
@@ -372,7 +358,44 @@ const solid = variant === 'solid';
     transition-delay: calc(0.08s + var(--i) * 0.05s);
   }
   .mobile-menu.is-open .mobile-menu__list li { opacity: 1; transform: none; }
-  .mobile-menu__list a {
+  .mobile-menu__row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .mobile-menu__row > a { flex: 1; }
+  .mobile-menu__toggle {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--gold-light);
+  }
+  .mobile-menu__toggle svg { width: 1.3rem; height: 1.3rem; transition: rotate 0.3s var(--ease-out); }
+  .mobile-menu__toggle[aria-expanded='true'] svg { rotate: 180deg; }
+
+  /* The procedures, which are the old site's pages. */
+  .mobile-menu__sub { display: grid; gap: 1.5rem; padding: 0.25rem 0 1.5rem; }
+  .mobile-menu__sub[hidden] { display: none; }
+  .mobile-menu__subhead {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(216, 189, 124, 0.3);
+  }
+  .mobile-menu__sub li { border: none; opacity: 1; transform: none; transition: none; }
+  .mobile-menu__sub a {
+    display: block;
+    padding: 0.45rem 0;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.35;
+    color: rgba(244, 238, 228, 0.82);
+  }
+
+  .mobile-menu__list > li > .mobile-menu__row > a {
     display: block;
     padding: 1rem 0;
     font-family: var(--font-display);
