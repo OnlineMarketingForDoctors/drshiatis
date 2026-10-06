@@ -153,6 +153,8 @@ const slides = procedure.cases.map((c) => ({
   .bacar.is-veiled .bacar__shot img { filter: blur(26px); transform: scale(1.06); }
   .bacar.is-veiled .bacar__shot figcaption,
   .bacar.is-veiled .bacar__cap { opacity: 0; }
+  /* display on a class beats the browser's own [hidden] rule, so say it here. */
+  .bacar__veil[hidden] { display: none; }
   .bacar__veil {
     position: absolute;
     inset: 0;
