@@ -3,8 +3,6 @@ import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import PageCta from '../components/PageCta.astro';
 import { areas } from '../data/surgical.js';
-
-const total = areas.reduce((n, a) => n + a.items.length, 0);
 ---
 
 <Base
@@ -21,7 +19,7 @@ const total = areas.reduce((n, a) => n + a.items.length, 0);
   >
     <nav class="suhead__jump" aria-label="Areas" data-reveal>
       {areas.map((a) => (
-        <a href={`#${a.slug}`}>{a.label}<span aria-hidden="true"> ({a.items.length})</span></a>
+        <a href={`#${a.slug}`}>{a.label}</a>
       ))}
     </nav>
   </PageHead>
@@ -66,7 +64,7 @@ const total = areas.reduce((n, a) => n + a.items.length, 0);
   ))}
 
   <PageCta
-    eyebrow={`${total} procedures`}
+    eyebrow="Where to start"
     title="Not sure"
     titleEm="which one"
     id="suend-title"
@@ -94,7 +92,6 @@ const total = areas.reduce((n, a) => n + a.items.length, 0);
     padding-bottom: 0.2rem;
     transition: border-color 0.3s, color 0.3s;
   }
-  .suhead__jump a span { color: var(--gold-light); }
   .suhead__jump a:hover { color: var(--gold-light); border-color: var(--gold-light); }
 </style>
 

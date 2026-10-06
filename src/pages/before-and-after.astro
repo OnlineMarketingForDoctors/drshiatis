@@ -4,16 +4,13 @@ import PageHead from '../components/PageHead.astro';
 import PageCta from '../components/PageCta.astro';
 import BeforeAfterGallery from '../components/BeforeAfterGallery.astro';
 import { site } from '../data/site.js';
-import { procedures, pairsFor } from '../data/beforeafter.js';
-
-const pairs = procedures.reduce((n, p) => n + pairsFor(p).length, 0);
-const patients = procedures.reduce((n, p) => n + p.cases.length, 0);
+import { procedures } from '../data/beforeafter.js';
 ---
 
 <Base
   variant="solid"
   title="Before & After | Mr Andreas Shiatis, Consultant Plastic Surgeon"
-  description={`${pairs} before and after photographs from ${patients} of Mr Andreas Shiatis' own patients, across ${procedures.length} procedures.`}
+  description="Before and after photographs of Mr Andreas Shiatis' own patients, across breast, body, reconstructive and men's surgery. Published with consent and unretouched."
 >
   <PageHead
     eyebrow="Before and after"
@@ -26,7 +23,7 @@ const patients = procedures.reduce((n, p) => n + p.cases.length, 0);
     imgMobilePosition="center"
     scrim="left"
     full
-    lead={`${pairs} matched pairs from ${patients} patients across ${procedures.length} procedures, photographed in clinic from the same angles before and after. Nothing here is a stock photograph and nothing has been retouched. Pick a procedure to see its cases.`}
+    lead="Matched pairs from his own patients, photographed in clinic from the same angles before and after. Nothing here is a stock photograph and nothing has been retouched. Pick a procedure to see its cases."
   >
     <div class="phead__actions" data-reveal>
       <a class="btn btn--ivory" href={site.bookingHref}>

@@ -71,52 +71,58 @@ const path = [
   },
 ];
 
+// What he treats. A slug links through to that procedure on the old site;
+// the rest are things it has no page for and stay as plain text.
+const OLD = 'https://www.drshiatis.com/news';
 const groups = [
   {
     title: 'Breast',
     items: [
-      'Breast reduction',
-      'Breast augmentation',
-      'Breast uplift (mastopexy)',
-      'Uplift with implants (augmentation mastopexy)',
-      'Preserve short-scar augmentation',
-      'Breast implant revision',
-      'Correction of breast asymmetry',
-      'Fat transfer to the breast (lipomodelling)',
-      'Areolar and nipple reduction',
+      ['Breast reduction', 'breast-reduction'],
+      ['Breast augmentation', 'breast-augmentation'],
+      ['Breast uplift (mastopexy)', 'mastopexy-(breast-lift)'],
+      ['Uplift with implants (augmentation mastopexy)', 'augmentation-mastopexy-(breast-lift-with-implants)'],
+      ['Preserve short-scar augmentation'],
+      ['Breast implant revision', 'implant-removal-%26-autoaugmentation-'],
+      ['Correction of breast asymmetry', 'breast-asymmetry-surgery'],
+      ['Fat transfer to the breast (lipomodelling)', 'lipomodelling-(fat-transfer)'],
+      ['Areolar and nipple reduction'],
     ],
   },
   {
     title: 'Body',
     items: [
-      'Abdominoplasty (tummy tuck)',
-      'Liposuction and 3D body contouring',
-      'Mummy makeover',
-      'Arm lift (brachioplasty)',
-      'Thigh lift',
-      'Body lift',
-      'Neck liposuction',
-      'Skin tightening',
+      ['Abdominoplasty (tummy tuck)', 'abdominoplasty-(tummy-tuck)'],
+      ['Liposuction and 3D body contouring', 'liposuction%2F-liposculpting-'],
+      ['Mummy makeover', 'mummy-makeover'],
+      ['Arm lift (brachioplasty)', 'arm-lift'],
+      ['Thigh lift', 'thigh-lift'],
+      ['Body lift', 'body-lift'],
+      ['Neck liposuction'],
+      ['Skin tightening'],
     ],
   },
   {
     title: 'For men',
     items: [
-      'Gynaecomastia surgery',
-      'Gynaecomastia under local anaesthetic',
-      'Male body contouring',
-      'Liposuction for men',
+      ['Gynaecomastia surgery', 'gynaecomastia-surgery'],
+      ['Gynaecomastia under local anaesthetic', 'gynaecomastia-surgery'],
+      ['Male body contouring', 'abdominal-3d-liposculpting-for-men'],
+      ['Liposuction for men', 'liposuction%2F-liposculpting-'],
     ],
   },
   {
     title: 'Face and fine detail',
     items: [
-      'Upper eyelid surgery (blepharoplasty)',
-      'Prominent ear correction',
-      'Earlobe reduction',
+      ['Upper eyelid surgery (blepharoplasty)', 'upper-blepharoplasty'],
+      ['Prominent ear correction', 'prominent-ear-correction'],
+      ['Earlobe reduction', 'earlobe-reduction'],
     ],
   },
-];
+].map((g) => ({
+  ...g,
+  items: g.items.map(([name, slug]) => ({ name, href: slug ? `${OLD}/${slug}` : null })),
+}));
 
 const tech = [
   {
@@ -362,7 +368,16 @@ const regions = ['London', 'Surrey', 'Sussex', 'Hampshire', 'Hertfordshire', 'Ke
           <div class="treats__group" data-reveal>
             <h3 class="h3 italic treats__title">{g.title}</h3>
             <ul class="treats__list">
-              {g.items.map((item) => <li>{item}</li>)}
+              {g.items.map((item) => (
+                <li>
+                  {item.href ? (
+                    <a class="treats__link" href={item.href} target="_blank" rel="noopener">
+                      {item.name}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                    </a>
+                  ) : item.name}
+                </li>
+              ))}
             </ul>
           </div>
         ))}
@@ -736,6 +751,34 @@ const regions = ['London', 'Surrey', 'Sussex', 'Hampshire', 'Hertfordshire', 'Ke
     gap: 0.55rem;
     font-size: 0.95rem;
     color: var(--ink-soft);
+  }
+  /* Linked where the old site has a page for it; the rest read as plain text,
+     so the arrow is what tells you which is which. */
+  .treats__link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    color: inherit;
+    border-bottom: 1px solid rgba(184, 150, 79, 0.45);
+    padding-bottom: 0.1rem;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .treats__link svg {
+    width: 0.7em;
+    height: 0.7em;
+    flex: none;
+    color: var(--gold);
+    opacity: 0;
+    transform: translate(-0.2rem, 0.2rem);
+    transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  }
+  .treats__link:hover,
+  .treats__link:focus-visible { color: var(--emerald); border-color: var(--emerald); }
+  .treats__link:hover svg,
+  .treats__link:focus-visible svg { opacity: 1; transform: none; }
+
+  @media (hover: none) {
+    .treats__link svg { opacity: 1; transform: none; }
   }
 
   .treats__note {

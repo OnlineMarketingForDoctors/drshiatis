@@ -29,7 +29,6 @@ const recent = posts.filter((p) => !current || p.id !== current.id).slice(0, 4);
               aria-current={activeCategory === c.name || current?.data.category === c.name ? 'true' : undefined}
             >
               <span>{c.name}</span>
-              <span class="side__count" aria-hidden="true">{c.count}</span>
             </a>
           </li>
         ))}
@@ -65,10 +64,10 @@ const recent = posts.filter((p) => !current || p.id !== current.id).slice(0, 4);
     </div>
     <div class="promo__body">
       <p class="promo__eyebrow">Before and after</p>
-      <p class="promo__title">64 pairs from his own patients</p>
+      <p class="promo__title">Results from his own patients</p>
       <p class="promo__text">
-        Twenty-five patients across eleven procedures, photographed from the same angles before and
-        after. No stock images, nothing retouched.
+        Photographed in clinic from the same angles before and after, across breast, body and
+        reconstructive surgery. No stock images, nothing retouched.
       </p>
       <span class="promo__link">See the gallery</span>
     </div>
@@ -100,7 +99,6 @@ const recent = posts.filter((p) => !current || p.id !== current.id).slice(0, 4);
     color: var(--ink-soft);
     transition: color 0.3s;
   }
-  .side__count { flex: none; font-size: 0.72rem; color: var(--gold); opacity: 0.75; }
   .side__cat:hover { color: var(--emerald); }
   .side__cat[aria-current='true'] {
     color: var(--emerald);
