@@ -18,6 +18,11 @@ interface Props {
   imgMobilePosition?: string;
   /* Fills the viewport, the way the About page head does. */
   full?: boolean;
+  /* A portrait beside the copy rather than behind it, which is what a
+     photograph of a person wants: a face survives being a panel, not a
+     backdrop with type over its chest. */
+  figure?: string;
+  figureAlt?: string;
   /* Which side the darkening falls on. The default puts it behind the right,
      which suits a texture; a photograph with its subject over there wants the
      weight on the copy side instead. */
@@ -35,10 +40,12 @@ const {
   imgMobilePosition = 'center',
   full = false,
   scrim = 'right',
+  figure,
+  figureAlt = '',
 } = Astro.props;
 ---
 
-<section class:list={['phead', 'on-dark', full && 'phead--full', scrim === 'left' && 'phead--scrim-left']} aria-labelledby={id}>
+<section class:list={['phead', 'on-dark', full && 'phead--full', scrim === 'left' && 'phead--scrim-left', figure && 'phead--figure']} aria-labelledby={id}>
   <div class="phead__bg" aria-hidden="true">
     <picture>
       {imgMobile && <source media="(max-width: 760px)" srcset={imgMobile} width="900" height="1218" />}
@@ -63,6 +70,14 @@ const {
       {lead && <p class="lead" data-reveal>{lead}</p>}
       <slot />
     </div>
+
+    {figure && (
+      <figure class="phead__figure">
+        <div class="cover phead__img" data-img-reveal>
+          <img src={figure} alt={figureAlt} width="1200" height="1600" fetchpriority="high" decoding="async" />
+        </div>
+      </figure>
+    )}
   </div>
 </section>
 
@@ -93,6 +108,20 @@ const {
   .phead--scrim-left .phead__bg { opacity: 0.95; }
   .phead__inner { padding-block: clamp(3.5rem, 9vw, 7rem); }
 
+  .phead--figure .phead__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .phead--figure .phead__copy { max-width: none; }
+  /* Capped so a short laptop screen keeps the band to roughly one screen
+     rather than letting a tall portrait push it past the fold. */
+  .phead__img {
+    aspect-ratio: 3 / 4;
+    max-height: min(calc(100svh - 11rem), 42rem);
+  }
+
   /* The sticky bar sits over the band, so the viewport height it fills is
      measured from under the bar. svh rather than vh: on a phone, vh is the
      height with the browser chrome retracted, which leaves the band taller
@@ -106,10 +135,19 @@ const {
       align-items: center;
       min-height: min(100svh, 56rem);
     }
+    /* The grid wins back from the flex rule above. */
+    .phead--full.phead--figure .phead__inner { display: grid; }
   }
   .phead__copy { max-width: 46rem; }
   .phead__title { margin-top: 1rem; }
   .phead__copy .lead { margin-top: 1.5rem; max-width: 36em; }
+
+  /* No room for a panel beside the copy, so the portrait goes under it and
+     turns landscape rather than running the length of the screen. */
+  @media (max-width: 900px) {
+    .phead--figure .phead__inner { grid-template-columns: minmax(0, 1fr); }
+    .phead__img { aspect-ratio: 4 / 3; max-height: none; }
+  }
 </style>
 
 <style is:global>
