@@ -1,0 +1,112 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import PageHead from '../../../components/PageHead.astro';
+import BlogSidebar from '../../../components/BlogSidebar.astro';
+import PageCta from '../../../components/PageCta.astro';
+import { formatDate, published, categoryCounts } from '../../../data/blog.js';
+
+export async function getStaticPaths() {
+  const posts = published(await getCollection('blog'));
+  return categoryCounts(posts).map((c) => ({
+    params: { category: c.slug },
+    props: { name: c.name, posts, inCategory: posts.filter((p) => p.data.category === c.name) },
+  }));
+}
+
+const { name, posts, inCategory } = Astro.props;
+---
+
+<Base
+  variant="solid"
+  title={`${name} | Journal | Mr Andreas Shiatis, Consultant Plastic Surgeon`}
+  description={`Pieces filed under ${name}, from the practice of Mr Andreas Shiatis, Consultant Plastic Surgeon in London.`}
+>
+  <PageHead
+    eyebrow="Journal"
+    title="Filed under"
+    titleEm={name.toLowerCase()}
+    id="cathead-title"
+    img="/images/blog-head.webp"
+    imgPosition="55% 50%"
+    imgMobile="/images/blog-head-mobile.webp"
+    scrim="left"
+    lead={`${inCategory.length} ${inCategory.length === 1 ? 'piece' : 'pieces'} in this part of the journal.`}
+  >
+    <p class="phead__stamp"><a class="phead__back" href="/blog/">All pieces</a></p>
+  </PageHead>
+
+  <section class="section" aria-label={name}>
+    <div class="container bloglayout">
+      <div>
+        <ul class="catlist">
+          {inCategory.map((p) => (
+            <li data-reveal>
+              <a class="catpost" href={`/blog/${p.id}/`}>
+                <div class="cover catpost__img" data-img-reveal>
+                  <Image src={p.data.cover} alt={p.data.coverAlt} widths={[400, 800]} sizes="(max-width: 760px) 100vw, 20rem" loading="lazy" />
+                </div>
+                <div>
+                  <p class="postmeta">
+                    <span class="postmeta__cat">{p.data.category}</span>
+                    <span class="postmeta__dot" aria-hidden="true">/</span>
+                    <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
+                    <span class="postmeta__dot" aria-hidden="true">/</span>
+                    <span>{p.data.readingTime} min read</span>
+                  </p>
+                  <h2 class="catpost__title">{p.data.title}</h2>
+                  <p class="catpost__summary">{p.data.summary}</p>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <BlogSidebar posts={posts} activeCategory={name} />
+    </div>
+  </section>
+
+  <PageCta
+    eyebrow="Rather ask in person"
+    title="Bring the question"
+    titleEm="to a consultation"
+    id="catend-title"
+    lead="Anything here is general by necessity. What applies to you depends on your own anatomy and your own history, which is a conversation rather than an article."
+  />
+</Base>
+
+<style is:global>
+  .phead__back { color: var(--gold-light); border-bottom: 1px solid rgba(216, 189, 124, 0.5); }
+  .phead__back:hover { color: var(--ivory); }
+</style>
+
+<style>
+  .catlist { display: grid; gap: clamp(2rem, 4vw, 3rem); }
+  .catpost {
+    display: grid;
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    gap: clamp(1.25rem, 3vw, 2.25rem);
+    align-items: start;
+  }
+  .catpost__img { aspect-ratio: 3 / 2; }
+  .catpost__title {
+    margin-top: 0.6rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-h3);
+    line-height: 1.12;
+    color: var(--emerald);
+    text-wrap: balance;
+    transition: color 0.3s;
+  }
+  .catpost__summary { margin-top: 0.75rem; font-size: 0.95rem; color: var(--ink-soft); }
+  .catpost:hover .catpost__title { color: var(--navy-soft); }
+
+  @media (max-width: 620px) {
+    .catpost { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

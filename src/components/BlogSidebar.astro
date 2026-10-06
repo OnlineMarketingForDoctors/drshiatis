@@ -1,0 +1,182 @@
+---
+import { Image } from 'astro:assets';
+import { formatDate, categoryCounts } from '../data/blog.js';
+
+interface Props {
+  // Every published post, so the sidebar can count and pick its own recents.
+  posts: any[];
+  // The post being read, if any: kept out of the recent list and used to mark
+  // the category it belongs to.
+  current?: any;
+  activeCategory?: string;
+}
+const { posts, current, activeCategory } = Astro.props;
+
+const cats = categoryCounts(posts);
+const recent = posts.filter((p) => !current || p.id !== current.id).slice(0, 4);
+---
+
+<aside class="sidebar" aria-label="More from the journal">
+  {cats.length > 1 && (
+    <section class="side">
+      <h2 class="side__title">Categories</h2>
+      <ul class="side__cats">
+        {cats.map((c) => (
+          <li>
+            <a
+              class="side__cat"
+              href={`/blog/category/${c.slug}/`}
+              aria-current={activeCategory === c.name || current?.data.category === c.name ? 'true' : undefined}
+            >
+              <span>{c.name}</span>
+              <span class="side__count" aria-hidden="true">{c.count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {recent.length > 0 && (
+    <section class="side">
+      <h2 class="side__title">{current ? 'More pieces' : 'Recent'}</h2>
+      <ul class="side__recent">
+        {recent.map((p) => (
+          <li>
+            <a class="recent" href={`/blog/${p.id}/`}>
+              <div class="cover recent__img">
+                <Image src={p.data.cover} alt="" widths={[200, 320]} sizes="112px" loading="lazy" />
+              </div>
+              <div>
+                <p class="recent__title">{p.data.title}</p>
+                <time class="recent__date" datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <!-- The gallery is the thing most readers are here to find -->
+  <a class="promo" href="/before-and-after">
+    <div class="promo__img">
+      <img src="/images/ba-head-mobile.webp" alt="" width="900" height="1218" loading="lazy" decoding="async" />
+    </div>
+    <div class="promo__body">
+      <p class="promo__eyebrow">Before and after</p>
+      <p class="promo__title">64 pairs from his own patients</p>
+      <p class="promo__text">
+        Twenty-five patients across eleven procedures, photographed from the same angles before and
+        after. No stock images, nothing retouched.
+      </p>
+      <span class="promo__link">See the gallery</span>
+    </div>
+  </a>
+</aside>
+
+<style>
+  .sidebar { display: grid; gap: clamp(2rem, 4vw, 2.75rem); align-content: start; }
+
+  .side__title {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(184, 150, 79, 0.4);
+  }
+
+  /* Categories */
+  .side__cat {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.65rem;
+    border-bottom: 1px solid rgba(184, 150, 79, 0.22);
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    transition: color 0.3s;
+  }
+  .side__count { flex: none; font-size: 0.72rem; color: var(--gold); opacity: 0.75; }
+  .side__cat:hover { color: var(--emerald); }
+  .side__cat[aria-current='true'] {
+    color: var(--emerald);
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-size: 1.05rem;
+  }
+
+  /* Recent */
+  .side__recent { display: grid; gap: 1.1rem; margin-top: 1.1rem; }
+  .recent { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 0.9rem; align-items: start; }
+  .recent__img { aspect-ratio: 4 / 3; }
+  .recent__title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.2;
+    color: var(--emerald);
+    transition: color 0.3s;
+  }
+  .recent__date { display: block; margin-top: 0.35rem; font-size: 0.74rem; color: var(--ink-soft); opacity: 0.8; }
+  .recent:hover .recent__title { color: var(--navy-soft); }
+
+  /* Gallery promo */
+  .promo {
+    display: block;
+    background: var(--emerald);
+    color: var(--ivory);
+    overflow: clip;
+  }
+  .promo__img { aspect-ratio: 4 / 3; overflow: clip; }
+  .promo__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    transition: scale 0.6s var(--ease-out);
+  }
+  .promo:hover .promo__img img { scale: 1.04; }
+  .promo__body { padding: 1.25rem 1.35rem 1.5rem; }
+  .promo__eyebrow {
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+  .promo__title {
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.3rem;
+    line-height: 1.15;
+  }
+  .promo__text {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: rgba(244, 238, 228, 0.82);
+  }
+  .promo__link {
+    display: inline-block;
+    margin-top: 1rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid rgba(216, 189, 124, 0.6);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    transition: border-color 0.3s;
+  }
+  .promo:hover .promo__link { border-color: var(--gold-light); }
+</style>

@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import BackToTop from '../components/BackToTop.astro';
 import Consent from '../components/Consent.astro';
 import Lightbox from '../components/Lightbox.astro';
+import { site } from '../data/site.js';
 
 interface Props {
   title: string;
@@ -47,7 +48,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     </main>
     <Footer />
     <BackToTop />
-    <Consent />
+    {site.cookieBanner && <Consent />}
     <Lightbox />
     <script src="../scripts/main.js"></script>
   </body>

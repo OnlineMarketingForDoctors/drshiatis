@@ -386,3 +386,26 @@ section[id] { scroll-margin-top: 5.5rem; }
   background: rgba(184, 150, 79, 0.08);
   font-size: 0.9rem;
 }
+
+
+/* ---------------------------------------------------------------------------
+   Blog shell
+   Reading column beside a sidebar. The sidebar sticks, because it is how a
+   reader gets to the next piece from halfway down a long one.
+--------------------------------------------------------------------------- */
+.bloglayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 19rem);
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: start;
+}
+.bloglayout > aside { position: sticky; top: 6.5rem; }
+
+@media (max-width: 1000px) {
+  .bloglayout { grid-template-columns: minmax(0, 1fr); }
+  .bloglayout > aside {
+    position: static;
+    padding-top: clamp(2.5rem, 5vw, 3.5rem);
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+  }
+}

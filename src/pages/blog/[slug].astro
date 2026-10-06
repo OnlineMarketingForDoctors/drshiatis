@@ -3,6 +3,8 @@ import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import PageCta from '../../components/PageCta.astro';
+import BlogSidebar from '../../components/BlogSidebar.astro';
+import { site } from '../../data/site.js';
 import { formatDate, published } from '../../data/blog.js';
 
 export async function getStaticPaths() {
@@ -10,11 +12,11 @@ export async function getStaticPaths() {
   return posts.map((post, i) => ({
     params: { slug: post.id },
     // The next piece along, so a reader has somewhere to go at the end.
-    props: { post, next: posts[(i + 1) % posts.length] },
+    props: { post, next: posts[(i + 1) % posts.length], posts },
   }));
 }
 
-const { post, next } = Astro.props;
+const { post, next, posts } = Astro.props;
 const { Content } = await render(post);
 const d = post.data;
 ---
@@ -25,44 +27,67 @@ const d = post.data;
   description={d.summary}
 >
   <article class="post">
-    <header class="post__head">
-      <div class="container post__headinner">
-        <p class="postmeta" data-reveal>
-          <span class="postmeta__cat">{d.category}</span>
-          <span class="postmeta__dot" aria-hidden="true">/</span>
-          <time datetime={d.date.toISOString()}>{formatDate(d.date)}</time>
-          <span class="postmeta__dot" aria-hidden="true">/</span>
-          <span>{d.readingTime} min read</span>
-        </p>
-        <h1 class="post__title" data-reveal>{d.title}</h1>
-        <p class="post__summary" data-reveal>{d.summary}</p>
-      </div>
-    </header>
+    <div class="container bloglayout post__layout">
+      <!-- Title, cover and text share one column, so they share one left edge -->
+      <div class="post__main">
+        <header class="post__head">
+          <p class="postmeta" data-reveal>
+            <span class="postmeta__cat">{d.category}</span>
+            <span class="postmeta__dot" aria-hidden="true">/</span>
+            <time datetime={d.date.toISOString()}>{formatDate(d.date)}</time>
+            <span class="postmeta__dot" aria-hidden="true">/</span>
+            <span>{d.readingTime} min read</span>
+          </p>
+          <h1 class="post__title" data-reveal>{d.title}</h1>
+          <p class="post__summary" data-reveal>{d.summary}</p>
+        </header>
 
-    <div class="container">
-      <div class="cover post__cover" data-img-reveal>
-        <Image src={d.cover} alt={d.coverAlt} widths={[760, 1200, 1800]}
-          sizes="(max-width: 1100px) 100vw, 1100px" loading="eager" />
-      </div>
-    </div>
+        <div class="cover post__cover" data-img-reveal>
+          <Image src={d.cover} alt={d.coverAlt} widths={[640, 1000, 1400]}
+            sizes="(max-width: 1000px) 100vw, 56rem" loading="eager" />
+        </div>
 
-    <div class="container post__bodywrap">
-      <div class="prose post__body">
-        <Content />
+        <div class="prose post__body">
+          <Content />
+        </div>
+
+        <!-- Who wrote it -->
+        <aside class="author" aria-labelledby="author-title">
+          <div class="cover author__img">
+            <img src="/images/meet-portrait.webp" alt={`${site.surgeon}, Consultant Plastic Surgeon`}
+              width="1200" height="1500" loading="lazy" decoding="async" />
+          </div>
+          <div class="author__body">
+            <p class="author__label" id="author-title">Written by</p>
+            <p class="author__name">{site.surgeon} <span class="author__quals">{site.qualifications}</span></p>
+            <p class="author__bio">
+              Consultant Plastic Surgeon in London, on the GMC Specialist Register for Plastic
+              Surgery and an NHS consultant at Barts Health, where he carries out microsurgical
+              breast reconstruction. His private practice is aesthetic breast and body surgery,
+              at Fitzrovia Hospital with Pantheons Clinic. He trained across the major London
+              plastic surgery units and holds a microsurgery fellowship from Imperial College.
+            </p>
+            <div class="author__links">
+              <a class="link-rule" href="/about">More about Mr Shiatis</a>
+              <a class="link-rule" href={site.bookingHref}>Book a consultation</a>
+            </div>
+          </div>
+        </aside>
+
+        <footer class="post__foot">
+          <p class="post__byline">
+            General information about the practice and its process, not advice about your own case.
+          </p>
+          {next && next.id !== post.id && (
+            <a class="post__next" href={`/blog/${next.id}/`}>
+              <span class="post__nextlabel">Read next</span>
+              <span class="post__nexttitle">{next.data.title}</span>
+            </a>
+          )}
+        </footer>
       </div>
 
-      <footer class="post__foot">
-        <p class="post__byline">
-          Written by the practice of Mr Andreas Shiatis, Consultant Plastic Surgeon.
-          General information, not advice about your own case.
-        </p>
-        {next && next.id !== post.id && (
-          <a class="post__next" href={`/blog/${next.id}/`}>
-            <span class="post__nextlabel">Read next</span>
-            <span class="post__nexttitle">{next.data.title}</span>
-          </a>
-        )}
-      </footer>
+      <BlogSidebar posts={posts} current={post} />
     </div>
   </article>
 
@@ -76,8 +101,12 @@ const d = post.data;
 </Base>
 
 <style>
-  .post__head { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.75rem, 3.5vw, 2.5rem); }
-  .post__headinner { max-width: 48rem; }
+  .post__layout { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+  .post__main { min-width: 0; }
+
+  /* The head runs the width of the column the cover and the text use, so the
+     three line up and the title is not squeezed into a narrow stack. */
+  .post__head { max-width: 56rem; }
   .post__title {
     margin-top: 1rem;
     font-family: var(--font-display);
@@ -90,20 +119,56 @@ const d = post.data;
   }
   .post__summary {
     margin-top: 1.25rem;
-    max-width: 36em;
+    max-width: 34em;
     font-size: var(--fs-lead);
     line-height: 1.55;
     color: var(--ink-soft);
   }
 
-  .post__cover { aspect-ratio: 3 / 2; max-height: 32rem; }
+  .post__cover {
+    margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+    aspect-ratio: 3 / 2;
+  }
 
-  .post__bodywrap { padding-block: clamp(2.5rem, 5vw, 4rem); }
-  .post__body { margin-inline: auto; }
+  .post__body { margin-top: clamp(2rem, 4vw, 3rem); max-width: 44em; }
+
+  /* Author */
+  .author {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: start;
+    max-width: 44em;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding: clamp(1.5rem, 3vw, 2rem);
+    background: var(--ivory-2);
+    border-top: 2px solid var(--gold);
+  }
+  .author__img { aspect-ratio: 4 / 5; }
+  .author__label {
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .author__name {
+    margin-top: 0.4rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.35rem;
+    line-height: 1.15;
+    color: var(--emerald);
+  }
+  .author__quals { display: block; font-size: 0.72rem; font-style: normal; letter-spacing: 0.1em; color: var(--ink-soft); }
+  .author__bio { margin-top: 0.8rem; font-size: 0.9rem; line-height: 1.6; color: var(--ink-soft); }
+  .author__links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; margin-top: 1.1rem; }
 
   .post__foot {
-    max-width: 42em;
-    margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+    max-width: 44em;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
     padding-top: 1.75rem;
     border-top: 1px solid rgba(184, 150, 79, 0.4);
   }
@@ -134,4 +199,9 @@ const d = post.data;
     transition: color 0.3s;
   }
   .post__next:hover .post__nexttitle { color: var(--navy-soft); }
+
+  @media (max-width: 560px) {
+    .author { grid-template-columns: minmax(0, 1fr); }
+    .author__img { max-width: 9rem; }
+  }
 </style>

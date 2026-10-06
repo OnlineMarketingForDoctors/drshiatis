@@ -23,6 +23,10 @@ export const site = {
   // is empty the form hands the enquiry to the inbox below as a pre-filled
   // email, so nothing a patient types is ever silently dropped.
   contactAction: '',
+  // Off for now. Turn it back on when the tags below are configured: the
+  // banner is what makes setting them lawful, and the privacy policy reads
+  // from this flag so it never describes asking that is not happening.
+  cookieBanner: false,
   // Measurement and advertising. Nothing loads while an id is empty, and
   // nothing loads at all until the visitor has accepted in the cookie banner.
   analytics: {

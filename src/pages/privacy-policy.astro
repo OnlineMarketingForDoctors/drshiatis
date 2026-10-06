@@ -3,6 +3,9 @@ import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import { site } from '../data/site.js';
 import { legal, sections, bases, trackers } from '../data/privacy.js';
+
+// Measurement and advertising are only described while they are actually on.
+const trackingOn = site.cookieBanner && Object.values(site.analytics ?? {}).some(Boolean);
 ---
 
 <Base
@@ -179,40 +182,57 @@ import { legal, sections, bases, trackers } from '../data/privacy.js';
         </p>
 
         <h2 id="cookies">Cookies and advertising</h2>
-        <p>
-          A cookie is a small file a site asks your browser to keep. The ones this site needs in
-          order to work set nothing that identifies you and need no permission. The rest are for
-          measurement and advertising, and we set none of them until you agree:
-        </p>
+        {trackingOn ? (
+          <>
+            <p>
+              A cookie is a small file a site asks your browser to keep. The ones this site needs
+              in order to work set nothing that identifies you and need no permission. The rest are
+              for measurement and advertising, and we set none of them until you agree:
+            </p>
 
-        <div class="basis">
-          {trackers.map((t) => (
-            <div class="basis__row">
-              <p class="basis__purpose">{t.name}</p>
-              <p class="basis__data">{t.does}</p>
-              <p class="basis__law">{t.sets}. Provided by {t.by}.</p>
+            <div class="basis">
+              {trackers.map((t) => (
+                <div class="basis__row">
+                  <p class="basis__purpose">{t.name}</p>
+                  <p class="basis__data">{t.does}</p>
+                  <p class="basis__law">{t.sets}. Provided by {t.by}.</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        <p>
-          You are asked when you first arrive, and nothing in that table runs if you decline. Your
-          browser settings will also block or clear cookies if you would rather handle it there.
-          Declining changes nothing about the site or about your care.
-        </p>
-        <p class="prose__choice">
-          <button class="btn btn--outline" type="button" data-consent-reopen>Change your cookie choice</button>
-        </p>
-        <p>
-          Google and Meta do not simply act on our instructions with this data: they also use it
-          for their own purposes, as set out in
-          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google&rsquo;s privacy policy</a>
-          and
-          <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener">Meta&rsquo;s privacy policy</a>.
-          We never send them your name, your email address, your telephone number or anything about
-          your health, and we do not build advertising audiences from the pages you read on this
-          site about particular procedures.
-        </p>
+            <p>
+              You are asked when you first arrive, and nothing in that table runs if you decline.
+              Your browser settings will also block or clear cookies if you would rather handle it
+              there. Declining changes nothing about the site or about your care.
+            </p>
+            <p class="prose__choice">
+              <button class="btn btn--outline" type="button" data-consent-reopen>Change your cookie choice</button>
+            </p>
+            <p>
+              Google and Meta do not simply act on our instructions with this data: they also use
+              it for their own purposes, as set out in
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google&rsquo;s privacy policy</a>
+              and
+              <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener">Meta&rsquo;s privacy policy</a>.
+              We never send them your name, your email address, your telephone number or anything
+              about your health, and we do not build advertising audiences from the pages you read
+              on this site about particular procedures.
+            </p>
+          </>
+        ) : (
+          <>
+            <p>
+              A cookie is a small file a site asks your browser to keep. At present this site sets
+              none of its own, and there is no analytics, no advertising pixel and no tracking of
+              any kind on it. Nobody is profiled for visiting.
+            </p>
+            <p>
+              Should that change, you will be asked before anything is set, this page will say
+              exactly what the cookies are and who provides them, and declining will remain an
+              answer that costs you nothing.
+            </p>
+          </>
+        )}
 
         <h2 id="transfers">Where it is held</h2>
         <p>
