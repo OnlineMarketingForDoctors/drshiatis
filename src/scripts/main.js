@@ -99,6 +99,10 @@ function initHeroVideo() {
     // The API replaces the mount node with the iframe, so the mount has to sit
     // inside the styled wrapper or the video ends up outside the cover box.
     heroPlayer = new window.YT.Player(mount, {
+      // Privacy-enhanced mode, the same domain the lightbox uses. Without it
+      // the player defaults to youtube.com and sets tracking cookies on the
+      // home page before anyone has asked for a video.
+      host: 'https://www.youtube-nocookie.com',
       videoId: id,
       playerVars: {
         autoplay: 1,
@@ -778,6 +782,93 @@ function initContact() {
   });
 }
 
+
+/* ---------------------------------------------------------------------------
+   Cookie consent
+   Measurement and advertising load here and nowhere else, so declining really
+   does mean nothing is set. The choice is kept in localStorage rather than a
+   cookie, which keeps the page honest while a visitor is still deciding.
+--------------------------------------------------------------------------- */
+const CONSENT_KEY = 'cookie-consent';
+
+function readConsent() {
+  try { return localStorage.getItem(CONSENT_KEY); } catch { return null; }
+}
+
+function loadTags(ids) {
+  const script = (src) => {
+    const el = document.createElement('script');
+    el.src = src;
+    el.async = true;
+    document.head.appendChild(el);
+  };
+
+  if (ids.ga4 || ids.googleAds) {
+    window.dataLayer = window.dataLayer || [];
+    // gtag has to push `arguments` itself, so this cannot be a rest parameter.
+    window.gtag = function gtag() { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    script(`https://www.googletagmanager.com/gtag/js?id=${ids.ga4 || ids.googleAds}`);
+    // Anonymise at source: the practice needs the shape of its traffic, not
+    // the address of the person reading about a particular operation.
+    if (ids.ga4) window.gtag('config', ids.ga4, { anonymize_ip: true });
+    if (ids.googleAds) window.gtag('config', ids.googleAds);
+  }
+
+  if (ids.metaPixel) {
+    /* eslint-disable */
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = true; t.src = v;
+      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    /* eslint-enable */
+    window.fbq('init', ids.metaPixel);
+    window.fbq('track', 'PageView');
+  }
+}
+
+function initConsent() {
+  const bar = $('[data-consent]');
+  if (!bar) return;
+
+  let ids = {};
+  try { ids = JSON.parse(bar.dataset.consentIds || '{}'); } catch { /* malformed */ }
+
+  const close = () => {
+    bar.classList.remove('is-open');
+    const done = () => { bar.hidden = true; };
+    if (reduceMotion) done();
+    else bar.addEventListener('transitionend', done, { once: true });
+  };
+
+  const decide = (answer) => {
+    try { localStorage.setItem(CONSENT_KEY, answer); } catch { /* private mode */ }
+    if (answer === 'yes') loadTags(ids);
+    close();
+  };
+
+  const open = () => {
+    bar.hidden = false;
+    // A frame between unhiding and animating, or the transition never runs.
+    requestAnimationFrame(() => bar.classList.add('is-open'));
+  };
+
+  $('[data-consent-yes]', bar)?.addEventListener('click', () => decide('yes'));
+  $('[data-consent-no]', bar)?.addEventListener('click', () => decide('no'));
+
+  // Anywhere on the site can reopen the question, which is what makes a
+  // decision withdrawable rather than final.
+  document.querySelectorAll('[data-consent-reopen]').forEach((el) => {
+    el.addEventListener('click', (e) => { e.preventDefault(); open(); });
+  });
+
+  const answer = readConsent();
+  if (answer === 'yes') loadTags(ids);
+  else if (answer !== 'no') open();
+}
+
 /* ---------------------------------------------------------------------------
    Boot
 --------------------------------------------------------------------------- */
@@ -796,6 +887,7 @@ function boot() {
   initNewsletter();
   initBeforeAfter();
   initContact();
+  initConsent();
 
   // Images loading late can shift trigger positions.
   window.addEventListener('load', () => ScrollTrigger.refresh());

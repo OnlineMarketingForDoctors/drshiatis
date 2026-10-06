@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import BackToTop from '../components/BackToTop.astro';
+import Consent from '../components/Consent.astro';
 import Lightbox from '../components/Lightbox.astro';
 
 interface Props {
@@ -46,6 +47,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     </main>
     <Footer />
     <BackToTop />
+    <Consent />
     <Lightbox />
     <script src="../scripts/main.js"></script>
   </body>

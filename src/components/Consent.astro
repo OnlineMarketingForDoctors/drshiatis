@@ -1,0 +1,92 @@
+---
+// The cookie banner. Nothing for measurement or advertising is loaded until a
+// visitor accepts here, which is what PECR requires and what the privacy
+// policy says we do. The tag ids live in site.js; while they are empty the
+// banner still records the choice and simply has nothing to start.
+import { site } from '../data/site.js';
+
+const a = site.analytics ?? {};
+const ids = JSON.stringify({ ga4: a.ga4 || '', googleAds: a.googleAds || '', metaPixel: a.metaPixel || '' });
+---
+
+<div class="consent" data-consent data-consent-ids={ids} hidden>
+  <div class="consent__inner" role="dialog" aria-modal="false" aria-labelledby="consent-title">
+    <div class="consent__copy">
+      <p class="consent__title" id="consent-title">Cookies</p>
+      <p class="consent__text">
+        We would like to measure how the site is used and which adverts bring people here. That
+        needs cookies from Google and Meta, so we are asking first. Decline and nothing is set;
+        the site works the same either way. The
+        <a href="/privacy-policy#cookies">privacy policy</a> has the detail.
+      </p>
+    </div>
+    <div class="consent__actions">
+      <button class="btn btn--outline consent__btn" type="button" data-consent-no>Decline</button>
+      <button class="btn btn--solid consent__btn" type="button" data-consent-yes>Accept</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .consent {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    background: var(--emerald-deep);
+    color: var(--ivory);
+    border-top: 1px solid rgba(216, 189, 124, 0.45);
+    /* Clear of the iOS home indicator. */
+    padding-bottom: env(safe-area-inset-bottom);
+    transform: translateY(100%);
+    transition: transform 0.45s var(--ease-out);
+  }
+  .consent.is-open { transform: none; }
+
+  .consent__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2.5rem;
+    width: min(100% - 2.5rem, var(--container, 76rem));
+    margin-inline: auto;
+    padding-block: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  .consent__copy { flex: 1 1 24rem; }
+  .consent__title {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+  .consent__text {
+    margin-top: 0.5rem;
+    max-width: 58em;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(244, 238, 228, 0.88);
+  }
+  .consent__text a {
+    color: var(--ivory);
+    border-bottom: 1px solid rgba(216, 189, 124, 0.6);
+  }
+  .consent__text a:hover { border-color: var(--gold-light); }
+
+  .consent__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .consent__btn { white-space: nowrap; }
+  /* The outline variant is drawn for ivory grounds, so it is restated here. */
+  .consent .btn--outline { color: var(--ivory); border-color: rgba(244, 238, 228, 0.45); }
+  .consent .btn--outline:hover { border-color: var(--ivory); }
+
+  @media (max-width: 560px) {
+    .consent__actions { width: 100%; }
+    .consent__btn { flex: 1; justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .consent { transition: none; }
+  }
+</style>

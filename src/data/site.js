@@ -23,6 +23,13 @@ export const site = {
   // is empty the form hands the enquiry to the inbox below as a pre-filled
   // email, so nothing a patient types is ever silently dropped.
   contactAction: '',
+  // Measurement and advertising. Nothing loads while an id is empty, and
+  // nothing loads at all until the visitor has accepted in the cookie banner.
+  analytics: {
+    ga4: '',        // G-XXXXXXXXXX
+    googleAds: '',  // AW-XXXXXXXXX
+    metaPixel: '',  // the 15 or 16 digit pixel id
+  },
   instagram: 'https://www.instagram.com/dr_shiatis/',
   instagramHandle: '@dr_shiatis',
   tiktok: 'https://www.tiktok.com/@dr_shiatis',

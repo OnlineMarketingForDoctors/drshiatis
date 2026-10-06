@@ -1,0 +1,401 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { site } from '../data/site.js';
+import { legal, sections, bases, trackers } from '../data/privacy.js';
+---
+
+<Base
+  variant="solid"
+  title="Privacy Policy | Mr Andreas Shiatis, Consultant Plastic Surgeon"
+  description="How Andreas Shiatis Plastic Surgery collects, uses and protects your personal information, including your clinical records and photographs, under UK data protection law."
+>
+  <PageHead
+    eyebrow="Privacy policy"
+    title="What we hold,"
+    titleEm="and why"
+    id="phead-title"
+    lead="Plain English, because a policy nobody can read protects nobody. This covers the information the practice holds about you, what we do with it, who else ever sees it, and what you can ask us to do about it."
+  >
+    <p class="phead__stamp">Last updated {legal.updated}</p>
+  </PageHead>
+
+  <section class="legal section" aria-labelledby="legal-title">
+    <div class="container legal__grid">
+      <h2 class="sr-only" id="legal-title">Privacy policy</h2>
+
+      <nav class="legal__nav" aria-label="On this page">
+        <p class="legal__navlabel">On this page</p>
+        <ol>
+          {sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+        </ol>
+      </nav>
+
+      <div class="prose">
+        <h2 id="who-we-are">Who we are</h2>
+        <p>
+          {legal.tradingAs} is the private practice of {site.surgeon}, Consultant Plastic Surgeon,
+          GMC {site.gmc}. The practice operates through {legal.controller}{legal.companyNumber && `, registered in England and Wales, company number ${legal.companyNumber}`},
+          whose registered office is {site.address.join(', ')}.
+        </p>
+        <p>
+          For anything you give us through this website, and for the records we keep about your
+          care, {legal.controller} is the data controller. That means we decide what is held and
+          why, and we are answerable for it.
+        </p>
+        {legal.icoNumber && (
+          <p>We are registered with the Information Commissioner's Office under number {legal.icoNumber}.</p>
+        )}
+        <p>
+          {legal.dpoName
+            ? `Questions about this policy go to ${legal.dpoName}, who is responsible for data protection at the practice.`
+            : 'Questions about this policy, or about anything we hold, go to the practice manager.'}
+          Write to <a href={`mailto:${site.email}`}>{site.email}</a> or call
+          <a href={site.phoneHref}>{site.phoneDisplay}</a>.
+        </p>
+        <p class="prose__note">
+          Where you are treated at a hospital, that hospital is a separate controller for the
+          records it keeps of your admission and care on its premises, with its own privacy notice.
+          This policy covers the practice, not the hospital.
+        </p>
+
+        <h2 id="what-we-hold">What we hold</h2>
+        <p>Depending on how far you get with us, that may be:</p>
+        <ul>
+          <li><strong>Enquiry details.</strong> Your name, email address, telephone number, where you heard about us, and whatever you write in the message.</li>
+          <li><strong>Appointment details.</strong> When you are coming in, where, and what you are coming about.</li>
+          <li><strong>Clinical information.</strong> Your medical history, medicines and allergies, what we find on examination, measurements, your consent forms, operation notes, letters to and from your GP, and your follow-up.</li>
+          <li><strong>Photographs.</strong> Clinical photographs taken before and after surgery, which form part of your record.</li>
+          <li><strong>Payment and insurance details.</strong> Enough to invoice you or your insurer. Card details are handled by the payment provider and are never held by the practice.</li>
+          <li><strong>Correspondence.</strong> Emails, letters and notes of telephone calls.</li>
+        </ul>
+        <p>
+          Most of this comes from you. Some comes from your GP, another specialist, or a hospital
+          involved in your care, and only with your knowledge.
+        </p>
+
+        <h2 id="why">Why we hold it</h2>
+        <p>
+          Under UK data protection law we have to have a lawful basis for everything we do with
+          your information. Information about your health is a special category, which needs a
+          second basis on top of the first. Ours are these:
+        </p>
+
+        <div class="basis">
+          {bases.map((b) => (
+            <div class="basis__row">
+              <p class="basis__purpose">{b.purpose}</p>
+              <p class="basis__data">{b.data}</p>
+              <p class="basis__law">{b.basis}</p>
+            </div>
+          ))}
+        </div>
+
+        <p>
+          We do not sell your information, we do not pass it to anyone for their own marketing,
+          and we do not make any decision about your care by automated means.
+        </p>
+
+        <h2 id="clinical-records">Your clinical records</h2>
+        <p>
+          Everything you tell a doctor is confidential, and that duty is older and stricter than
+          data protection law. Your record is seen by {site.surgeon} and by the staff who need it
+          to arrange and deliver your care, and by nobody else without your agreement.
+        </p>
+        <p>
+          There are narrow exceptions, which apply to every doctor in the country: where the law
+          requires disclosure, where a court orders it, and where there is a risk of serious harm
+          to you or to somebody else. If we ever have to rely on one of those, we will tell you
+          unless telling you would itself cause that harm.
+        </p>
+
+        <h2 id="photographs">Photographs</h2>
+        <p>
+          Clinical photography is part of planning and assessing surgery, so photographs are taken
+          as a matter of course and kept in your record on the same confidential footing as the
+          rest of it. That use needs no separate permission from you.
+        </p>
+        <p>
+          Using a photograph for anything else is different, and we ask separately and in writing
+          each time. That includes this website, social media, teaching and lectures, and
+          publication. You can say no, and it changes nothing about your care. You can also change
+          your mind later: tell us and we will take the image down, though we cannot pull back a
+          copy somebody else has already saved or a journal has already printed.
+        </p>
+        <p>
+          Nothing identifying you is published without that written consent, and consent to one
+          use is never treated as consent to another.
+        </p>
+
+        <h2 id="sharing">Who we share it with</h2>
+        <ul>
+          <li><strong>The hospital or clinic</strong> where you are seen or operated on, so they can admit and look after you.</li>
+          <li><strong>Other clinicians in your care</strong>: your anaesthetist, your GP, a radiologist, a physiotherapist, another specialist. We write to your GP unless you ask us not to.</li>
+          <li><strong>Your insurer</strong>, where you are using insurance, and only what they need to authorise and settle the claim.</li>
+          <li><strong>Suppliers who work for us</strong> and only on our instructions: the practice management and booking systems, the accountant, secure document storage, the IT support. Each is bound by a written contract that holds them to the same standards.</li>
+          <li><strong>Regulators and insurers of the practice</strong>, where we are obliged to, for example in response to a complaint or a claim.</li>
+        </ul>
+
+        <h2 id="retention">How long we keep it</h2>
+        <p>
+          Clinical records for adults are kept for at least eight years after your last
+          appointment, in line with the retention schedules the independent sector works to. For a
+          patient treated as a child, the record is kept until their 25th birthday. Where a
+          complaint or a claim is open, the record is kept until that is finished.
+        </p>
+        <p>
+          An enquiry that never becomes an appointment is kept for twelve months and then deleted.
+          Newsletter subscriptions are kept until you unsubscribe. Invoices and the records behind
+          them are kept for six years, because tax law requires it.
+        </p>
+
+        <h2 id="website">This website</h2>
+        <ul>
+          <li>
+            <strong>The before and after gallery</strong> remembers, for the length of your browser
+            tab only, that you have read the notice in front of it, so you are not asked twice. It
+            never leaves your device and we cannot see it.
+          </li>
+          <li>
+            <strong>Video</strong> is served by YouTube in privacy-enhanced mode, which sets nothing
+            unless you actually play something. If you do, YouTube may set its own cookies, under
+            Google&rsquo;s privacy policy rather than ours.
+          </li>
+          <li>
+            <strong>The booking calendar</strong> on the booking page is supplied by a third party
+            and runs inside its own frame. Anything you enter there goes to that provider under
+            their terms and their privacy notice, as well as reaching us.
+          </li>
+          <li>
+            <strong>Our hosting provider</strong> keeps short-lived server logs, including IP
+            addresses, as every web server does. They are used to keep the site up and secure, not
+            to identify you.
+          </li>
+        </ul>
+        <p>
+          The enquiry and newsletter forms currently open your own email program with the message
+          ready to send, so what you write travels as an ordinary email from your own account. If
+          that changes, this page will say so.
+        </p>
+
+        <h2 id="cookies">Cookies and advertising</h2>
+        <p>
+          A cookie is a small file a site asks your browser to keep. The ones this site needs in
+          order to work set nothing that identifies you and need no permission. The rest are for
+          measurement and advertising, and we set none of them until you agree:
+        </p>
+
+        <div class="basis">
+          {trackers.map((t) => (
+            <div class="basis__row">
+              <p class="basis__purpose">{t.name}</p>
+              <p class="basis__data">{t.does}</p>
+              <p class="basis__law">{t.sets}. Provided by {t.by}.</p>
+            </div>
+          ))}
+        </div>
+
+        <p>
+          You are asked when you first arrive, and nothing in that table runs if you decline. Your
+          browser settings will also block or clear cookies if you would rather handle it there.
+          Declining changes nothing about the site or about your care.
+        </p>
+        <p class="prose__choice">
+          <button class="btn btn--outline" type="button" data-consent-reopen>Change your cookie choice</button>
+        </p>
+        <p>
+          Google and Meta do not simply act on our instructions with this data: they also use it
+          for their own purposes, as set out in
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google&rsquo;s privacy policy</a>
+          and
+          <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener">Meta&rsquo;s privacy policy</a>.
+          We never send them your name, your email address, your telephone number or anything about
+          your health, and we do not build advertising audiences from the pages you read on this
+          site about particular procedures.
+        </p>
+
+        <h2 id="transfers">Where it is held</h2>
+        <p>
+          Your clinical records are held in the United Kingdom.
+        </p>
+        <p>
+          Some of the suppliers behind this website, including the hosting, the advertising and the
+          measurement tools above, are based in the United States or move data there. Where that
+          happens the transfer is covered by the UK extension to the EU&ndash;US Data Privacy
+          Framework, or by the standard contractual clauses the UK government has approved, so the
+          protection travels with the information.
+        </p>
+
+        <h2 id="rights">Your rights</h2>
+        <p>Over the information we hold about you, you may ask us to:</p>
+        <ul>
+          <li><strong>Show you</strong> a copy of it. Normally free, and within one month.</li>
+          <li><strong>Correct</strong> anything wrong. A clinical opinion you disagree with is not deleted, but your disagreement is recorded alongside it.</li>
+          <li><strong>Delete</strong> it. This one is limited: we cannot delete a clinical record we are required to keep.</li>
+          <li><strong>Restrict or object</strong> to what we do with it, including stopping marketing outright at any time.</li>
+          <li><strong>Hand it over</strong> to you or to another provider in a portable form, where you gave it to us under consent or a contract.</li>
+          <li><strong>Withdraw consent</strong> you have given, at any time, without affecting anything done before you withdrew it.</li>
+        </ul>
+        <p>
+          Ask by writing to <a href={`mailto:${site.email}`}>{site.email}</a>. We may need to
+          confirm who you are first, which protects you rather than us.
+        </p>
+
+        <h2 id="complaints">How to complain</h2>
+        <p>
+          Tell us first and we will try to put it right: <a href={`mailto:${site.email}`}>{site.email}</a>,
+          or <a href={site.phoneHref}>{site.phoneDisplay}</a>.
+        </p>
+        <p>
+          If you are not satisfied, you can complain to the Information Commissioner's Office,
+          which regulates data protection in the UK, at
+          <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener">ico.org.uk</a>
+          or on 0303 123 1113. You can go to them at any point; you do not have to come to us first.
+        </p>
+
+        <h2 class="prose__last">Changes to this policy</h2>
+        <p>
+          If what we do with your information changes, this page changes with it and the date at
+          the top moves. Where a change matters to you, we will tell you rather than leave you to
+          notice.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  /* In the head's slot, so outside this page's scoping. */
+  .phead__stamp {
+    margin-top: 2rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+</style>
+
+<style>
+  .legal__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  /* Contents */
+  .legal__nav { position: sticky; top: 6.5rem; }
+  .legal__navlabel {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .legal__nav ol { counter-reset: s; }
+  .legal__nav a {
+    display: flex;
+    gap: 0.6rem;
+    padding-block: 0.55rem;
+    font-size: 0.9rem;
+    line-height: 1.35;
+    color: var(--ink-soft);
+    transition: color 0.3s;
+  }
+  .legal__nav a::before {
+    counter-increment: s;
+    content: counter(s);
+    flex: none;
+    font-size: 0.7rem;
+    color: var(--gold);
+    padding-top: 0.15rem;
+  }
+  .legal__nav a:hover { color: var(--emerald); }
+
+  /* The document */
+  .prose { max-width: 42em; }
+  .prose :global(h2) {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+    color: var(--emerald);
+    /* Clears the sticky bar when a contents link jumps here. */
+    scroll-margin-top: 6rem;
+  }
+  .prose :global(h2:first-child) { margin-top: 0; padding-top: 0; border-top: none; }
+  .prose :global(p) { margin-top: 1rem; color: var(--ink-soft); }
+  .prose :global(ul) { margin-top: 1rem; display: grid; gap: 0.75rem; }
+  .prose :global(li) {
+    position: relative;
+    padding-left: 1.4rem;
+    color: var(--ink-soft);
+  }
+  .prose :global(li)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 0.4rem;
+    height: 1px;
+    background: var(--gold);
+  }
+  .prose :global(strong) { color: var(--emerald); font-weight: 500; }
+  .prose :global(a) {
+    color: var(--emerald);
+    border-bottom: 1px solid rgba(184, 150, 79, 0.6);
+    transition: border-color 0.25s;
+  }
+  .prose :global(a:hover) { border-color: var(--emerald); }
+  .prose :global(.prose__choice) { margin-top: 1.5rem; }
+  .prose :global(.prose__note) {
+    margin-top: 1.25rem;
+    padding: 0.85rem 1.1rem;
+    border-left: 2px solid var(--gold);
+    background: rgba(184, 150, 79, 0.08);
+    font-size: 0.9rem;
+  }
+
+  /* Lawful bases */
+  .basis { margin-top: 1.75rem; }
+  .basis__row {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 6fr);
+    gap: 1rem 1.5rem;
+    padding-block: 1.1rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.3);
+  }
+  .basis__row:last-child { border-bottom: 1px solid rgba(184, 150, 79, 0.3); }
+  .basis__purpose {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--emerald);
+  }
+  .basis__data, .basis__law { font-size: 0.88rem; line-height: 1.55; color: var(--ink-soft); }
+  .basis__law { color: var(--ink-soft); opacity: 0.85; }
+
+  @media (max-width: 900px) {
+    .legal__grid { grid-template-columns: minmax(0, 1fr); }
+    .legal__nav { position: static; }
+    .legal__nav ol {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 1.5rem;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .basis__row { grid-template-columns: minmax(0, 1fr); gap: 0.4rem; }
+    .legal__nav ol { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
