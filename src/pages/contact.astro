@@ -1,0 +1,353 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { site } from '../data/site.js';
+import { heardAbout, enquiryTopics } from '../data/contact.js';
+
+// With no handler configured the browser's own mailto fallback carries the
+// enquiry, so a visitor without JavaScript still gets through.
+const action = site.contactAction || `mailto:${site.email}`;
+const mailtoOnly = !site.contactAction;
+
+const details = [
+  {
+    label: 'Telephone',
+    value: site.phoneDisplay,
+    href: site.phoneHref,
+    note: 'Monday to Friday, 9am to 5pm. Leave a message outside those hours and a coordinator will call you back.',
+  },
+  {
+    label: 'Email',
+    value: site.email,
+    href: `mailto:${site.email}`,
+    note: 'Answered within one working day.',
+  },
+  {
+    label: 'Consulting rooms',
+    value: site.hospital,
+    note: 'Private consultations under Pantheons Clinic. A second London location is available on request.',
+  },
+  {
+    label: 'Registered office',
+    value: site.address.join(', '),
+    href: site.addressHref,
+    note: 'Correspondence only, not a consulting address.',
+  },
+];
+---
+
+<Base
+  variant="solid"
+  title="Contact | Mr Andreas Shiatis, Consultant Plastic Surgeon"
+  description="Contact Mr Andreas Shiatis, Consultant Plastic Surgeon in London. Call +44 (0)20 8050 9669, email info@drshiatis.com, or send an enquiry and a patient coordinator will reply within one working day."
+>
+  <PageHead
+    eyebrow="Contact"
+    title="Ask us"
+    titleEm="anything"
+    id="chead-title"
+    lead="A patient coordinator reads every enquiry and replies within one working day. If you would rather speak to someone, the line below is answered by a person, not a menu."
+  >
+    <div class="phead__actions" data-reveal>
+      <a class="btn btn--ivory" href={site.phoneHref}>Call {site.phoneDisplay}</a>
+      <a class="btn btn--outline-light" href={`mailto:${site.email}`}>Email the practice</a>
+    </div>
+  </PageHead>
+
+  <section class="contact section" aria-labelledby="cform-title">
+    <div class="container contact__grid">
+      <!-- The form -->
+      <div class="cform">
+        <h2 class="h3 cform__title" id="cform-title" data-reveal>Send an enquiry</h2>
+        <p class="cform__blurb" data-reveal>
+          Tell us what you are considering and anything you would like us to know beforehand. You
+          are not committing to anything by writing, and nothing you say here goes any further
+          than the practice.
+        </p>
+
+        <form
+          class="cform__form"
+          data-contact
+          data-fallback-email={site.email}
+          action={action}
+          method="post"
+          enctype={mailtoOnly ? 'text/plain' : undefined}
+          novalidate={false}
+        >
+          <div class="field">
+            <label for="c-name">Your name <span class="req" aria-hidden="true">*</span></label>
+            <input id="c-name" name="name" type="text" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label for="c-email">Email <span class="req" aria-hidden="true">*</span></label>
+            <input id="c-email" name="email" type="email" autocomplete="email" required />
+          </div>
+
+          <div class="field">
+            <label for="c-phone">Telephone</label>
+            <input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+
+          <div class="field">
+            <label for="c-topic">What is your enquiry about?</label>
+            <div class="select">
+              <select id="c-topic" name="topic">
+                <option value="">Please choose</option>
+                {enquiryTopics.map((t) => <option value={t}>{t}</option>)}
+              </select>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+          </div>
+
+          <div class="field field--wide">
+            <label for="c-heard">Where did you hear about us? <span class="req" aria-hidden="true">*</span></label>
+            <div class="select">
+              <select id="c-heard" name="heard_about" required data-heard>
+                <option value="">Please choose</option>
+                {heardAbout.map((o) => (
+                  <option value={o.value} data-detail={o.detail}>{o.label}</option>
+                ))}
+              </select>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+          </div>
+
+          <!-- Revealed for the two answers that ask a follow-up -->
+          <div class="field field--wide cform__detail" data-heard-detail hidden>
+            <label for="c-heard-detail" data-heard-detail-label>Which one?</label>
+            <input id="c-heard-detail" name="heard_about_detail" type="text" />
+          </div>
+
+          <div class="field field--wide">
+            <label for="c-message">Your message</label>
+            <textarea id="c-message" name="message" rows="5"></textarea>
+          </div>
+
+          <div class="field field--wide">
+            <label class="check">
+              <input type="checkbox" name="consent" required />
+              <span>
+                I am happy for the practice to contact me about this enquiry. See the
+                <a href="/privacy-policy">privacy policy</a> for how your details are handled.
+              </span>
+            </label>
+          </div>
+
+          <!-- Bots fill this; people never see it. -->
+          <div class="cform__trap" aria-hidden="true">
+            <label for="c-company">Company</label>
+            <input id="c-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="field field--wide cform__send">
+            <button class="btn btn--solid" type="submit">
+              Send enquiry
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <p class="cform__note" data-contact-note role="status"></p>
+          </div>
+        </form>
+      </div>
+
+      <!-- The details -->
+      <aside class="cdetails" aria-labelledby="cdetails-title">
+        <h2 class="h3 cdetails__title" id="cdetails-title" data-reveal>Reach us directly</h2>
+        <dl class="cdetails__list">
+          {details.map((d) => (
+            <div class="cdetail" data-reveal>
+              <dt>{d.label}</dt>
+              <dd>
+                {d.href ? <a href={d.href}>{d.value}</a> : d.value}
+                <span class="cdetail__note">{d.note}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="cdetails__book" data-reveal>
+          <p class="cdetails__booklead">Ready to book?</p>
+          <p class="cdetails__booknote">
+            Consultations can be booked online without speaking to anyone first.
+          </p>
+          <a class="btn btn--outline" href={site.bookingHref}>Book a consultation</a>
+        </div>
+
+        <p class="cdetails__urgent" data-reveal>
+          If you are a patient of Mr Shiatis and your question is urgent, call the number above
+          rather than writing. For a medical emergency, contact your GP, call 111, or attend
+          an emergency department.
+        </p>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2.5rem, 6vw, 5.5rem);
+    align-items: start;
+  }
+
+  /* Form */
+  .cform__title { color: var(--emerald); }
+  .cform__blurb { margin-top: 0.9rem; max-width: 36em; color: var(--ink-soft); }
+
+  .cform__form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+    margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+  .field { display: grid; gap: 0.5rem; }
+  /* A class setting display beats the user agent's [hidden] rule, so the
+     follow-up box would otherwise sit open with nothing to answer. */
+  .field[hidden] { display: none; }
+  .field--wide { grid-column: 1 / -1; }
+
+  .field label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--emerald);
+  }
+  .req { color: var(--gold); }
+
+  .field input[type='text'],
+  .field input[type='email'],
+  .field input[type='tel'],
+  .field textarea,
+  .select select {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--paper, #fff);
+    border: 1px solid rgba(18, 49, 91, 0.22);
+    border-radius: 0;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .field textarea { resize: vertical; min-height: 7rem; }
+
+  .field input:focus,
+  .field textarea:focus,
+  .select select:focus {
+    outline: none;
+    border-color: var(--emerald);
+    box-shadow: inset 0 -2px 0 var(--gold);
+  }
+  .field input:focus-visible,
+  .field textarea:focus-visible,
+  .select select:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+  /* The native arrow differs on every platform, so it is replaced. */
+  .select { position: relative; display: grid; }
+  .select select { appearance: none; padding-right: 2.5rem; cursor: pointer; }
+  .select svg {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    translate: 0 -50%;
+    width: 1rem;
+    height: 1rem;
+    color: var(--gold);
+    pointer-events: none;
+  }
+
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.88rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .check input {
+    flex: none;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin-top: 0.15rem;
+    accent-color: var(--emerald);
+  }
+  .check a { color: var(--emerald); border-bottom: 1px solid rgba(184, 150, 79, 0.6); }
+  .check a:hover { border-color: var(--emerald); }
+
+  .cform__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .cform__send { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.25rem; }
+  .cform__note { font-size: 0.85rem; color: var(--ink-soft); }
+  .cform__note.is-done { color: var(--emerald); }
+  .cform__note.is-error { color: #9b2c2c; }
+
+  /* Details */
+  .cdetails {
+    padding: clamp(1.75rem, 3.5vw, 2.5rem);
+    background: var(--ivory-2);
+    border-top: 2px solid var(--gold);
+  }
+  .cdetails__title { color: var(--emerald); }
+  .cdetails__list { margin-top: 1.5rem; }
+  .cdetail { padding-block: 1.1rem; border-top: 1px solid rgba(184, 150, 79, 0.4); }
+  .cdetail:first-child { border-top: none; padding-top: 0; }
+  .cdetail dt {
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .cdetail dd {
+    margin: 0.4rem 0 0;
+    font-size: 1.02rem;
+    color: var(--emerald);
+  }
+  .cdetail dd a { border-bottom: 1px solid rgba(184, 150, 79, 0.5); transition: border-color 0.25s; }
+  .cdetail dd a:hover { border-color: var(--emerald); }
+  .cdetail__note {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .cdetails__book {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .cdetails__booklead {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--emerald);
+  }
+  .cdetails__booknote { margin: 0.5rem 0 1.1rem; font-size: 0.88rem; color: var(--ink-soft); }
+
+  .cdetails__urgent {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 900px) {
+    .contact__grid { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .cform__form { grid-template-columns: minmax(0, 1fr); }
+    .cform__send .btn { width: 100%; justify-content: center; }
+  }
+</style>

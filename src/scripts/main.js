@@ -713,6 +713,71 @@ function initBeforeAfter() {
   if (!fromHash || !show(fromHash)) show(tabs[0].dataset.baTab);
 }
 
+
+/* ---------------------------------------------------------------------------
+   Contact form
+   Two jobs: reveal the follow-up box for the answers that ask one, and, until
+   a form handler is configured, hand the enquiry to the practice inbox as a
+   pre-filled email rather than dropping it.
+--------------------------------------------------------------------------- */
+function initContact() {
+  const form = $('[data-contact]');
+  if (!form) return;
+
+  const note = $('[data-contact-note]', form);
+  const trap = form.querySelector('input[name="company"]');
+
+  /* --- the follow-up box --- */
+  const heard = $('[data-heard]', form);
+  const wrap = $('[data-heard-detail]', form);
+  const label = $('[data-heard-detail-label]', form);
+  const input = wrap?.querySelector('input');
+
+  const syncDetail = () => {
+    if (!heard || !wrap || !input) return;
+    const ask = heard.options[heard.selectedIndex]?.dataset.detail;
+    wrap.hidden = !ask;
+    input.required = Boolean(ask);
+    if (ask && label) label.textContent = ask;
+    if (!ask) input.value = '';
+  };
+  heard?.addEventListener('change', syncDetail);
+  syncDetail();
+
+  /* --- sending --- */
+  form.addEventListener('submit', (e) => {
+    if (trap && trap.value) { e.preventDefault(); return; }
+
+    // The browser has already run validation; let it through to a real handler.
+    if (!form.dataset.fallbackEmail || form.getAttribute('action')?.startsWith('mailto:') !== true) return;
+
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const get = (n) => form.querySelector(`[name="${n}"]`)?.value.trim() || '';
+    const lines = [
+      ['Name', get('name')],
+      ['Email', get('email')],
+      ['Telephone', get('phone')],
+      ['Enquiry about', get('topic')],
+      ['Heard about us', [get('heard_about'), get('heard_about_detail')].filter(Boolean).join(': ')],
+      ['', ''],
+      ['Message', get('message')],
+    ]
+      .filter(([k, v]) => k === '' || v)
+      .map(([k, v]) => (k ? `${k}: ${v}` : ''))
+      .join('\n');
+
+    const to = form.dataset.fallbackEmail;
+    const subject = encodeURIComponent(`Enquiry from ${get('name') || 'the website'}`);
+    window.location.href = `mailto:${to}?subject=${subject}&body=${encodeURIComponent(lines)}`;
+    if (note) {
+      note.textContent = 'Opening your email app to send this. If nothing happens, email ' + to + ' directly.';
+      note.classList.add('is-done');
+    }
+  });
+}
+
 /* ---------------------------------------------------------------------------
    Boot
 --------------------------------------------------------------------------- */
@@ -730,6 +795,7 @@ function boot() {
   initLightbox();
   initNewsletter();
   initBeforeAfter();
+  initContact();
 
   // Images loading late can shift trigger positions.
   window.addEventListener('load', () => ScrollTrigger.refresh());

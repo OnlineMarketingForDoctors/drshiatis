@@ -18,6 +18,11 @@ export const site = {
   // the rest all give you one). While it is empty the newsletter form falls
   // back to opening a pre-filled email, so no address is ever silently lost.
   newsletterAction: '',
+  // Same again for the contact form: paste the form handler's POST URL here
+  // (Formspree, Basin, a CRM endpoint, whatever the practice uses). While it
+  // is empty the form hands the enquiry to the inbox below as a pre-filled
+  // email, so nothing a patient types is ever silently dropped.
+  contactAction: '',
   instagram: 'https://www.instagram.com/dr_shiatis/',
   instagramHandle: '@dr_shiatis',
   tiktok: 'https://www.tiktok.com/@dr_shiatis',
