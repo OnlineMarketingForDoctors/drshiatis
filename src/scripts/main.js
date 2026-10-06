@@ -680,6 +680,43 @@ function initBeforeAfter() {
     resets.set(p.dataset.baPanel, list);
   });
 
+  /* --- accordion, on a phone --- */
+  const narrow = window.matchMedia('(max-width: 900px)');
+  const toggles = new Map();
+  panels.forEach((p) => {
+    const t = p.querySelector('[data-ba-acc]');
+    if (t) toggles.set(p.dataset.baPanel, t);
+  });
+
+  const openOnly = (slug) => {
+    panels.forEach((p) => {
+      const on = p.dataset.baPanel === slug;
+      p.classList.toggle('is-open', on);
+      toggles.get(p.dataset.baPanel)?.setAttribute('aria-expanded', String(on));
+      if (on) resets.get(slug)?.forEach((reset) => reset());
+    });
+  };
+
+  toggles.forEach((t, slug) => {
+    t.addEventListener('click', () => {
+      // Wider than a phone the procedure list does the switching, and the
+      // heading is inert.
+      if (!narrow.matches) return;
+      const panel = panels.find((p) => p.dataset.baPanel === slug);
+      if (panel.classList.contains('is-open')) {
+        panel.classList.remove('is-open');
+        t.setAttribute('aria-expanded', 'false');
+      } else {
+        openOnly(slug);
+        // Opening one further down should not leave its heading off-screen.
+        requestAnimationFrame(() => {
+          const top = panel.getBoundingClientRect().top + window.scrollY - 90;
+          if (panel.getBoundingClientRect().top < 0) window.scrollTo({ top, behavior: 'smooth' });
+        });
+      }
+    });
+  });
+
   /* --- switching --- */
   const show = (slug, { focus = false } = {}) => {
     const panel = panels.find((p) => p.dataset.baPanel === slug);
@@ -693,6 +730,19 @@ function initBeforeAfter() {
     if (focus) panel.querySelector('.bapanel__title')?.focus();
     return true;
   };
+
+  // The two modes keep their own state, so whichever is showing is correct the
+  // moment the viewport crosses the breakpoint.
+  const syncMode = () => {
+    if (narrow.matches) {
+      const open = panels.find((p) => p.classList.contains('is-open'));
+      openOnly((open || panels.find((p) => p.classList.contains('is-active')) || panels[0]).dataset.baPanel);
+    } else {
+      // Expanded is the only honest answer when the body is always visible.
+      toggles.forEach((t) => t.setAttribute('aria-expanded', 'true'));
+    }
+  };
+  narrow.addEventListener('change', syncMode);
 
   panels.forEach((p) => {
     const h = p.querySelector('.bapanel__title');
@@ -715,6 +765,7 @@ function initBeforeAfter() {
   root.classList.add('is-live');
   const fromHash = decodeURIComponent(location.hash.slice(1));
   if (!fromHash || !show(fromHash)) show(tabs[0].dataset.baTab);
+  syncMode();
 }
 
 

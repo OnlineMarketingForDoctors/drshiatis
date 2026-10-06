@@ -6,7 +6,7 @@ export const procedures = [
     slug: 'breast-augmentation',
     label: 'Breast augmentation',
     blurb:
-      'Harmonising the breast with an implant, chosen by measurement rather than by cup size. Six patients, each shot from the angles that show what an implant actually does to a shape.',
+      'Harmonising the breast with an implant, chosen by measurement rather than by cup size, and shot from the angles that show what an implant actually does to a shape.',
     cases: [
       { n: 1, dir: '/ba/breast-augmentation/patient-01', angles: ['front', 'side-right'] },
       { n: 2, dir: '/ba/breast-augmentation/patient-02', angles: ['front', 'oblique-left', 'oblique-right'] },
@@ -48,7 +48,7 @@ export const procedures = [
     slug: 'breast-reduction',
     label: 'Breast reduction',
     blurb:
-      'The operation with the highest satisfaction rate in plastic surgery, done here on a drainless day-case protocol. Three patients, photographed from five angles each.',
+      'The operation with the highest satisfaction rate in plastic surgery, done here on a drainless day-case protocol and photographed from every angle.',
     cases: [
       { n: 1, dir: '/ba/breast-reduction/patient-01', angles: ['front', 'oblique-left', 'oblique-right', 'side-left', 'side-right'] },
       { n: 2, dir: '/ba/breast-reduction/patient-02', angles: ['front', 'oblique-left', 'side-left', 'side-right'] },
@@ -68,7 +68,7 @@ export const procedures = [
     slug: 'gynaecomastia',
     label: 'Gynaecomastia',
     blurb:
-      'Flattening a male chest that carries glandular tissue, fat or both. The largest set here, reflecting how much of this Mr Shiatis does.',
+      'Flattening a male chest that carries glandular tissue, fat or both. A large part of the practice, and one of the operations he is asked for most.',
     note:
       'The after photographs in this set were taken on the day of surgery. Surgical marker pen, dressings and early swelling are still visible, so they show what was removed rather than the settled result.',
     cases: [
@@ -116,7 +116,7 @@ export const procedures = [
     slug: 'ftm-top-surgery',
     label: 'FTM top surgery',
     blurb:
-      'Chest masculinisation, photographed from four angles.',
+      'Chest masculinisation, photographed from front, side and oblique.',
     cases: [
       { n: 1, dir: '/ba/ftm-top-surgery/patient-01', angles: ['front', 'oblique-left', 'oblique-right', 'side-right'] },
     ],

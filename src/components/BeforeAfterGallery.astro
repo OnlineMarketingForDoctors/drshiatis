@@ -46,11 +46,22 @@ const panels = procedures.map((p) => ({ ...p, pairs: pairsFor(p) }));
       <div class="bapanels">
         {panels.map((p, pi) => (
           <section class="bapanel" id={p.slug} data-ba-panel={p.slug} aria-labelledby={`${p.slug}-h`}>
-            <header class="bapanel__head">
-              <h3 class="bapanel__title" id={`${p.slug}-h`}>{p.label}</h3>
-              <p class="bapanel__blurb">{p.blurb}</p>
-              {p.note && <p class="bapanel__note">{p.note}</p>}
-            </header>
+            <h3 class="bapanel__title" id={`${p.slug}-h`}>
+              <button
+                class="bapanel__toggle"
+                type="button"
+                data-ba-acc
+                aria-expanded="true"
+                aria-controls={`${p.slug}-body`}
+              >
+                <span>{p.label}</span>
+                <svg class="bapanel__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+            </h3>
+
+            <div class="bapanel__body" id={`${p.slug}-body`}>
+            <p class="bapanel__blurb">{p.blurb}</p>
+            {p.note && <p class="bapanel__note">{p.note}</p>}
 
             <ul class="bacases">
               {p.cases.map((c, ci) => (
@@ -113,6 +124,7 @@ const panels = procedures.map((p) => ({ ...p, pairs: pairsFor(p) }));
                 </li>
               ))}
             </ul>
+            </div>
           </section>
         ))}
       </div>
@@ -174,7 +186,8 @@ const panels = procedures.map((p) => ({ ...p, pairs: pairsFor(p) }));
     opacity: 0.8;
   }
 
-  /* Panel head */
+  /* Panel head. The title is a button so a phone can collapse it; on a wider
+     screen the procedure list does the switching, so it is inert there. */
   .bapanel + .bapanel { margin-top: clamp(3.5rem, 7vw, 5.5rem); }
   .bapanel__title {
     font-family: var(--font-display);
@@ -185,7 +198,15 @@ const panels = procedures.map((p) => ({ ...p, pairs: pairsFor(p) }));
     line-height: 1.1;
     color: var(--emerald);
   }
+  .bapanel__toggle {
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    pointer-events: none;
+  }
+  .bapanel__chev { display: none; }
   .bapanel__blurb { margin-top: 0.85rem; max-width: 42em; color: var(--ink-soft); }
+  .bacases { margin-top: clamp(1.75rem, 3.5vw, 2.5rem); }
   .bapanel__note {
     margin-top: 1rem;
     max-width: 42em;
@@ -202,7 +223,6 @@ const panels = procedures.map((p) => ({ ...p, pairs: pairsFor(p) }));
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(2rem, 4vw, 3.25rem) clamp(1.5rem, 3vw, 2.5rem);
-    margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
   }
 
   /* One patient's angles */
@@ -302,36 +322,46 @@ const panels = procedures.map((p) => ({ ...p, pairs: pairsFor(p) }));
   .bagal__layout.is-live .bapanel.is-active { display: block; }
   .bagal__layout.is-live .bapanel + .bapanel { margin-top: 0; }
 
+  /* On a phone the procedures become an accordion rather than a row of chips:
+     eleven names cannot be read sideways, and a chip row hides most of them. */
   @media (max-width: 900px) {
     .bagal__layout { grid-template-columns: minmax(0, 1fr); }
-    /* The list becomes a scrolling row of chips above the photographs. */
-    .banav { position: static; }
-    .banav__label, .banav__total { display: none; }
-    .banav__list {
+    .banav { display: none; }
+
+    /* Every procedure is in the document here, open or shut. */
+    .bagal__layout.is-live .bapanel,
+    .bagal__layout.is-live .bapanel.is-active { display: block; }
+    .bagal__layout.is-live .bapanel + .bapanel { margin-top: 0; }
+
+    .bapanel { border-bottom: 1px solid rgba(184, 150, 79, 0.4); }
+    .bapanel:first-child { border-top: 1px solid rgba(184, 150, 79, 0.4); }
+    .bapanel__title { font-size: 1.35rem; }
+    .bapanel__toggle {
       display: flex;
-      gap: 0.5rem;
-      overflow-x: auto;
-      scrollbar-width: none;
-      padding-bottom: 0.25rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      width: 100%;
+      padding-block: 1.1rem;
+      pointer-events: auto;
     }
-    .banav__list::-webkit-scrollbar { display: none; }
-    .banav__item {
-      padding: 0.6rem 0.9rem;
-      border: 1px solid rgba(184, 150, 79, 0.4);
-      border-radius: 999px;
-      white-space: nowrap;
+    .bapanel__chev {
+      display: block;
+      flex: none;
+      width: 1.1rem;
+      height: 1.1rem;
+      color: var(--gold);
+      transition: rotate 0.3s var(--ease-out);
     }
-    .banav__item[aria-current='true'] {
-      background: var(--emerald);
-      border-color: var(--emerald);
-      color: var(--ivory);
-    }
-    .banav__item[aria-current='true'] .banav__name {
-      font-family: inherit;
-      font-style: normal;
-      font-size: 0.95rem;
-    }
-    .bapanel__head { margin-top: 2rem; }
+    .bapanel__toggle[aria-expanded='true'] .bapanel__chev { rotate: 180deg; }
+
+    .bapanel__body { display: none; padding-bottom: clamp(1.5rem, 4vw, 2.25rem); }
+    .bapanel.is-open .bapanel__body { display: block; }
+    .bapanel__blurb { margin-top: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bapanel__chev { transition: none; }
   }
 
   /* Four portraits across a phone is too many, so one patient to a row. */
