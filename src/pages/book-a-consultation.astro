@@ -154,6 +154,17 @@ const bring = [
   }
 
   .bhead__inner { padding-block: clamp(3.5rem, 9vw, 7rem); }
+
+  /* A full height head, like every page but the procedure categories. Only
+     where there is room beside the copy: on a phone the copy alone is most of
+     the screen, so forcing it would just open a gap. */
+  @media (min-width: 761px) {
+    .bhead__inner {
+      display: flex;
+      align-items: center;
+      min-height: min(100svh, 56rem);
+    }
+  }
   .bhead__copy { max-width: 46rem; }
   .bhead__title { margin-top: 1rem; }
   .bhead__copy .lead { margin-top: 1.5rem; max-width: 34em; }
