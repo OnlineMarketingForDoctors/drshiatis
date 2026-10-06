@@ -1,0 +1,137 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageCta from '../../components/PageCta.astro';
+import { formatDate, published } from '../../data/blog.js';
+
+export async function getStaticPaths() {
+  const posts = published(await getCollection('blog'));
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    // The next piece along, so a reader has somewhere to go at the end.
+    props: { post, next: posts[(i + 1) % posts.length] },
+  }));
+}
+
+const { post, next } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+---
+
+<Base
+  variant="solid"
+  title={`${d.title} | Mr Andreas Shiatis, Consultant Plastic Surgeon`}
+  description={d.summary}
+>
+  <article class="post">
+    <header class="post__head">
+      <div class="container post__headinner">
+        <p class="postmeta" data-reveal>
+          <span class="postmeta__cat">{d.category}</span>
+          <span class="postmeta__dot" aria-hidden="true">/</span>
+          <time datetime={d.date.toISOString()}>{formatDate(d.date)}</time>
+          <span class="postmeta__dot" aria-hidden="true">/</span>
+          <span>{d.readingTime} min read</span>
+        </p>
+        <h1 class="post__title" data-reveal>{d.title}</h1>
+        <p class="post__summary" data-reveal>{d.summary}</p>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="cover post__cover" data-img-reveal>
+        <Image src={d.cover} alt={d.coverAlt} widths={[760, 1200, 1800]}
+          sizes="(max-width: 1100px) 100vw, 1100px" loading="eager" />
+      </div>
+    </div>
+
+    <div class="container post__bodywrap">
+      <div class="prose post__body">
+        <Content />
+      </div>
+
+      <footer class="post__foot">
+        <p class="post__byline">
+          Written by the practice of Mr Andreas Shiatis, Consultant Plastic Surgeon.
+          General information, not advice about your own case.
+        </p>
+        {next && next.id !== post.id && (
+          <a class="post__next" href={`/blog/${next.id}/`}>
+            <span class="post__nextlabel">Read next</span>
+            <span class="post__nexttitle">{next.data.title}</span>
+          </a>
+        )}
+      </footer>
+    </div>
+  </article>
+
+  <PageCta
+    eyebrow="Your own case"
+    title="General here,"
+    titleEm="specific in person"
+    id="postend-title"
+    lead="What applies to you depends on your anatomy, your history and what you are actually asking for. That is a consultation rather than an article."
+  />
+</Base>
+
+<style>
+  .post__head { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.75rem, 3.5vw, 2.5rem); }
+  .post__headinner { max-width: 48rem; }
+  .post__title {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 96;
+    font-weight: 400;
+    font-size: var(--fs-h2);
+    line-height: 1.04;
+    color: var(--emerald);
+    text-wrap: balance;
+  }
+  .post__summary {
+    margin-top: 1.25rem;
+    max-width: 36em;
+    font-size: var(--fs-lead);
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .post__cover { aspect-ratio: 3 / 2; max-height: 32rem; }
+
+  .post__bodywrap { padding-block: clamp(2.5rem, 5vw, 4rem); }
+  .post__body { margin-inline: auto; }
+
+  .post__foot {
+    max-width: 42em;
+    margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .post__byline { font-size: 0.85rem; line-height: 1.6; color: var(--ink-soft); opacity: 0.85; }
+
+  .post__next {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.25);
+  }
+  .post__nextlabel {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .post__nexttitle {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-h3);
+    line-height: 1.12;
+    color: var(--emerald);
+    transition: color 0.3s;
+  }
+  .post__next:hover .post__nexttitle { color: var(--navy-soft); }
+</style>

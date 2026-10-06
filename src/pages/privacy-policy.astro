@@ -315,55 +315,6 @@ import { legal, sections, bases, trackers } from '../data/privacy.js';
   }
   .legal__nav a:hover { color: var(--emerald); }
 
-  /* The document */
-  .prose { max-width: 42em; }
-  .prose :global(h2) {
-    margin-top: clamp(2.5rem, 5vw, 3.5rem);
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(184, 150, 79, 0.4);
-    font-family: var(--font-display);
-    font-variation-settings: 'opsz' 72;
-    font-style: italic;
-    font-weight: 500;
-    font-size: var(--fs-h3);
-    line-height: 1.1;
-    color: var(--emerald);
-    /* Clears the sticky bar when a contents link jumps here. */
-    scroll-margin-top: 6rem;
-  }
-  .prose :global(h2:first-child) { margin-top: 0; padding-top: 0; border-top: none; }
-  .prose :global(p) { margin-top: 1rem; color: var(--ink-soft); }
-  .prose :global(ul) { margin-top: 1rem; display: grid; gap: 0.75rem; }
-  .prose :global(li) {
-    position: relative;
-    padding-left: 1.4rem;
-    color: var(--ink-soft);
-  }
-  .prose :global(li)::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.65em;
-    width: 0.4rem;
-    height: 1px;
-    background: var(--gold);
-  }
-  .prose :global(strong) { color: var(--emerald); font-weight: 500; }
-  .prose :global(a) {
-    color: var(--emerald);
-    border-bottom: 1px solid rgba(184, 150, 79, 0.6);
-    transition: border-color 0.25s;
-  }
-  .prose :global(a:hover) { border-color: var(--emerald); }
-  .prose :global(.prose__choice) { margin-top: 1.5rem; }
-  .prose :global(.prose__note) {
-    margin-top: 1.25rem;
-    padding: 0.85rem 1.1rem;
-    border-left: 2px solid var(--gold);
-    background: rgba(184, 150, 79, 0.08);
-    font-size: 0.9rem;
-  }
-
   /* Lawful bases */
   .basis { margin-top: 1.75rem; }
   .basis__row {

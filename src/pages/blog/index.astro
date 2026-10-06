@@ -1,0 +1,174 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import PageCta from '../../components/PageCta.astro';
+import { formatDate, published } from '../../data/blog.js';
+
+const posts = published(await getCollection('blog'));
+const [lead, ...rest] = posts;
+---
+
+<Base
+  variant="solid"
+  title="Journal | Mr Andreas Shiatis, Consultant Plastic Surgeon"
+  description="Writing from the practice of Mr Andreas Shiatis, Consultant Plastic Surgeon in London: what to ask before you book, what a consultation involves, and how results are assessed."
+>
+  <PageHead
+    eyebrow="Journal"
+    title="Written between"
+    titleEm="operating lists"
+    id="bloghead-title"
+    lead="Occasional pieces from the practice. Less about procedures, which are covered elsewhere on the site, and more about the things people wish they had known before they walked in."
+  />
+
+  {posts.length === 0 ? (
+    <section class="section">
+      <div class="container">
+        <p class="blog__empty">The first pieces are being written. Do come back.</p>
+      </div>
+    </section>
+  ) : (
+    <section class="section" aria-label="Posts">
+      <div class="container">
+        <a class="lead-post" href={`/blog/${lead.id}/`} data-reveal>
+          <div class="cover lead-post__img" data-img-reveal>
+            <Image src={lead.data.cover} alt={lead.data.coverAlt} widths={[640, 1000, 1400]}
+              sizes="(max-width: 900px) 100vw, 56vw" loading="eager" />
+          </div>
+          <div class="lead-post__body">
+            <p class="postmeta">
+              <span class="postmeta__cat">{lead.data.category}</span>
+              <span class="postmeta__dot" aria-hidden="true">/</span>
+              <time datetime={lead.data.date.toISOString()}>{formatDate(lead.data.date)}</time>
+              <span class="postmeta__dot" aria-hidden="true">/</span>
+              <span>{lead.data.readingTime} min read</span>
+            </p>
+            <h2 class="lead-post__title">{lead.data.title}</h2>
+            <p class="lead-post__summary">{lead.data.summary}</p>
+            <span class="link-rule">Read it</span>
+          </div>
+        </a>
+
+        {rest.length > 0 && (
+          <ul class="postgrid" style={`--postgrid-cols:${Math.min(rest.length, 3)}`} data-reveal-group>
+            {rest.map((p) => (
+              <li data-reveal>
+                <a class="postcard" href={`/blog/${p.id}/`}>
+                  <div class="cover postcard__img" data-img-reveal>
+                    <Image src={p.data.cover} alt={p.data.coverAlt} widths={[400, 800]}
+                      sizes="(max-width: 760px) 100vw, 30vw" loading="lazy" />
+                  </div>
+                  <p class="postmeta postcard__meta">
+                    <span class="postmeta__cat">{p.data.category}</span>
+                    <span class="postmeta__dot" aria-hidden="true">/</span>
+                    <span>{p.data.readingTime} min read</span>
+                  </p>
+                  <h2 class="postcard__title">{p.data.title}</h2>
+                  <p class="postcard__summary">{p.data.summary}</p>
+                  <time class="postcard__date" datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  )}
+
+  <PageCta
+    eyebrow="Rather ask in person"
+    title="Bring the question"
+    titleEm="to a consultation"
+    id="blogend-title"
+    lead="Anything here is general by necessity. What applies to you depends on your own anatomy and your own history, which is a conversation rather than an article."
+  />
+</Base>
+
+<style is:global>
+  /* Shared by the index and the post pages. */
+  .postmeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .postmeta__cat { color: var(--gold); }
+  .postmeta__dot { color: var(--gold); opacity: 0.6; }
+</style>
+
+<style>
+  .blog__empty { font-size: var(--fs-lead); color: var(--ink-soft); }
+
+  .lead-post {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(1.75rem, 4vw, 3.5rem);
+    align-items: center;
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .lead-post__img { aspect-ratio: 3 / 2; }
+  .lead-post__title {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-h2);
+    line-height: 1.08;
+    color: var(--emerald);
+    text-wrap: balance;
+    transition: color 0.3s;
+  }
+  .lead-post__summary { margin-top: 1rem; max-width: 34em; color: var(--ink-soft); }
+  .lead-post .link-rule { margin-top: 1.5rem; display: inline-block; }
+  .lead-post:hover .lead-post__title { color: var(--navy-soft); }
+
+  /* Driven by how many there are, so two posts fill the row rather than
+     leaving a third of it empty while the blog is young. */
+  .postgrid {
+    display: grid;
+    grid-template-columns: repeat(var(--postgrid-cols, 3), minmax(0, 1fr));
+    gap: clamp(2.25rem, 4vw, 3.5rem) clamp(1.75rem, 3vw, 2.75rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .postcard__img { aspect-ratio: 3 / 2; }
+  .postcard__meta { margin-top: 1.1rem; }
+  .postcard__title {
+    margin-top: 0.6rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: var(--fs-h3);
+    line-height: 1.12;
+    color: var(--emerald);
+    text-wrap: balance;
+    transition: color 0.3s;
+  }
+  .postcard__summary { margin-top: 0.75rem; font-size: 0.95rem; color: var(--ink-soft); }
+  .postcard__date {
+    display: block;
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    opacity: 0.8;
+  }
+  .postcard:hover .postcard__title { color: var(--navy-soft); }
+
+  @media (max-width: 900px) {
+    .lead-post { grid-template-columns: minmax(0, 1fr); }
+    .postgrid { grid-template-columns: repeat(min(var(--postgrid-cols, 3), 2), minmax(0, 1fr)); }
+  }
+  @media (max-width: 620px) {
+    .postgrid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
