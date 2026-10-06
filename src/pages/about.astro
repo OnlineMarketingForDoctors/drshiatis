@@ -71,15 +71,15 @@ const path = [
   },
 ];
 
-// What he treats. A slug links through to that procedure on the old site;
-// the rest are things it has no page for and stay as plain text.
+// What he treats. A slug links through to that procedure on the old site, a
+// third entry to its page here; the rest have no page and stay as plain text.
 const OLD = 'https://www.drshiatis.com/news';
 const groups = [
   {
     title: 'Breast',
     items: [
       ['Breast reduction', 'breast-reduction'],
-      ['Breast augmentation', 'breast-augmentation'],
+      ['Breast augmentation', 'breast-augmentation', '/breast-augmentation'],
       ['Breast uplift (mastopexy)', 'mastopexy-(breast-lift)'],
       ['Uplift with implants (augmentation mastopexy)', 'augmentation-mastopexy-(breast-lift-with-implants)'],
       ['Preserve short-scar augmentation'],
@@ -121,7 +121,7 @@ const groups = [
   },
 ].map((g) => ({
   ...g,
-  items: g.items.map(([name, slug]) => ({ name, href: slug ? `${OLD}/${slug}` : null })),
+  items: g.items.map(([name, slug, here]) => ({ name, href: here ?? (slug ? `${OLD}/${slug}` : null) })),
 }));
 
 const tech = [
@@ -152,6 +152,9 @@ const tech = [
 ];
 
 const regions = ['London', 'Surrey', 'Sussex', 'Hampshire', 'Hertfordshire', 'Kent', 'Essex'];
+// Links that leave the site open in a new tab; pages here do not.
+const ext = (href) => (href.startsWith('http') ? '_blank' : null);
+const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
 ---
 
 <Base
@@ -371,7 +374,7 @@ const regions = ['London', 'Surrey', 'Sussex', 'Hampshire', 'Hertfordshire', 'Ke
               {g.items.map((item) => (
                 <li>
                   {item.href ? (
-                    <a class="treats__link" href={item.href} target="_blank" rel="noopener">
+                    <a class="treats__link" href={item.href} target={ext(item.href)} rel={rel(item.href)}>
                       {item.name}
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
                     </a>

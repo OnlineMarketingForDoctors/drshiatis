@@ -1,7 +1,7 @@
 ---
 // The main menu for both desktop bars. Categories with procedures carry a
-// panel that opens on hover or keyboard focus; the procedure links go to the
-// old site, so they open in a new tab.
+// panel that opens on hover or keyboard focus. Procedures without a page here
+// yet link to the old site, and those open in a new tab.
 import { menu } from '../data/menu.js';
 
 interface Props {
@@ -10,6 +10,9 @@ interface Props {
   variant?: 'header' | 'bar';
 }
 const { path = '', variant = 'header' } = Astro.props;
+// Links that leave the site open in a new tab; pages here do not.
+const ext = (href) => (href.startsWith('http') ? '_blank' : null);
+const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
 ---
 
 <ul class:list={['navlist', `navlist--${variant}`]}>
@@ -30,7 +33,7 @@ const { path = '', variant = 'header' } = Astro.props;
                 {col.title && <p class="dropdown__heading">{col.title}</p>}
                 <ul class="dropdown__list">
                   {col.items.map((p) => (
-                    <li><a href={p.href} target="_blank" rel="noopener">{p.name}</a></li>
+                    <li><a href={p.href} target={ext(p.href)} rel={rel(p.href)}>{p.name}</a></li>
                   ))}
                 </ul>
               </div>

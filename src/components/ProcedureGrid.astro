@@ -19,6 +19,9 @@ interface Props {
   more?: string;
 }
 const { items, label = 'Procedures', columns = 3, more = 'More on this' } = Astro.props;
+// Links that leave the site open in a new tab; pages here do not.
+const ext = (href) => (href.startsWith('http') ? '_blank' : null);
+const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
 ---
 
 <section class="pgrid section" aria-label={label}>
@@ -40,7 +43,7 @@ const { items, label = 'Procedures', columns = 3, more = 'More on this' } = Astr
               <div><dt>What to expect</dt><dd>{t.detail}</dd></div>
             </dl>
 
-            <a class="pcard__more" href={t.href} target="_blank" rel="noopener">
+            <a class="pcard__more" href={t.href} target={ext(t.href)} rel={rel(t.href)}>
               {more}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
             </a>

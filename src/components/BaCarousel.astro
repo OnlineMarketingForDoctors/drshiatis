@@ -1,0 +1,176 @@
+---
+// Before and after, two patients at a time. Each slide is one patient's pair
+// with its own caption; the track is a scroll-snap row so it swipes natively
+// and the arrows are an enhancement on top.
+import { angleLabels } from '../data/beforeafter.js';
+
+interface Props { procedure: any; label: string; href?: string }
+const { procedure, label, href = '/before-and-after' } = Astro.props;
+
+// One slide per patient, using the angle that reads most clearly.
+const slides = procedure.cases.map((c) => ({
+  ...c,
+  angle: c.angles.includes('front') ? 'front' : c.angles[0],
+}));
+---
+
+<div class="bacar" data-bacar>
+  <div class="bacar__stage">
+  <ul class="bacar__track" data-bacar-track tabindex="0" aria-label={`${label}, before and after`}>
+    {slides.map((s) => (
+      <li class="bacar__slide" data-bacar-slide>
+        <div class="bacar__pair">
+          <figure class="cover bacar__shot">
+            <img src={`${s.dir}/before-${s.angle}.webp`} alt={`${label}, patient ${s.n}, before surgery`} width="1200" height="1500" loading="lazy" decoding="async" />
+            <figcaption>Before</figcaption>
+          </figure>
+          <figure class="cover bacar__shot">
+            <img src={`${s.dir}/after-${s.angle}.webp`} alt={`${label}, patient ${s.n}, after surgery`} width="1200" height="1500" loading="lazy" decoding="async" />
+            <figcaption class="bacar__after">After</figcaption>
+          </figure>
+        </div>
+        <p class="bacar__cap">
+          <span>Patient {s.n}</span>
+          <span class="bacar__sep" aria-hidden="true">/</span>
+          <span class="bacar__angle">{angleLabels[s.angle]} view</span>
+        </p>
+      </li>
+    ))}
+  </ul>
+
+    <!-- The gallery page warns before showing these, so this page does too. -->
+    <div class="bacar__veil" data-bacar-veil hidden>
+      <div class="bacar__veil-inner">
+        <p class="eyebrow eyebrow--gold">Please read first</p>
+        <p class="bacar__veil-body">
+          These are unretouched clinical photographs, including nudity, taken for medical
+          records and published with each patient&rsquo;s written consent. Results vary from
+          person to person.
+        </p>
+        <button class="btn btn--solid" type="button" data-bacar-reveal>Show the results</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bacar__foot">
+    <div class="bacar__controls" data-bacar-controls hidden>
+      <button class="bacar__arrow" type="button" data-bacar-prev aria-label="Previous patients">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+      </button>
+      <p class="bacar__count" data-bacar-count aria-live="polite"></p>
+      <button class="bacar__arrow" type="button" data-bacar-next aria-label="Next patients">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+      </button>
+    </div>
+    <a class="link-rule" href={href}>See the full gallery</a>
+  </div>
+</div>
+
+<style>
+  .bacar__track {
+    display: flex;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    min-width: 0;
+  }
+  .bacar__track::-webkit-scrollbar { display: none; }
+  .bacar__track:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+  /* Two patients to a view, so each slide is half the row less the gap. */
+  .bacar__slide {
+    flex: 0 0 calc((100% - clamp(1.5rem, 3vw, 2.5rem)) / 2);
+    scroll-snap-align: start;
+  }
+  .bacar__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .bacar__shot { position: relative; background: var(--ivory-2); }
+  .bacar__shot img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+  .bacar__shot figcaption {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 0.35rem 0.7rem;
+    background: rgba(9, 29, 56, 0.82);
+    color: var(--ivory);
+    font-size: 0.56rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .bacar__after { background: var(--gold) !important; color: var(--emerald-deep) !important; }
+
+  .bacar__cap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.9rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--emerald);
+  }
+  .bacar__sep { color: var(--gold); }
+  .bacar__angle { color: var(--ink-soft); }
+
+  .bacar__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .bacar__controls { display: flex; align-items: center; gap: 1rem; }
+  .bacar__arrow {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid rgba(184, 150, 79, 0.5);
+    border-radius: 50%;
+    color: var(--emerald);
+    transition: background 0.3s, color 0.3s, border-color 0.3s, opacity 0.3s;
+  }
+  .bacar__arrow svg { width: 1rem; height: 1rem; }
+  .bacar__arrow:hover:not(:disabled) { background: var(--emerald); border-color: var(--emerald); color: var(--ivory); }
+  .bacar__arrow:disabled { opacity: 0.3; cursor: default; }
+  .bacar__count {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The warning, over the photographs until it is dismissed. */
+  .bacar__stage { position: relative; }
+  .bacar.is-veiled .bacar__track { overflow: hidden; }
+  .bacar.is-veiled .bacar__shot img { filter: blur(26px); transform: scale(1.06); }
+  .bacar.is-veiled .bacar__shot figcaption,
+  .bacar.is-veiled .bacar__cap { opacity: 0; }
+  .bacar__veil {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    background: rgba(244, 238, 228, 0.72);
+  }
+  .bacar__veil-inner { max-width: 32rem; text-align: center; }
+  .bacar__veil-body {
+    margin: 0.9rem 0 1.5rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* One patient at a time once two no longer fit. */
+  @media (max-width: 760px) {
+    .bacar__slide { flex: 0 0 100%; }
+  }
+</style>

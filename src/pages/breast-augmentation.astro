@@ -1,0 +1,649 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Reviews from '../components/Reviews.astro';
+import SectionNav from '../components/SectionNav.astro';
+import BaCarousel from '../components/BaCarousel.astro';
+import Meet from '../components/Meet.astro';
+import PageCta from '../components/PageCta.astro';
+import { site } from '../data/site.js';
+import {
+  hero, sections, gallery, glance, benefits, candidates,
+  steps, recovery, risks, faqs, cost, why,
+} from '../data/breast-augmentation.js';
+
+const icons = {
+  clock: 'M12 7v5l3 2M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18Z',
+  moon: 'M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z',
+  home: 'M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z',
+  case: 'M3 8h18v12H3zM9 8V5h6v3',
+  car: 'M12 3 20 20l-8-4-8 4Z',
+  activity: 'M3 12h4l2.5-7 4 14L16 12h5',
+  shield: 'M12 3 20 6v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6Z',
+  check: 'M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18Zm-3.5-9 2.5 2.5L16 9',
+  pin: 'M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Zm0-8.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z',
+  tag: 'M3 12V4h8l9 9-8 8-9-9Zm4.5-4.5h.01',
+};
+---
+
+<Base
+  variant="solid"
+  path="/breast-augmentation"
+  title="Breast Augmentation London | Mr Andreas Shiatis, Consultant Plastic Surgeon"
+  description="Breast augmentation with Mr Andreas Shiatis FRCS (Plast), Consultant Plastic Surgeon in London. Implants chosen by measurement, two consultations before any decision, from £6,000."
+>
+  <!-- Hero -->
+  <PageHead
+    eyebrow={hero.eyebrow}
+    title={hero.title}
+    titleEm={hero.titleEm}
+    id="bahead-title"
+    img="/images/ba-hero.webp"
+    imgPosition="50% 40%"
+    imgMobile="/images/ba-hero-mobile.webp"
+    scrim="left"
+    full
+    lead={hero.lead}
+  >
+    <ul class="herolist" data-reveal>
+      {hero.points.map((p) => (
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L19 7"/></svg>
+          <span>{p}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="phead__actions" data-reveal>
+      <a class="btn btn--ivory" href={site.bookingHref}>
+        Book a consultation
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn--outline-light" href="#before-after">See before and after</a>
+    </div>
+  </PageHead>
+
+  <!-- Reviews -->
+  <Reviews />
+
+  <!-- In-page nav -->
+  <SectionNav sections={sections} />
+
+  <!-- Medical review line -->
+  <p class="medrev">
+    This content has been medically reviewed by {site.surgeon} (GMC number {site.gmc}),
+    {site.qualifications}, Consultant Plastic and Reconstructive Surgeon.
+  </p>
+
+  <!-- Before and after -->
+  <section class="section" id="before-after" aria-labelledby="ba-title">
+    <div class="container">
+      <header class="shead">
+        <p class="eyebrow eyebrow--gold" data-reveal>Before and after</p>
+        <h2 class="h2 shead__title" id="ba-title" data-reveal>His own patients, <em class="italic">his own results</em></h2>
+        <p class="shead__lead" data-reveal>
+          Photographed in clinic from the same angles before and after, published with written
+          consent, cropped but otherwise untouched.
+        </p>
+      </header>
+      <BaCarousel procedure={gallery} label="Breast augmentation" href="/before-and-after#breast-augmentation" />
+    </div>
+  </section>
+
+  <!-- Overview -->
+  <section class="section bg-ivory-2" id="overview" aria-labelledby="ov-title">
+    <div class="container split">
+      <div class="split__copy">
+        <p class="eyebrow eyebrow--gold" data-reveal>Overview</p>
+        <h2 class="h2 shead__title" id="ov-title" data-reveal>What breast augmentation <em class="italic">actually is</em></h2>
+        <div class="prose split__prose" data-reveal>
+          <p>
+            An operation that increases the size of the breast, and reshapes it, using an implant
+            placed through a short incision in the fold underneath. It is the most commonly
+            performed cosmetic operation in the world, and the one most often done badly, because
+            the decision that matters is made before theatre rather than in it.
+          </p>
+          <p>
+            That decision is which implant, in which plane, for your particular chest. Mr Shiatis
+            plans it by measurement: chest width, the width of your own breast base, how much
+            tissue there is to cover an implant and how elastic your skin is. Those numbers narrow
+            the sensible range considerably before anybody discusses a look.
+          </p>
+          <p>
+            He offers breast harmonisation through traditional augmentation alongside the latest
+            tissue preservation technique, Preserve. Which suits you is a conversation, not a
+            product you choose from a list.
+          </p>
+        </div>
+      </div>
+      <figure class="split__fig" data-reveal>
+        <div class="cover split__img" data-img-reveal>
+          <img src="/images/ba-consult.webp" alt="A tape measure, surgical marker and sizing discs on a consulting desk" width="1800" height="1200" loading="lazy" decoding="async" />
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- At a glance -->
+  <section class="section" id="at-a-glance" aria-labelledby="gl-title">
+    <div class="container">
+      <header class="shead shead--centre">
+        <h2 class="h2 shead__title" id="gl-title" data-reveal>Breast augmentation <em class="italic">at a glance</em></h2>
+        <p class="shead__lead" data-reveal>
+          A snapshot of what to expect. Every plan is individual, so Mr Shiatis confirms your own
+          timings at your consultation.
+        </p>
+      </header>
+
+      <ul class="glance" data-reveal-group>
+        {glance.map((g) => (
+          <li class="glance__item" data-reveal>
+            <svg class="glance__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[g.icon]}/></svg>
+            <div>
+              <p class="glance__label">{g.label}</p>
+              <p class="glance__value">{g.value}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section class="section bg-emerald on-dark" id="benefits" aria-labelledby="bn-title">
+    <div class="container">
+      <header class="shead">
+        <p class="eyebrow" data-reveal>Benefits</p>
+        <h2 class="h2 shead__title" id="bn-title" data-reveal>What it is <em class="italic">good for</em></h2>
+      </header>
+      <ol class="cards" data-reveal-group>
+        {benefits.map((b, i) => (
+          <li class="card" data-reveal>
+            <span class="card__n italic" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="card__title">{b.title}</h3>
+            <p class="card__text">{b.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Candidates -->
+  <section class="section" id="candidates" aria-labelledby="cd-title">
+    <div class="container">
+      <header class="shead">
+        <p class="eyebrow eyebrow--gold" data-reveal>Suitability</p>
+        <h2 class="h2 shead__title" id="cd-title" data-reveal>Am I a suitable <em class="italic">candidate</em></h2>
+      </header>
+      <div class="twocol" data-reveal-group>
+        <div class="suit suit--yes" data-reveal>
+          <h3 class="suit__title">Usually a good fit if</h3>
+          <ul>{candidates.yes.map((c) => <li>{c}</li>)}</ul>
+        </div>
+        <div class="suit suit--no" data-reveal>
+          <h3 class="suit__title">Worth discussing first if</h3>
+          <ul>{candidates.no.map((c) => <li>{c}</li>)}</ul>
+        </div>
+      </div>
+      <p class="suit__note" data-reveal>
+        None of these is a verdict. They are the things Mr Shiatis will want to talk through, and
+        if surgery is not the right answer for you he will say so.
+      </p>
+    </div>
+  </section>
+
+  <!-- Procedure -->
+  <section class="section bg-ivory-2" id="procedure" aria-labelledby="pr-title">
+    <div class="container split split--flip">
+      <div class="split__copy">
+        <p class="eyebrow eyebrow--gold" data-reveal>The operation</p>
+        <h2 class="h2 shead__title" id="pr-title" data-reveal>What it <em class="italic">involves</em></h2>
+        <div class="prose split__prose" data-reveal>
+          <p>
+            You are marked up standing and in daylight before you go anywhere near theatre, because
+            the plan has to work on a body that is upright rather than lying down.
+          </p>
+          <p>
+            Under general anaesthetic, a short incision is made in the fold beneath the breast,
+            where the scar sits hidden. A pocket is created in the chosen plane, the implant is
+            placed through a sleeve that keeps it from touching skin, and the position is checked
+            with you sat up on the table before closing.
+          </p>
+          <p>
+            About an hour and a half. No drains in a routine case. You wake in recovery, go back to
+            your own room, and most patients are home the same evening.
+          </p>
+        </div>
+      </div>
+      <figure class="split__fig" data-reveal>
+        <div class="cover split__img" data-img-reveal>
+          <img src="/images/ba-implants.webp" alt="A round implant and a teardrop implant side by side on a dark surface" width="1800" height="1200" loading="lazy" decoding="async" />
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Implants -->
+  <section class="section" id="implants" aria-labelledby="im-title">
+    <div class="container">
+      <header class="shead">
+        <p class="eyebrow eyebrow--gold" data-reveal>Implants</p>
+        <h2 class="h2 shead__title" id="im-title" data-reveal>Round, or <em class="italic">teardrop</em></h2>
+      </header>
+      <div class="twocol" data-reveal-group>
+        <div class="opt" data-reveal>
+          <h3 class="opt__title">Round</h3>
+          <p class="opt__text">Equal fullness top and bottom, which gives more cleavage and a fuller upper pole.</p>
+          <dl class="opt__meta">
+            <div><dt>Suits</dt><dd>Patients wanting visible fullness above the nipple</dd></div>
+            <div><dt>In its favour</dt><dd>Cannot distort by rotating, since it is the same shape all the way round</dd></div>
+            <div><dt>Against</dt><dd>Can look obviously augmented on a slim frame with little natural tissue</dd></div>
+          </dl>
+        </div>
+        <div class="opt" data-reveal>
+          <h3 class="opt__title">Teardrop</h3>
+          <p class="opt__text">Contoured to the natural slope of a breast, tapered at the top and full at the base.</p>
+          <dl class="opt__meta">
+            <div><dt>Suits</dt><dd>Slimmer patients, and anyone wanting the result not to announce itself</dd></div>
+            <div><dt>In its favour</dt><dd>The most natural profile, particularly with little natural breast tissue</dd></div>
+            <div><dt>Against</dt><dd>Must sit exactly right, because a rotation shows</dd></div>
+          </dl>
+        </div>
+      </div>
+      <p class="suit__note" data-reveal>
+        Mr Shiatis also offers Preserve, a tissue preservation technique used alongside traditional
+        augmentation where it suits the patient. Whether it applies to you is discussed at
+        consultation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Placement -->
+  <section class="section bg-emerald on-dark" id="placement" aria-labelledby="pl-title">
+    <div class="container">
+      <header class="shead">
+        <p class="eyebrow" data-reveal>Placement</p>
+        <h2 class="h2 shead__title" id="pl-title" data-reveal>Above, below, <em class="italic">or both</em></h2>
+        <p class="shead__lead" data-reveal>
+          Which plane the implant sits in changes how it looks, how it feels and how long you take
+          to recover. The diagrams are schematic, not anatomical drawings.
+        </p>
+      </header>
+
+      <ul class="planes" data-reveal-group>
+        {[
+          { t: 'Subglandular', s: 'Above the muscle', d: 'Between breast tissue and chest muscle. Shorter recovery and easier access later, but rippling can show where there is little tissue or thin skin.', y: 34 },
+          { t: 'Submuscular', s: 'Below the muscle', d: 'Under the pectoral muscle. More natural look and feel, less rippling, less interference with mammograms. Longer and more uncomfortable recovery.', y: 56 },
+          { t: 'Dual plane', s: 'Both', d: 'Upper part under the muscle, lower part under breast tissue. The natural look of submuscular with the shape of subglandular, and the usual answer for mild sagging.', y: 45 },
+        ].map((p) => (
+          <li class="plane" data-reveal>
+            <svg class="plane__dia" viewBox="0 0 120 80" role="img" aria-label={`${p.t}: ${p.s}`}>
+              <path d="M0 24 H120" stroke="currentColor" stroke-width="1.5" opacity="0.35" />
+              <path d="M0 40 H120" stroke="currentColor" stroke-width="3" opacity="0.6" />
+              <path d="M0 62 H120" stroke="currentColor" stroke-width="2.5" opacity="0.9" />
+              <ellipse cx="60" cy={p.y} rx="26" ry="11" fill="currentColor" opacity="0.32" />
+              <ellipse cx="60" cy={p.y} rx="26" ry="11" fill="none" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+            <h3 class="plane__title">{p.t}</h3>
+            <p class="plane__sub">{p.s}</p>
+            <p class="plane__text">{p.d}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="planes__key" data-reveal>Skin, then breast tissue, then muscle, then the chest wall. The shaded shape is the implant.</p>
+    </div>
+  </section>
+
+  <!-- Journey -->
+  <section class="section" id="journey" aria-labelledby="jr-title">
+    <div class="container">
+      <header class="shead">
+        <p class="eyebrow eyebrow--gold" data-reveal>Your journey</p>
+        <h2 class="h2 shead__title" id="jr-title" data-reveal>From enquiry <em class="italic">to settled</em></h2>
+      </header>
+      <ol class="steps" data-reveal-group>
+        {steps.map((s) => (
+          <li class="step" data-reveal>
+            <span class="step__n italic" aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
+            <div>
+              <h3 class="step__title">{s.title}</h3>
+              <p class="step__text">{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Recovery -->
+  <section class="section bg-ivory-2" id="recovery" aria-labelledby="rc-title">
+    <div class="container split">
+      <div class="split__copy">
+        <p class="eyebrow eyebrow--gold" data-reveal>Recovery</p>
+        <h2 class="h2 shead__title" id="rc-title" data-reveal>Recovery and <em class="italic">aftercare</em></h2>
+        <dl class="timeline" data-reveal-group>
+          {recovery.map((r) => (
+            <div class="timeline__row" data-reveal>
+              <dt>{r.when}</dt>
+              <dd>{r.text}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <figure class="split__fig" data-reveal>
+        <div class="cover split__img split__img--tall" data-img-reveal>
+          <img src="/images/ba-recovery.webp" alt="A bed made up with ivory linen, books and tea on the bedside table" width="1800" height="1200" loading="lazy" decoding="async" />
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Risks -->
+  <section class="section" id="risks" aria-labelledby="rk-title">
+    <div class="container">
+      <header class="shead">
+        <p class="eyebrow eyebrow--gold" data-reveal>Risks</p>
+        <h2 class="h2 shead__title" id="rk-title" data-reveal>Possible risks and <em class="italic">complications</em></h2>
+        <p class="shead__lead" data-reveal>
+          Every operation carries risk, and a surgeon who implies otherwise is not worth seeing.
+          These are gone through in full, in writing, before you consent.
+        </p>
+      </header>
+      <div class="risks" data-reveal-group>
+        {[['Expected', risks.common], ['Uncommon', risks.uncommon], ['Rare', risks.rare]].map(([t, list]) => (
+          <div class="risk" data-reveal>
+            <h3 class="risk__title">{t}</h3>
+            <ul>{list.map((r) => <li>{r}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Mr Shiatis -->
+  <section class="section bg-emerald on-dark" id="surgeon" aria-labelledby="wh-title">
+    <div class="container">
+      <header class="shead">
+        <p class="eyebrow" data-reveal>Why him</p>
+        <h2 class="h2 shead__title" id="wh-title" data-reveal>Why choose Mr Shiatis <em class="italic">for this</em></h2>
+      </header>
+      <ul class="cards" data-reveal-group>
+        {why.map((w, i) => (
+          <li class="card" data-reveal>
+            <span class="card__n italic" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="card__title">{w.title}</h3>
+            <p class="card__text">{w.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Meet />
+
+  <!-- Cost -->
+  <section class="section bg-ivory-2" id="cost" aria-labelledby="co-title">
+    <div class="container">
+      <header class="shead">
+        <p class="eyebrow eyebrow--gold" data-reveal>Cost</p>
+        <h2 class="h2 shead__title" id="co-title" data-reveal>How much does it <em class="italic">cost</em></h2>
+      </header>
+      <div class="costbox" data-reveal>
+        <p class="costbox__from"><span>From</span> <strong>{cost.from}</strong></p>
+        <div class="costbox__inc">
+          <h3 class="costbox__title">What that includes</h3>
+          <ul>{cost.includes.map((c) => <li>{c}</li>)}</ul>
+          <p class="costbox__note">{cost.notes}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="section" id="faqs" aria-labelledby="fq-title">
+    <div class="container faqwrap">
+      <header class="shead">
+        <p class="eyebrow eyebrow--gold" data-reveal>Questions</p>
+        <h2 class="h2 shead__title" id="fq-title" data-reveal>Frequently asked <em class="italic">questions</em></h2>
+      </header>
+      <div class="faqs" data-reveal-group>
+        {faqs.map((f) => (
+          <details class="faq" data-reveal>
+            <summary>
+              <span>{f.q}</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <PageCta
+    eyebrow="Next step"
+    title="Book your breast augmentation"
+    titleEm="consultation"
+    id="baend-title"
+    lead="Two consultations with Mr Shiatis before any decision, and nothing booked or paid for on the day you first meet. Bring your questions, written down."
+  />
+</Base>
+
+<style is:global>
+  /* Hero selling points, which sit in the head's slot. */
+  .herolist { display: grid; gap: 0.6rem; margin-top: 1.75rem; }
+  .herolist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: rgba(244, 238, 228, 0.92);
+  }
+  .herolist svg { flex: none; width: 1rem; height: 1rem; margin-top: 0.25rem; color: var(--gold-light); }
+</style>
+
+<style>
+  /* Anchor jumps land below the site bar and the section nav, not under them. */
+  .section[id] { scroll-margin-top: 7.5rem; }
+
+  /* Shared section furniture */
+  .shead { max-width: 46rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .shead--centre { margin-inline: auto; text-align: center; }
+  .shead__title { margin-top: 0.9rem; }
+  .shead__lead { margin-top: 1.1rem; font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); }
+  .on-dark .shead__lead { color: rgba(244, 238, 228, 0.82); }
+  .split__prose { margin-top: 1.25rem; }
+
+  /* The medical review line */
+  .medrev {
+    width: min(100% - 2.5rem, 48rem);
+    margin: clamp(2rem, 4vw, 3rem) auto 0;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    text-align: center;
+    color: var(--ink-soft);
+    opacity: 0.85;
+  }
+
+  /* Split screen */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .split--flip .split__fig { order: -1; }
+  .split__img { aspect-ratio: 3 / 2; }
+  .split__img--tall { aspect-ratio: 4 / 5; }
+
+  /* At a glance */
+  .glance {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 clamp(2rem, 5vw, 4.5rem);
+    max-width: 62rem;
+    margin-inline: auto;
+  }
+  .glance__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.1rem;
+    padding-block: clamp(1.1rem, 2vw, 1.5rem);
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .glance__icon { flex: none; width: 1.6rem; height: 1.6rem; color: var(--gold); margin-top: 0.15rem; }
+  .glance__label { font-weight: 500; color: var(--emerald); }
+  .glance__value { margin-top: 0.25rem; font-size: 0.95rem; color: var(--ink-soft); }
+
+  /* Numbered cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .card { padding-top: 1.25rem; border-top: 1px solid rgba(216, 189, 124, 0.4); }
+  .card__n { display: block; font-family: var(--font-display); font-size: 1.1rem; color: var(--gold-light); }
+  .card__title {
+    margin-top: 0.6rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.35rem;
+    line-height: 1.15;
+  }
+  .card__text { margin-top: 0.6rem; font-size: 0.92rem; line-height: 1.6; color: rgba(244, 238, 228, 0.82); }
+
+  /* Two-column lists */
+  .twocol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.75rem, 4vw, 3.5rem); }
+  .suit { padding-top: 1.25rem; border-top: 2px solid var(--gold); }
+  .suit--no { border-top-color: rgba(184, 150, 79, 0.35); }
+  .suit__title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-size: 1.35rem;
+    color: var(--emerald);
+  }
+  .suit ul { margin-top: 1rem; display: grid; gap: 0.7rem; }
+  .suit li { position: relative; padding-left: 1.4rem; font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); }
+  .suit li::before { content: ''; position: absolute; left: 0; top: 0.7em; width: 0.5rem; height: 1px; background: var(--gold); }
+  .suit__note { margin-top: clamp(1.75rem, 3vw, 2.5rem); max-width: 44em; font-size: 0.92rem; color: var(--ink-soft); }
+
+  /* Implant options */
+  .opt { padding-top: 1.25rem; border-top: 2px solid var(--gold); }
+  .opt__title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-size: var(--fs-h3);
+    color: var(--emerald);
+  }
+  .opt__text { margin-top: 0.7rem; color: var(--ink-soft); }
+  .opt__meta { display: grid; gap: 0.9rem; margin-top: 1.25rem; padding-top: 1.1rem; border-top: 1px solid rgba(184, 150, 79, 0.3); }
+  .opt__meta dt { font-size: 0.64rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+  .opt__meta dd { margin: 0.25rem 0 0; font-size: 0.92rem; line-height: 1.5; color: var(--ink-soft); }
+
+  /* Placement */
+  .planes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.75rem, 4vw, 3rem); }
+  .plane__dia { width: 100%; height: auto; color: var(--gold-light); background: rgba(9, 29, 56, 0.35); padding: 0.5rem; }
+  .plane__title {
+    margin-top: 1.1rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-size: 1.35rem;
+  }
+  .plane__sub { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-light); margin-top: 0.3rem; }
+  .plane__text { margin-top: 0.7rem; font-size: 0.92rem; line-height: 1.6; color: rgba(244, 238, 228, 0.82); }
+  .planes__key { margin-top: 1.75rem; font-size: 0.8rem; color: rgba(244, 238, 228, 0.6); }
+
+  /* Journey */
+  .steps { display: grid; gap: clamp(1.25rem, 2.5vw, 2rem); max-width: 52rem; }
+  .step { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1.25rem; padding-top: 1.1rem; border-top: 1px solid rgba(184, 150, 79, 0.4); }
+  .step__n { font-family: var(--font-display); font-size: 1.3rem; color: var(--gold); }
+  .step__title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--emerald);
+  }
+  .step__text { margin-top: 0.5rem; color: var(--ink-soft); }
+
+  /* Recovery timeline */
+  .timeline { margin-top: 1.5rem; }
+  .timeline__row { padding-block: 1rem; border-top: 1px solid rgba(184, 150, 79, 0.4); }
+  .timeline dt { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+  .timeline dd { margin: 0.4rem 0 0; font-size: 0.95rem; line-height: 1.55; color: var(--ink-soft); }
+
+  /* Risks */
+  .risks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.75rem, 4vw, 3rem); }
+  .risk { padding-top: 1.1rem; border-top: 2px solid var(--gold); }
+  .risk__title { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--emerald); }
+  .risk ul { margin-top: 1rem; display: grid; gap: 0.7rem; }
+  .risk li { position: relative; padding-left: 1.4rem; font-size: 0.92rem; line-height: 1.5; color: var(--ink-soft); }
+  .risk li::before { content: ''; position: absolute; left: 0; top: 0.7em; width: 0.5rem; height: 1px; background: var(--gold); }
+
+  /* Cost */
+  .costbox { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .costbox__from { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+  .costbox__from strong {
+    display: block;
+    margin-top: 0.4rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 96;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    letter-spacing: 0;
+    color: var(--emerald);
+  }
+  .costbox__title { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--emerald); }
+  .costbox__inc ul { margin-top: 1rem; display: grid; gap: 0.7rem; }
+  .costbox__inc li { position: relative; padding-left: 1.4rem; color: var(--ink-soft); }
+  .costbox__inc li::before { content: ''; position: absolute; left: 0; top: 0.7em; width: 0.5rem; height: 1px; background: var(--gold); }
+  .costbox__note { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(184, 150, 79, 0.4); font-size: 0.88rem; line-height: 1.6; color: var(--ink-soft); }
+
+  /* FAQs */
+  .faqwrap { max-width: 52rem; }
+  .faq { border-top: 1px solid rgba(184, 150, 79, 0.4); }
+  .faq:last-child { border-bottom: 1px solid rgba(184, 150, 79, 0.4); }
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.15rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.25;
+    color: var(--emerald);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary svg { flex: none; width: 1.1rem; height: 1.1rem; color: var(--gold); transition: rotate 0.3s var(--ease-out); }
+  .faq[open] summary svg { rotate: 45deg; }
+  .faq p { padding-bottom: 1.35rem; max-width: 44em; color: var(--ink-soft); }
+
+  @media (max-width: 900px) {
+    .split { grid-template-columns: minmax(0, 1fr); }
+    .split--flip .split__fig { order: 0; }
+    .split__img--tall { aspect-ratio: 3 / 2; }
+    .planes, .risks { grid-template-columns: minmax(0, 1fr); }
+    .costbox { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 680px) {
+    .glance { grid-template-columns: minmax(0, 1fr); }
+    .twocol { grid-template-columns: minmax(0, 1fr); }
+    .step { grid-template-columns: 2.25rem minmax(0, 1fr); gap: 0.9rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq summary svg { transition: none; }
+  }
+</style>

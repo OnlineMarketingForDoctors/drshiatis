@@ -945,6 +945,182 @@ function initConsent() {
 }
 
 /* ---------------------------------------------------------------------------
+   Procedure page: in-page section nav
+   The bar sticks under the site bar, so the section you are reading is the
+   last one whose top has passed below the bar.
+--------------------------------------------------------------------------- */
+function initSectionNav() {
+  const nav = $('[data-secnav]');
+  if (!nav) return;
+
+  const scroller = $('.secnav__scroll', nav);
+  const links = $$('[data-secnav-link]', nav);
+  const pairs = links
+    .map((a) => ({ a, section: document.getElementById(a.dataset.secnavLink) }))
+    .filter((p) => p.section);
+  if (pairs.length < 2) return;
+
+  let current = null;
+
+  // Keep the marked link in view in the bar's own scroller, which matters on
+  // a phone where most of the bar is off-screen. scrollLeft, not
+  // scrollIntoView: the latter would also scroll the page.
+  const reveal = (a) => {
+    if (!scroller || scroller.scrollWidth <= scroller.clientWidth) return;
+    const left = a.offsetLeft - scroller.offsetLeft;
+    const target = left - (scroller.clientWidth - a.offsetWidth) / 2;
+    scroller.scrollTo({ left: Math.max(0, target), behavior: reduceMotion ? 'auto' : 'smooth' });
+  };
+
+  const mark = (section) => {
+    if (section === current) return;
+    current = section;
+    pairs.forEach(({ a, section: s }) => {
+      const on = s === section;
+      a.classList.toggle('is-current', on);
+      if (on) { a.setAttribute('aria-current', 'true'); reveal(a); }
+      else a.removeAttribute('aria-current');
+    });
+  };
+
+  const measure = () => {
+    // The bar's own bottom edge is the line a section has to cross, whatever
+    // the header is doing above it.
+    const line = nav.getBoundingClientRect().bottom + 8;
+    let found = null;
+    pairs.forEach(({ section }) => {
+      if (section.getBoundingClientRect().top <= line) found = section;
+    });
+
+    // Past the last section's start, and at the very bottom of the document,
+    // the final link is the honest answer.
+    const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (atEnd) found = pairs[pairs.length - 1].section;
+
+    mark(found);
+  };
+
+  let queued = false;
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; measure(); });
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  measure();
+}
+
+/* ---------------------------------------------------------------------------
+   Procedure page: before and after carousel
+   Two patients to a view on a desktop, one on a phone. The track swipes on
+   its own; the arrows step it by a whole view.
+--------------------------------------------------------------------------- */
+function initBaCarousel() {
+  $$('[data-bacar]').forEach((root) => {
+    const track = $('[data-bacar-track]', root);
+    const slides = $$('[data-bacar-slide]', root);
+    const controls = $('[data-bacar-controls]', root);
+    if (!track || !controls || slides.length < 2) return;
+
+    const prev = $('[data-bacar-prev]', root);
+    const next = $('[data-bacar-next]', root);
+    const counter = $('[data-bacar-count]', root);
+
+    // Clinical photographs, warned about before they are shown, and the
+    // gallery page's key so one answer covers the visit.
+    const veil = $('[data-bacar-veil]', root);
+    if (veil) {
+      let seen = false;
+      try { seen = sessionStorage.getItem('ba-seen') === '1'; } catch { /* private mode */ }
+      const reveal = () => {
+        root.classList.remove('is-veiled');
+        veil.hidden = true;
+        track.removeAttribute('aria-hidden');
+        track.tabIndex = 0;
+        try { sessionStorage.setItem('ba-seen', '1'); } catch { /* private mode */ }
+      };
+      if (!seen) {
+        root.classList.add('is-veiled');
+        veil.hidden = false;
+        // Nothing behind the warning should be reachable while it stands.
+        track.setAttribute('aria-hidden', 'true');
+        track.tabIndex = -1;
+      }
+      $('[data-bacar-reveal]', root)?.addEventListener('click', reveal);
+    }
+
+    // How many slides a view holds, read off the layout rather than assumed,
+    // so the breakpoint lives in one place: the stylesheet.
+    const perView = () => {
+      const w = slides[0].offsetWidth;
+      if (!w) return 1;
+      return Math.max(1, Math.round(track.clientWidth / w));
+    };
+
+    const offsetOf = (i) => slides[i].offsetLeft - slides[0].offsetLeft;
+    const maxScroll = () => Math.max(0, track.scrollWidth - track.clientWidth);
+
+    let index = 0;
+
+    const draw = () => {
+      const per = perView();
+      const last = Math.min(slides.length, index + per);
+      counter.textContent = per > 1 && last > index + 1
+        ? `Patients ${index + 1} to ${last} of ${slides.length}`
+        : `Patient ${index + 1} of ${slides.length}`;
+      // The ends are where the track can no longer move, not where the index
+      // runs out: a part-slide of slack still counts as somewhere to go.
+      if (prev) prev.disabled = track.scrollLeft <= 1;
+      if (next) next.disabled = track.scrollLeft >= maxScroll() - 1;
+    };
+
+    const go = (i) => {
+      const target = Math.max(0, Math.min(slides.length - 1, i));
+      track.scrollTo({
+        left: Math.min(offsetOf(target), maxScroll()),
+        behavior: reduceMotion ? 'auto' : 'smooth',
+      });
+      // The scroll handler settles the index and redraws once it lands.
+    };
+
+    // Swiping, and our own smooth scrolling, both move the track without
+    // going through the index, so read the position back.
+    const settleIndex = () => {
+      const left = track.scrollLeft;
+      let best = 0;
+      let bestD = Infinity;
+      slides.forEach((s, i) => {
+        const d = Math.abs(offsetOf(i) - left);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      index = best;
+      draw();
+    };
+
+    let settle = null;
+    track.addEventListener('scroll', () => {
+      clearTimeout(settle);
+      settle = setTimeout(settleIndex, 90);
+    }, { passive: true });
+
+    prev?.addEventListener('click', () => go(index - perView()));
+    next?.addEventListener('click', () => go(index + perView()));
+
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + perView()); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - perView()); }
+    });
+
+    window.addEventListener('resize', () => { clearTimeout(settle); settle = setTimeout(settleIndex, 150); });
+
+    controls.hidden = false;
+    draw();
+  });
+}
+
+/* ---------------------------------------------------------------------------
    Boot
 --------------------------------------------------------------------------- */
 function boot() {
@@ -964,6 +1140,8 @@ function boot() {
   initBeforeAfter();
   initContact();
   initConsent();
+  initSectionNav();
+  initBaCarousel();
 
   // Images loading late can shift trigger positions.
   window.addEventListener('load', () => ScrollTrigger.refresh());

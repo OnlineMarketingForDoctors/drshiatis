@@ -15,6 +15,9 @@ interface Props {
 
 const { variant = 'overlay', path = '' } = Astro.props;
 const solid = variant === 'solid';
+// Links that leave the site open in a new tab; pages here do not.
+const ext = (href) => (href.startsWith('http') ? '_blank' : null);
+const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
 ---
 
 <!-- Full header, laid over the hero video -->
@@ -128,7 +131,7 @@ const solid = variant === 'solid';
                     {col.title && <p class="mobile-menu__subhead">{col.title}</p>}
                     <ul>
                       {col.items.map((p) => (
-                        <li><a href={p.href} target="_blank" rel="noopener">{p.name}</a></li>
+                        <li><a href={p.href} target={ext(p.href)} rel={rel(p.href)}>{p.name}</a></li>
                       ))}
                     </ul>
                   </div>

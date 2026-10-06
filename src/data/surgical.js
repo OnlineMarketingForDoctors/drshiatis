@@ -1,6 +1,7 @@
 // The surgical procedures on the old drshiatis.com, in the areas and the order
 // that site groups them, with its own wording for each name. Links point at the
-// old pages until the procedure pages are rebuilt here.
+// old pages until the procedure pages are rebuilt here; an item with a third
+// entry has a page on this site, and that is used instead.
 const OLD = 'https://www.drshiatis.com/news';
 
 export const areas = [
@@ -13,7 +14,7 @@ export const areas = [
     intro:
       'Most of the practice. Augmentation, reduction and uplift, and the revision work that follows surgery done elsewhere.',
     items: [
-      ['Breast Augmentation', 'breast-augmentation'],
+      ['Breast Augmentation', 'breast-augmentation', '/breast-augmentation'],
       ['Breast Reduction', 'breast-reduction'],
       ['Mastopexy (Breast Lift)', 'mastopexy-(breast-lift)'],
       ['Augmentation Mastopexy (Breast Lift with Implants)', 'augmentation-mastopexy-(breast-lift-with-implants)'],
@@ -72,4 +73,7 @@ export const areas = [
       ['Breast Symmetrisation Procedures', 'breast-symmetrisation-procedures'],
     ],
   },
-].map((a) => ({ ...a, items: a.items.map(([name, slug]) => ({ name, href: `${OLD}/${slug}` })) }));
+].map((a) => ({
+  ...a,
+  items: a.items.map(([name, slug, here]) => ({ name, href: here ?? `${OLD}/${slug}` })),
+}));
