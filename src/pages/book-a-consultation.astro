@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
 import BookingWidget from '../components/BookingWidget.astro';
 import { site } from '../data/site.js';
 
@@ -31,47 +32,41 @@ const bring = [
   title="Book a Consultation | Mr Andreas Shiatis, Consultant Plastic Surgeon"
   description="Book a face to face consultation with Mr Andreas Shiatis, Consultant Plastic Surgeon, at Fitzrovia Hospital in London. Choose a time online, or call +44 (0)20 8050 9669."
 >
-  <!-- Page head -->
-  <section class="bhead on-dark" aria-labelledby="bhead-title">
-    <div class="bhead__bg" aria-hidden="true">
-      <img src="/images/satin.webp" alt="" width="1800" height="1005" fetchpriority="high" decoding="async" />
+  <PageHead
+    eyebrow="Book a consultation"
+    title="Start with"
+    titleEm="a conversation"
+    id="bhead-title"
+    img="/images/booking-head.webp"
+    imgPosition="55% 50%"
+    imgMobile="/images/booking-head-mobile.webp"
+    scrim="left"
+    full
+    lead="Two consultations before any decision, both with Mr Shiatis himself. Choose a time that suits you below, or speak to a patient coordinator if you would rather talk it through first."
+  >
+    <div class="phead__actions" data-reveal>
+      <a class="btn btn--ivory" href="#booking">
+        Choose a time
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+      </a>
+      <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
     </div>
 
-    <div class="container bhead__inner">
-      <div class="bhead__copy">
-        <p class="eyebrow" data-reveal>Book a consultation</p>
-        <h1 class="h2 bhead__title" id="bhead-title" data-reveal>
-          Start with <em class="italic">a conversation</em>
-        </h1>
-        <p class="lead" data-reveal>
-          Two consultations before any decision, both with Mr Shiatis himself. Choose a time that suits you below, or speak to a patient coordinator if you would rather talk it through first.
-        </p>
-
-        <div class="bhead__actions" data-reveal>
-          <a class="btn btn--ivory" href="#booking">
-            Choose a time
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
-          </a>
-          <a class="btn btn--outline-light" href={site.phoneHref}>Call {site.phoneDisplay}</a>
-        </div>
-
-        <dl class="bhead__meta" data-reveal>
-          <div>
-            <dt>Where</dt>
-            <dd>{site.hospital}</dd>
-          </div>
-          <div>
-            <dt>With</dt>
-            <dd>{site.surgeon} {site.qualifications}</dd>
-          </div>
-          <div>
-            <dt>GMC</dt>
-            <dd>{site.gmc}</dd>
-          </div>
-        </dl>
+    <dl class="bhead__meta" data-reveal>
+      <div>
+        <dt>Where</dt>
+        <dd>{site.hospital}</dd>
       </div>
-    </div>
-  </section>
+      <div>
+        <dt>With</dt>
+        <dd>{site.surgeon} {site.qualifications}</dd>
+      </div>
+      <div>
+        <dt>GMC</dt>
+        <dd>{site.gmc}</dd>
+      </div>
+    </dl>
+  </PageHead>
 
   <!-- How it works -->
   <section class="bsteps section--tight bg-ivory" aria-labelledby="bsteps-title">
@@ -129,55 +124,8 @@ const bring = [
   </section>
 </Base>
 
-<style>
-  /* Page head */
-  .bhead {
-    position: relative;
-    overflow: clip;
-    isolation: isolate;
-    background: var(--emerald);
-    color: var(--ivory);
-  }
-  .bhead__bg {
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    opacity: 0.5;
-  }
-  .bhead__bg img { width: 100%; height: 100%; object-fit: cover; }
-  .bhead::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(to right, rgba(9, 29, 56, 0.35), rgba(9, 29, 56, 0.8));
-  }
-
-  .bhead__inner { padding-block: clamp(3.5rem, 9vw, 7rem); }
-
-  /* A full height head, like every page but the procedure categories. Only
-     where there is room beside the copy: on a phone the copy alone is most of
-     the screen, so forcing it would just open a gap. */
-  @media (min-width: 761px) {
-    .bhead__inner {
-      display: flex;
-      align-items: center;
-      min-height: min(100svh, 56rem);
-    }
-  }
-  .bhead__copy { max-width: 46rem; }
-  .bhead__title { margin-top: 1rem; }
-  .bhead__copy .lead { margin-top: 1.5rem; max-width: 34em; }
-
-  .bhead__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 2.25rem;
-  }
-  .bhead__actions svg { width: 0.9em; height: 0.9em; }
-  .bhead__actions .btn:hover svg { transform: translateY(3px); }
-
+<style is:global>
+  /* In the head's slot, so outside this page's scoping. */
   .bhead__meta {
     display: flex;
     flex-wrap: wrap;
@@ -197,7 +145,10 @@ const bring = [
     font-size: 0.95rem;
     color: rgba(244, 238, 228, 0.9);
   }
+  .phead__actions .btn:hover svg { transform: translateY(3px); }
+</style>
 
+<style>
   /* Steps */
   .bsteps__list {
     display: grid;
