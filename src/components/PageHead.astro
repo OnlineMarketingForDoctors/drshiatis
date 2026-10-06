@@ -12,6 +12,16 @@ interface Props {
      as the gradient darkens towards the right. */
   img?: string;
   imgPosition?: string;
+  /* A narrow crop of the same scene, for the band at phone width, where a
+     landscape frame loses all but a sliver of its middle. */
+  imgMobile?: string;
+  imgMobilePosition?: string;
+  /* Fills the viewport, the way the About page head does. */
+  full?: boolean;
+  /* Which side the darkening falls on. The default puts it behind the right,
+     which suits a texture; a photograph with its subject over there wants the
+     weight on the copy side instead. */
+  scrim?: 'right' | 'left';
 }
 const {
   eyebrow,
@@ -21,12 +31,27 @@ const {
   lead,
   img = '/images/satin.webp',
   imgPosition = 'center',
+  imgMobile,
+  imgMobilePosition = 'center',
+  full = false,
+  scrim = 'right',
 } = Astro.props;
 ---
 
-<section class="phead on-dark" aria-labelledby={id}>
+<section class:list={['phead', 'on-dark', full && 'phead--full', scrim === 'left' && 'phead--scrim-left']} aria-labelledby={id}>
   <div class="phead__bg" aria-hidden="true">
-    <img src={img} alt="" width="1800" height="1005" style={`object-position:${imgPosition}`} fetchpriority="high" decoding="async" />
+    <picture>
+      {imgMobile && <source media="(max-width: 760px)" srcset={imgMobile} width="900" height="1218" />}
+      <img
+        src={img}
+        alt=""
+        width="1800"
+        height="1005"
+        style={`object-position:${imgPosition}; --phead-pos-mobile:${imgMobilePosition}`}
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
   </div>
 
   <div class="container phead__inner">
@@ -50,6 +75,7 @@ const {
     color: var(--ivory);
   }
   .phead__bg { position: absolute; inset: 0; z-index: -2; opacity: 0.5; }
+  .phead__bg picture { display: contents; }
   .phead__bg img { width: 100%; height: 100%; object-fit: cover; }
   .phead::before {
     content: '';
@@ -58,7 +84,29 @@ const {
     z-index: -1;
     background: linear-gradient(to right, rgba(9, 29, 56, 0.35), rgba(9, 29, 56, 0.8));
   }
+  .phead--scrim-left::before {
+    background:
+      linear-gradient(to right, rgba(9, 29, 56, 0.9) 0%, rgba(9, 29, 56, 0.78) 38%, rgba(9, 29, 56, 0.3) 72%, rgba(9, 29, 56, 0.22) 100%);
+  }
+  /* A photograph carries the band rather than tinting it, so it is held back
+     far less than the satin is. */
+  .phead--scrim-left .phead__bg { opacity: 0.95; }
   .phead__inner { padding-block: clamp(3.5rem, 9vw, 7rem); }
+
+  /* The sticky bar sits over the band, so the viewport height it fills is
+     measured from under the bar. svh rather than vh: on a phone, vh is the
+     height with the browser chrome retracted, which leaves the band taller
+     than the screen until you scroll. */
+  /* Only where there is room beside the copy. On a phone the copy alone is
+     most of the screen, so a forced viewport height would just stretch the
+     photograph behind it; the About head sizes to its content there too. */
+  @media (min-width: 761px) {
+    .phead--full .phead__inner {
+      display: flex;
+      align-items: center;
+      min-height: min(100svh, 56rem);
+    }
+  }
   .phead__copy { max-width: 46rem; }
   .phead__title { margin-top: 1rem; }
   .phead__copy .lead { margin-top: 1.5rem; max-width: 36em; }
@@ -68,6 +116,21 @@ const {
   /* Shared by everything a page drops into the head's slot. */
   .phead__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
   .phead__actions svg { width: 0.9em; height: 0.9em; }
+
+  /* Weighting the scrim to one side only pays while the copy leaves the other
+     side free. Below this the copy spans the band, so the photograph becomes
+     atmosphere and the scrim goes near even. */
+  @media (max-width: 1023px) {
+    .phead--scrim-left::before {
+      background:
+        linear-gradient(to bottom, rgba(9, 29, 56, 0.72) 0%, rgba(9, 29, 56, 0.86) 45%, rgba(9, 29, 56, 0.92) 100%);
+    }
+  }
+
+  @media (max-width: 760px) {
+    /* The mobile source has its own focal point. */
+    .phead__bg img { object-position: var(--phead-pos-mobile, center) !important; }
+  }
 
   @media (max-width: 640px) {
     .phead__actions { flex-direction: column; align-items: stretch; }
