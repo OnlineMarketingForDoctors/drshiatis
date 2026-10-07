@@ -410,11 +410,6 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
           </div>
         ))}
       </div>
-
-      <p class="treats__note" data-reveal>
-        <span class="rule" aria-hidden="true"></span>
-        Mr Shiatis does not currently offer facelift or rhinoplasty surgery. Where something falls outside his practice, he will tell you so and point you towards the right surgeon.
-      </p>
     </div>
   </section>
 
@@ -849,17 +844,6 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
   @media (hover: none) {
     .treats__link svg { opacity: 1; transform: none; }
   }
-
-  .treats__note {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    max-width: 46em;
-    margin-top: clamp(2.5rem, 5vw, 3.5rem);
-    font-size: var(--fs-small);
-    color: var(--ink-soft);
-  }
-  .treats__note .rule { flex: none; margin-top: 0.7em; width: 2.5rem; }
 
   /* ---------------------------------------------------------------------
      Technique
