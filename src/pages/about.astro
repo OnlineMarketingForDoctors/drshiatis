@@ -4,6 +4,7 @@ import Affiliations from '../components/Affiliations.astro';
 import Testimonial from '../components/Testimonial.astro';
 import Cta from '../components/Cta.astro';
 import { site } from '../data/site.js';
+import { bio } from '../data/bio.js';
 
 const headMeta = [
   ['Specialty', 'Aesthetic breast and body surgery'],
@@ -205,6 +206,30 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
     </div>
   </section>
 
+  <!-- The practice's own biography, carried across from the old site word for
+       word. The wording is fixed; see src/data/bio.js. -->
+  <section class="bio section bg-paper" id="biography" aria-labelledby="bio-title">
+    <div class="container">
+      <header class="bio__head" data-reveal-group>
+        <p class="eyebrow eyebrow--gold" data-reveal>Biography</p>
+        <h2 class="h2 bio__h" id="bio-title" data-reveal>{bio.title}</h2>
+        <p class="bio__standfirst" data-reveal>{bio.standfirst}</p>
+        <p class="lead bio__intro" data-reveal>{bio.intro}</p>
+      </header>
+
+      <div class="bio__blocks" data-reveal-group>
+        {bio.sections.map((b) => (
+          <article class="bio__block" data-reveal>
+            <h3 class="bio__title">{b.title}</h3>
+            <div class="bio__prose">
+              {b.paras.map((t) => <p>{t}</p>)}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- The practice -->
   <section class="intro section bg-ivory" aria-labelledby="intro-title">
     <div class="container">
@@ -215,7 +240,7 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
 
       <div class="intro__body" data-reveal-group>
         <p class="lead" data-reveal>
-          Mr Shiatis’s practice is dedicated to delivering refined, natural-looking results through meticulous surgical technique, personalised treatment planning and an unwavering commitment to patient safety.
+          What that looks like in a consulting room, and what it means for the result you are asking for.
         </p>
         <div class="intro__cols" data-reveal>
           <p>
@@ -334,7 +359,7 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
             As an NHS Consultant Plastic Surgeon, Mr Shiatis specialises in microsurgical breast reconstruction and complex reconstructive surgery, rebuilding the breast using a patient’s own tissue, with vessels joined under the microscope.
           </p>
           <p class="dual__text" data-reveal>
-            This advanced reconstructive background gives an exceptional understanding of anatomy, tissue handling and surgical precision, and it directly enhances the quality and safety of his aesthetic work.
+            Reconstruction is unforgiving work. A flap either survives on the vessels you joined or it does not, and you know within hours. Operating to that standard most weeks is what makes a routine aesthetic list feel unhurried.
           </p>
         </article>
 
@@ -553,6 +578,47 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
 
   .ahead__img { aspect-ratio: 3 / 4; }
   .ahead__img > img { position: absolute; inset: 0; }
+
+  /* ---------------------------------------------------------------------
+     Biography
+  --------------------------------------------------------------------- */
+  .bio__head { max-width: 52rem; }
+  .bio__h { margin-top: 1rem; }
+  .bio__standfirst {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+    line-height: 1.3;
+    color: var(--gold);
+  }
+  .bio__intro { margin-top: 1.5rem; color: var(--ink-soft); }
+
+  .bio__blocks {
+    display: grid;
+    gap: clamp(1.75rem, 3vw, 2.75rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  /* Heading on a rail to the left, prose to the right, like a dossier. */
+  .bio__block {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: clamp(1rem, 4vw, 3.5rem);
+    padding-top: clamp(1.75rem, 3vw, 2.75rem);
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
+  }
+  .bio__title {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 72;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(1.3rem, 1.9vw, 1.75rem);
+    line-height: 1.15;
+    color: var(--emerald);
+  }
+  .bio__prose { max-width: 40em; color: var(--ink-soft); }
+  .bio__prose p + p { margin-top: 1rem; }
 
   /* ---------------------------------------------------------------------
      The practice
@@ -902,6 +968,8 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
     .ahead__inner { grid-template-columns: 1fr; }
     .ahead__figure { order: -1; }
     .ahead__img { aspect-ratio: 4 / 3; }
+
+    .bio__block { grid-template-columns: 1fr; gap: 0.9rem; }
 
     .intro__body { grid-template-columns: 1fr; }
     .intro__cols { grid-template-columns: 1fr; }
