@@ -90,10 +90,10 @@ const icons = {
     </div>
   </section>
 
-  <!-- Overview -->
-  <section class="section bg-ivory-2" id="overview" aria-labelledby="ov-title">
-    <div class="container split">
-      <div class="split__copy">
+  <!-- Overview: copy inside the container, photograph running off the right edge -->
+  <section class="section bg-ivory-2 flush" id="overview" aria-labelledby="ov-title">
+    <div class="container">
+      <div class="flush__copy">
         <p class="eyebrow eyebrow--gold" data-reveal>Overview</p>
         <h2 class="h2 shead__title" id="ov-title" data-reveal>What breast augmentation <em class="italic">actually is</em></h2>
         <div class="prose split__prose" data-reveal>
@@ -116,36 +116,40 @@ const icons = {
           </p>
         </div>
       </div>
-      <figure class="split__fig" data-reveal>
-        <div class="cover split__img" data-img-reveal>
-          <img src="/images/ba-decolletage.webp" alt="A woman's neckline and shoulders in an ivory silk camisole against a deep navy panelled wall" width="1800" height="1200" loading="lazy" decoding="async" />
-        </div>
-      </figure>
     </div>
+    <figure class="flush__fig" data-reveal>
+      <div class="cover flush__img" data-img-reveal>
+        <img src="/images/ba-decolletage.webp" alt="A woman&rsquo;s neckline and shoulders in an ivory silk camisole against a deep navy panelled wall" width="1400" height="1750" loading="lazy" decoding="async" />
+      </div>
+    </figure>
   </section>
 
-  <!-- At a glance -->
-  <section class="section" id="at-a-glance" aria-labelledby="gl-title">
-    <div class="container">
-      <header class="shead shead--centre">
-        <h2 class="h2 shead__title" id="gl-title" data-reveal>Breast augmentation <em class="italic">at a glance</em></h2>
-        <p class="shead__lead" data-reveal>
+  <!-- At a glance: the facts on a card, over a full-bleed photograph -->
+  <section class="glanceband" id="at-a-glance" aria-labelledby="gl-title">
+    <div class="glanceband__bg" aria-hidden="true" data-parallax data-parallax-strength="8">
+      <img src="/images/ba-form.webp" alt="" width="1600" height="1066" loading="lazy" decoding="async" />
+    </div>
+    <div class="container glanceband__inner">
+      <div class="glancecard" data-reveal-group>
+        <p class="eyebrow eyebrow--gold" data-reveal>At a glance</p>
+        <h2 class="h2 glancecard__title" id="gl-title" data-reveal>Breast augmentation <em class="italic">at a glance</em></h2>
+        <p class="glancecard__lead" data-reveal>
           A snapshot of what to expect. Every plan is individual, so Mr Shiatis confirms your own
           timings at your consultation.
         </p>
-      </header>
 
-      <ul class="glance" data-reveal-group>
-        {glance.map((g) => (
-          <li class="glance__item" data-reveal>
-            <svg class="glance__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[g.icon]}/></svg>
-            <div>
-              <p class="glance__label">{g.label}</p>
-              <p class="glance__value">{g.value}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+        <ul class="glance">
+          {glance.map((g) => (
+            <li class="glance__item" data-reveal>
+              <svg class="glance__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[g.icon]}/></svg>
+              <div>
+                <p class="glance__label">{g.label}</p>
+                <p class="glance__value">{g.value}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -192,13 +196,21 @@ const icons = {
     </div>
   </section>
 
-  <!-- Procedure -->
+  <!-- The operation: a wide plate, then the account in two columns beneath it -->
   <section class="section bg-ivory-2" id="procedure" aria-labelledby="pr-title">
-    <div class="container split split--flip">
-      <div class="split__copy">
-        <p class="eyebrow eyebrow--gold" data-reveal>The operation</p>
-        <h2 class="h2 shead__title" id="pr-title" data-reveal>What it <em class="italic">involves</em></h2>
-        <div class="prose split__prose" data-reveal>
+    <div class="container">
+      <figure class="opplate" data-reveal>
+        <div class="cover opplate__img" data-img-reveal>
+          <img src="/images/ba-theatre.webp" alt="An operating theatre set up and waiting, instrument trolley draped in surgical cloth" width="1800" height="1012" loading="lazy" decoding="async" />
+        </div>
+      </figure>
+
+      <div class="opgrid">
+        <header class="opgrid__head">
+          <p class="eyebrow eyebrow--gold" data-reveal>The operation</p>
+          <h2 class="h2 shead__title" id="pr-title" data-reveal>What it <em class="italic">involves</em></h2>
+        </header>
+        <div class="prose opgrid__cols" data-reveal>
           <p>
             You are marked up standing and in daylight before you go anywhere near theatre, because
             the plan has to work on a body that is upright rather than lying down.
@@ -215,41 +227,47 @@ const icons = {
           </p>
         </div>
       </div>
-      <figure class="split__fig" data-reveal>
-        <div class="cover split__img" data-img-reveal>
-          <img src="/images/ba-implants.webp" alt="A round implant and a teardrop implant side by side on a dark surface" width="1800" height="1200" loading="lazy" decoding="async" />
-        </div>
-      </figure>
     </div>
   </section>
 
-  <!-- Implants -->
+  <!-- Implants: the photograph, with the comparison lapping over it -->
   <section class="section" id="implants" aria-labelledby="im-title">
     <div class="container">
       <header class="shead">
         <p class="eyebrow eyebrow--gold" data-reveal>Implants</p>
         <h2 class="h2 shead__title" id="im-title" data-reveal>Round, or <em class="italic">teardrop</em></h2>
       </header>
-      <div class="twocol" data-reveal-group>
-        <div class="opt" data-reveal>
-          <h3 class="opt__title">Round</h3>
-          <p class="opt__text">Equal fullness top and bottom, which gives more cleavage and a fuller upper pole.</p>
-          <dl class="opt__meta">
-            <div><dt>Suits</dt><dd>Patients wanting visible fullness above the nipple</dd></div>
-            <div><dt>In its favour</dt><dd>Cannot distort by rotating, since it is the same shape all the way round</dd></div>
-            <div><dt>Against</dt><dd>Can look obviously augmented on a slim frame with little natural tissue</dd></div>
-          </dl>
-        </div>
-        <div class="opt" data-reveal>
-          <h3 class="opt__title">Teardrop</h3>
-          <p class="opt__text">Contoured to the natural slope of a breast, tapered at the top and full at the base.</p>
-          <dl class="opt__meta">
-            <div><dt>Suits</dt><dd>Slimmer patients, and anyone wanting the result not to announce itself</dd></div>
-            <div><dt>In its favour</dt><dd>The most natural profile, particularly with little natural breast tissue</dd></div>
-            <div><dt>Against</dt><dd>Must sit exactly right, because a rotation shows</dd></div>
-          </dl>
+
+      <div class="impl">
+        <figure class="impl__fig" data-reveal>
+          <div class="cover impl__img" data-img-reveal>
+            <img src="/images/ba-implant.webp" alt="A silicone breast implant held in one hand, with implants of other shapes and sizes laid out behind" width="853" height="1066" loading="lazy" decoding="async" />
+          </div>
+          <figcaption class="impl__cap">Chosen by base width and projection, in millimetres, not by cup size.</figcaption>
+        </figure>
+
+        <div class="impl__panel" data-reveal-group>
+          <div class="opt" data-reveal>
+            <h3 class="opt__title">Round</h3>
+            <p class="opt__text">Equal fullness top and bottom, which gives more cleavage and a fuller upper pole.</p>
+            <dl class="opt__meta">
+              <div><dt>Suits</dt><dd>Patients wanting visible fullness above the nipple</dd></div>
+              <div><dt>In its favour</dt><dd>Cannot distort by rotating, since it is the same shape all the way round</dd></div>
+              <div><dt>Against</dt><dd>Can look obviously augmented on a slim frame with little natural tissue</dd></div>
+            </dl>
+          </div>
+          <div class="opt" data-reveal>
+            <h3 class="opt__title">Teardrop</h3>
+            <p class="opt__text">Contoured to the natural slope of a breast, tapered at the top and full at the base.</p>
+            <dl class="opt__meta">
+              <div><dt>Suits</dt><dd>Slimmer patients, and anyone wanting the result not to announce itself</dd></div>
+              <div><dt>In its favour</dt><dd>The most natural profile, particularly with little natural breast tissue</dd></div>
+              <div><dt>Against</dt><dd>Must sit exactly right, because a rotation shows</dd></div>
+            </dl>
+          </div>
         </div>
       </div>
+
       <p class="suit__note" data-reveal>
         Mr Shiatis also offers Preserve, a tissue preservation technique used alongside traditional
         augmentation where it suits the patient. Whether it applies to you is discussed at
@@ -294,13 +312,21 @@ const icons = {
     </div>
   </section>
 
-  <!-- Journey -->
+  <!-- Journey: the heading holds its place on the left while the steps run past -->
   <section class="section" id="journey" aria-labelledby="jr-title">
-    <div class="container">
-      <header class="shead">
-        <p class="eyebrow eyebrow--gold" data-reveal>Your journey</p>
-        <h2 class="h2 shead__title" id="jr-title" data-reveal>From enquiry <em class="italic">to settled</em></h2>
-      </header>
+    <div class="container jrn">
+      <div class="jrn__aside">
+        <div class="jrn__sticky">
+          <p class="eyebrow eyebrow--gold" data-reveal>Your journey</p>
+          <h2 class="h2 shead__title" id="jr-title" data-reveal>From enquiry <em class="italic">to settled</em></h2>
+          <figure class="jrn__fig" data-reveal>
+            <div class="cover jrn__img" data-img-reveal>
+              <img src="/images/ba-plan.webp" alt="A measuring tape, skin marker and calipers on a sheet of paper on a consulting desk" width="1120" height="1400" loading="lazy" decoding="async" />
+            </div>
+          </figure>
+        </div>
+      </div>
+
       <ol class="steps" data-reveal-group>
         {steps.map((s) => (
           <li class="step" data-reveal>
@@ -315,10 +341,10 @@ const icons = {
     </div>
   </section>
 
-  <!-- Recovery -->
+  <!-- Recovery: the timeline, with two staggered plates alongside it -->
   <section class="section bg-ivory-2" id="recovery" aria-labelledby="rc-title">
-    <div class="container split">
-      <div class="split__copy">
+    <div class="container rec">
+      <div class="rec__copy">
         <p class="eyebrow eyebrow--gold" data-reveal>Recovery</p>
         <h2 class="h2 shead__title" id="rc-title" data-reveal>Recovery and <em class="italic">aftercare</em></h2>
         <dl class="timeline" data-reveal-group>
@@ -330,11 +356,34 @@ const icons = {
           ))}
         </dl>
       </div>
-      <figure class="split__fig" data-reveal>
-        <div class="cover split__img split__img--tall" data-img-reveal>
-          <img src="/images/ba-recovery.webp" alt="A bed made up with ivory linen, books and tea on the bedside table" width="1800" height="1200" loading="lazy" decoding="async" />
-        </div>
-      </figure>
+
+      <div class="rec__stack">
+        <figure class="rec__fig rec__fig--a" data-reveal>
+          <div class="cover rec__img" data-img-reveal>
+            <img src="/images/ba-support.webp" alt="A woman fastening a front-opening post-surgical support bra" width="1120" height="1400" loading="lazy" decoding="async" />
+          </div>
+          <figcaption class="rec__cap">The post-surgical bra goes on in theatre and stays on, day and night, for six weeks.</figcaption>
+        </figure>
+        <figure class="rec__fig rec__fig--b" data-reveal>
+          <div class="cover rec__img" data-img-reveal>
+            <img src="/images/ba-rest.webp" alt="A bed made up with ivory linen, with books and tea on the bedside table" width="1120" height="1400" loading="lazy" decoding="async" />
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- A pause, on the one thing patients most often get wrong about timing -->
+  <section class="statement on-dark" aria-label="On timing">
+    <div class="statement__bg" aria-hidden="true" data-parallax data-parallax-strength="10">
+      <img src="/images/ba-silk.webp" alt="" width="2400" height="1018" loading="lazy" decoding="async" />
+    </div>
+    <div class="container statement__inner" data-reveal-group>
+      <p class="eyebrow" data-reveal>On timing</p>
+      <p class="statement__line" data-reveal>
+        Implants drop and soften for about three months. The result worth judging is the one at the
+        end of that, <em class="italic">not the one in the mirror in week one.</em>
+      </p>
     </div>
   </section>
 
@@ -466,16 +515,113 @@ const icons = {
     opacity: 0.85;
   }
 
-  /* Split screen */
-  .split {
-    display: grid;
-    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    gap: clamp(2rem, 5vw, 4.5rem);
-    align-items: center;
+  /* Overview: copy inside the container, photograph flush to the page edge */
+  .flush { position: relative; overflow: hidden; }
+  .flush__fig { margin: 0; }
+  @media (min-width: 901px) {
+    .flush__copy { max-width: 46%; }
+    .flush__fig { position: absolute; inset-block: 0; right: 0; width: 42%; }
+    .flush__img { height: 100%; }
   }
-  .split--flip .split__fig { order: -1; }
-  .split__img { aspect-ratio: 3 / 2; }
-  .split__img--tall { aspect-ratio: 4 / 5; }
+  @media (max-width: 900px) {
+    .flush__fig { margin-top: clamp(2rem, 5vw, 3rem); }
+    .flush__img { aspect-ratio: 4 / 5; }
+  }
+
+  /* At a glance: the facts on a card, over a full-bleed photograph */
+  .glanceband {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--emerald-deep);
+  }
+  .glanceband__bg { position: absolute; inset: -8% 0; z-index: -2; }
+  .glanceband__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 78% 32%; }
+  .glanceband::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to right, rgba(9, 29, 56, 0.94) 0%, rgba(9, 29, 56, 0.88) 46%, rgba(9, 29, 56, 0.5) 74%, rgba(9, 29, 56, 0.22) 100%);
+  }
+  .glanceband__inner { padding-block: var(--section); max-width: var(--container); }
+  .glancecard {
+    max-width: 54rem;
+    padding: clamp(1.75rem, 4vw, 3.25rem);
+    background: var(--paper);
+    box-shadow: 0 2.5rem 5rem -2.5rem rgba(9, 29, 56, 0.6);
+  }
+  .glancecard__title { margin-top: 0.9rem; }
+  .glancecard__lead { margin-top: 1rem; font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); }
+  .glancecard .glance { margin-top: clamp(1.5rem, 3vw, 2.25rem); max-width: none; gap: 0 clamp(1.5rem, 3vw, 3rem); }
+
+  /* The operation: a wide plate, then the account in two columns */
+  .opplate { margin: 0 0 clamp(2.5rem, 5vw, 4rem); }
+  .opplate__img { aspect-ratio: 16 / 7; }
+  .opgrid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 4.5rem); }
+  .opgrid__cols { max-width: none; }
+  /* Space below rather than above, or the second column starts lower than the first. */
+  .opgrid__cols p { margin-top: 0; margin-bottom: 1.15rem; break-inside: avoid; }
+  .opgrid__cols p + p { margin-top: 0; }
+  /* Two columns only where there is room for them to balance evenly. */
+  @media (min-width: 1200px) {
+    .opgrid__cols { columns: 2; column-gap: clamp(2rem, 4vw, 3.5rem); }
+  }
+
+  /* Implants: the photograph, with the comparison lapping over it */
+  .impl { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
+  .impl__fig { margin: 0; }
+  .impl__img { aspect-ratio: 4 / 5; }
+  .impl__cap { max-width: 20em; margin-top: 0.9rem; font-size: 0.8rem; line-height: 1.5; color: var(--ink-soft); }
+  .impl__panel {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: clamp(1.75rem, 3vw, 2.5rem);
+    margin-left: clamp(-4rem, -4vw, -2rem);
+    padding: clamp(1.75rem, 3.5vw, 3rem);
+    background: var(--paper);
+    box-shadow: 0 2.5rem 5rem -2.75rem rgba(9, 29, 56, 0.45);
+  }
+
+  /* Journey: the heading holds its place while the steps run past */
+  .jrn { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .jrn__sticky { position: sticky; top: 9rem; }
+  .jrn__fig { margin: clamp(1.75rem, 3vw, 2.5rem) 0 0; }
+  .jrn__img { aspect-ratio: 5 / 4; }
+  .jrn__img img { object-position: 50% 62%; }
+  .jrn .steps { max-width: none; }
+
+  /* Recovery: the timeline, with two staggered plates alongside */
+  .rec { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .rec__stack { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .rec__fig { margin: 0; width: 76%; }
+  .rec__fig--b { justify-self: end; }
+  .rec__img { aspect-ratio: 4 / 5; }
+  .rec__cap { margin-top: 0.9rem; font-size: 0.8rem; line-height: 1.5; color: var(--ink-soft); }
+
+  /* A full-bleed pause between recovery and risks */
+  .statement { position: relative; overflow: hidden; isolation: isolate; background: var(--emerald-deep); }
+  .statement__bg { position: absolute; inset: -10% 0; z-index: -2; }
+  .statement__bg img { width: 100%; height: 100%; object-fit: cover; }
+  .statement::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(9, 29, 56, 0.9), rgba(9, 29, 56, 0.84));
+  }
+  .statement__inner { max-width: 56rem; padding-block: clamp(4rem, 8vw, 7rem); text-align: center; }
+  .statement__line {
+    margin-top: 1.25rem;
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 96;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 3.1vw, 2.8rem);
+    line-height: 1.2;
+    color: var(--ivory);
+  }
+  .statement__line em { color: var(--gold-light); }
 
   /* At a glance */
   .glance {
@@ -631,9 +777,20 @@ const icons = {
   .faq p { padding-bottom: 1.35rem; max-width: 44em; color: var(--ink-soft); }
 
   @media (max-width: 900px) {
-    .split { grid-template-columns: minmax(0, 1fr); }
-    .split--flip .split__fig { order: 0; }
-    .split__img--tall { aspect-ratio: 3 / 2; }
+    .opgrid, .impl, .jrn, .rec { grid-template-columns: minmax(0, 1fr); }
+    .opplate__img { aspect-ratio: 3 / 2; }
+    .impl__panel {
+      margin-left: 0;
+      margin-top: clamp(1.5rem, 4vw, 2.5rem);
+      margin-inline: clamp(0.75rem, 4vw, 2.5rem);
+    }
+    /* Leave a band of the photograph showing above the card on a phone. */
+    .glanceband__inner { padding-top: clamp(12rem, 42vw, 18rem); }
+    .glanceband__bg img { object-position: 70% 20%; }
+    .jrn__sticky { position: static; }
+    .jrn__img { aspect-ratio: 16 / 9; }
+    .rec__fig { width: 100%; }
+    .glancecard { max-width: none; }
     .planes, .risks { grid-template-columns: minmax(0, 1fr); }
     .costbox { grid-template-columns: minmax(0, 1fr); }
   }
