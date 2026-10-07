@@ -39,7 +39,7 @@ const icons = {
     titleEm={hero.titleEm}
     id="bahead-title"
     img="/images/ba-hero.webp"
-    imgPosition="50% 40%"
+    imgPosition="50% 32%"
     imgMobile="/images/ba-hero-mobile.webp"
     scrim="left"
     full
@@ -127,7 +127,7 @@ const icons = {
   <!-- At a glance: the facts on a card, over a full-bleed photograph -->
   <section class="glanceband" id="at-a-glance" aria-labelledby="gl-title">
     <div class="glanceband__bg" aria-hidden="true" data-parallax data-parallax-strength="8">
-      <img src="/images/ba-form.webp" alt="" width="1600" height="1066" loading="lazy" decoding="async" />
+      <img src="/images/ba-room.webp" alt="" width="2000" height="1342" loading="lazy" decoding="async" />
     </div>
     <div class="container glanceband__inner">
       <div class="glancecard" data-reveal-group>
@@ -284,31 +284,27 @@ const icons = {
         <h2 class="h2 shead__title" id="pl-title" data-reveal>Above, below, <em class="italic">or both</em></h2>
         <p class="shead__lead" data-reveal>
           Which plane the implant sits in changes how it looks, how it feels and how long you take
-          to recover. The diagrams are schematic, not anatomical drawings.
+          to recover.
         </p>
       </header>
 
       <ul class="planes" data-reveal-group>
         {[
-          { t: 'Subglandular', s: 'Above the muscle', d: 'Between breast tissue and chest muscle. Shorter recovery and easier access later, but rippling can show where there is little tissue or thin skin.', y: 34 },
-          { t: 'Submuscular', s: 'Below the muscle', d: 'Under the pectoral muscle. More natural look and feel, less rippling, less interference with mammograms. Longer and more uncomfortable recovery.', y: 56 },
-          { t: 'Dual plane', s: 'Both', d: 'Upper part under the muscle, lower part under breast tissue. The natural look of submuscular with the shape of subglandular, and the usual answer for mild sagging.', y: 45 },
+          { t: 'Subglandular', s: 'Above the muscle', img: 'ba-plane-subglandular', d: 'Between breast tissue and chest muscle. Shorter recovery and easier access later, but rippling can show where there is little tissue or thin skin.' },
+          { t: 'Submuscular', s: 'Below the muscle', img: 'ba-plane-submuscular', d: 'Under the pectoral muscle. More natural look and feel, less rippling, less interference with mammograms. Longer and more uncomfortable recovery.' },
+          { t: 'Dual plane', s: 'Both', img: 'ba-plane-dual', d: 'Upper part under the muscle, lower part under breast tissue. The natural look of submuscular with the shape of subglandular, and the usual answer for mild sagging.' },
         ].map((p) => (
           <li class="plane" data-reveal>
-            <svg class="plane__dia" viewBox="0 0 120 80" role="img" aria-label={`${p.t}: ${p.s}`}>
-              <path d="M0 24 H120" stroke="currentColor" stroke-width="1.5" opacity="0.35" />
-              <path d="M0 40 H120" stroke="currentColor" stroke-width="3" opacity="0.6" />
-              <path d="M0 62 H120" stroke="currentColor" stroke-width="2.5" opacity="0.9" />
-              <ellipse cx="60" cy={p.y} rx="26" ry="11" fill="currentColor" opacity="0.32" />
-              <ellipse cx="60" cy={p.y} rx="26" ry="11" fill="none" stroke="currentColor" stroke-width="1.5" />
-            </svg>
+            <div class="cover plane__dia">
+              <img src={`/images/${p.img}.webp`} alt={`Cross section of the breast showing ${p.t.toLowerCase()} implant placement, ${p.s.toLowerCase()}`} width="700" height="840" loading="lazy" decoding="async" />
+            </div>
             <h3 class="plane__title">{p.t}</h3>
             <p class="plane__sub">{p.s}</p>
             <p class="plane__text">{p.d}</p>
           </li>
         ))}
       </ul>
-      <p class="planes__key" data-reveal>Skin, then breast tissue, then muscle, then the chest wall. The shaded shape is the implant.</p>
+      <p class="planes__key" data-reveal>The pale shape is the implant; the band running down the chest is the pectoral muscle. The drawings are illustrative, and every chest differs.</p>
     </div>
   </section>
 
@@ -362,7 +358,6 @@ const icons = {
           <div class="cover rec__img" data-img-reveal>
             <img src="/images/ba-support.webp" alt="A woman fastening a front-opening post-surgical support bra" width="1120" height="1400" loading="lazy" decoding="async" />
           </div>
-          <figcaption class="rec__cap">The post-surgical bra goes on in theatre and stays on, day and night, for six weeks.</figcaption>
         </figure>
         <figure class="rec__fig rec__fig--b" data-reveal>
           <div class="cover rec__img" data-img-reveal>
@@ -536,7 +531,7 @@ const icons = {
     background: var(--emerald-deep);
   }
   .glanceband__bg { position: absolute; inset: -8% 0; z-index: -2; }
-  .glanceband__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 78% 32%; }
+  .glanceband__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 72% 42%; }
   .glanceband::before {
     content: '';
     position: absolute;
@@ -585,7 +580,9 @@ const icons = {
   }
 
   /* Journey: the heading holds its place while the steps run past */
-  .jrn { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  /* No align-items here: the aside has to fill the row, or the sticky child
+     has no room to travel and never sticks. */
+  .jrn { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 4.5rem); }
   .jrn__sticky { position: sticky; top: 9rem; }
   .jrn__fig { margin: clamp(1.75rem, 3vw, 2.5rem) 0 0; }
   .jrn__img { aspect-ratio: 5 / 4; }
@@ -594,11 +591,16 @@ const icons = {
 
   /* Recovery: the timeline, with two staggered plates alongside */
   .rec { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
-  .rec__stack { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
-  .rec__fig { margin: 0; width: 76%; }
-  .rec__fig--b { justify-self: end; }
+  .rec__fig { margin: 0; width: 64%; }
+  .rec__fig--b {
+    position: relative;
+    z-index: 1;
+    margin-left: 36%;
+    margin-top: -22%;
+    /* A ring of the section colour, so the upper plate reads as the nearer one. */
+    outline: clamp(0.4rem, 1vw, 0.75rem) solid var(--ivory-2);
+  }
   .rec__img { aspect-ratio: 4 / 5; }
-  .rec__cap { margin-top: 0.9rem; font-size: 0.8rem; line-height: 1.5; color: var(--ink-soft); }
 
   /* A full-bleed pause between recovery and risks */
   .statement { position: relative; overflow: hidden; isolation: isolate; background: var(--emerald-deep); }
@@ -693,7 +695,7 @@ const icons = {
 
   /* Placement */
   .planes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.75rem, 4vw, 3rem); }
-  .plane__dia { width: 100%; height: auto; color: var(--gold-light); background: rgba(9, 29, 56, 0.35); padding: 0.5rem; }
+  .plane__dia { aspect-ratio: 5 / 6; background: rgba(9, 29, 56, 0.35); }
   .plane__title {
     margin-top: 1.1rem;
     font-family: var(--font-display);
@@ -786,10 +788,11 @@ const icons = {
     }
     /* Leave a band of the photograph showing above the card on a phone. */
     .glanceband__inner { padding-top: clamp(12rem, 42vw, 18rem); }
-    .glanceband__bg img { object-position: 70% 20%; }
+    .glanceband__bg img { object-position: 76% 40%; }
     .jrn__sticky { position: static; }
     .jrn__img { aspect-ratio: 16 / 9; }
     .rec__fig { width: 100%; }
+    .rec__fig--b { margin: clamp(1.5rem, 4vw, 2.5rem) 0 0; outline: none; }
     .glancecard { max-width: none; }
     .planes, .risks { grid-template-columns: minmax(0, 1fr); }
     .costbox { grid-template-columns: minmax(0, 1fr); }
