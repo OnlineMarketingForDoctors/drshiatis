@@ -1,0 +1,85 @@
+---
+// Cross-section of the breast in profile, facing right, drawn so the one thing
+// that differs between the three planes is unmistakable: where the pectoral
+// muscle sits relative to the implant.
+//   subglandular - muscle behind the implant, only breast tissue in front of it
+//   submuscular  - muscle and gland both in front of the implant
+//   dual         - muscle over the upper half, released at its lower border,
+//                  gland covering the lower part of the implant
+interface Props { plane: 'subglandular' | 'submuscular' | 'dual'; title: string }
+const { plane, title } = Astro.props;
+
+const RIBS = [74, 132, 190, 248, 306, 364];
+
+// Skin, from the top of the chest out around the nipple and back to the fold.
+const SKIN =
+  'M62 44 C128 54 214 112 243 186 C252 208 254 214 258 222 C254 230 252 236 243 258 ' +
+  'C214 330 128 352 62 356 L62 392 L34 392 L34 44 Z';
+
+// The implant sits in front of the muscle in one case and behind it in two,
+// so it is drawn in two different places.
+const IMPLANT_FRONT =
+  'M92 118 C150 126 196 170 198 222 C196 282 150 318 92 326 C86 300 84 150 92 118 Z';
+const IMPLANT_BACK =
+  'M70 112 C130 120 178 166 180 220 C178 282 130 318 70 326 C66 300 64 144 70 112 Z';
+
+const configs = {
+  subglandular: {
+    implant: IMPLANT_FRONT,
+    // A straight band hugging the chest wall, wholly behind the implant.
+    muscle: 'M62 60 C74 60 80 64 82 70 L82 374 C80 380 74 384 62 384 Z',
+    // Breast tissue is the only thing between the implant and the skin.
+    gland: 'M196 150 C226 164 240 192 243 214 C240 248 226 282 196 296 C206 250 206 196 196 150 Z',
+  },
+  submuscular: {
+    implant: IMPLANT_BACK,
+    // The muscle sweeps right over the front of the implant, top to bottom.
+    muscle:
+      'M62 56 C130 70 184 134 192 220 C184 306 130 350 62 362 L62 344 ' +
+      'C118 332 166 294 174 220 C166 146 118 100 62 74 Z',
+    gland: 'M186 158 C218 172 238 196 243 214 C238 242 218 272 186 288 C194 246 194 200 186 158 Z',
+  },
+  dual: {
+    implant: IMPLANT_BACK,
+    // The same sweep, released halfway down: the band stops at the lower pole.
+    muscle:
+      'M62 56 C130 70 184 134 192 214 L174 218 C166 146 118 100 62 74 Z',
+    // Breast tissue covers the lower part of the implant instead.
+    gland:
+      'M176 214 C206 224 232 246 243 220 C238 258 214 296 176 306 ' +
+      'C186 278 186 242 176 214 Z',
+  },
+};
+
+const c = configs[plane];
+---
+
+<svg class="planedia" viewBox="0 0 280 420" role="img" aria-label={title}>
+  <!-- Chest wall and ribs -->
+  <path d={SKIN} fill="#f1e7d7" stroke="#c9a961" stroke-width="2.2" stroke-linejoin="round" />
+  {RIBS.map((y) => (
+    <ellipse cx="48" cy={y} rx="11" ry="17" fill="#e5d7bb" stroke="#c9a961" stroke-width="1.6" />
+  ))}
+
+  <!-- Subglandular puts the muscle behind the implant, so it is drawn first -->
+  {plane === 'subglandular' && (
+    <path d={c.muscle} fill="#c2908a" stroke="#a8786f" stroke-width="1.6" />
+  )}
+
+  <path d={c.implant} fill="#fbf8f3" stroke="#c9a961" stroke-width="2.2" />
+
+  <!-- The other two put it in front, so it is drawn over the implant -->
+  {plane !== 'subglandular' && (
+    <path d={c.muscle} fill="#c2908a" stroke="#a8786f" stroke-width="1.6" stroke-linejoin="round" />
+  )}
+
+  <!-- Breast tissue, always in front -->
+  <path d={c.gland} fill="#e3c88f" stroke="#c9a961" stroke-width="1.6" stroke-linejoin="round" />
+
+  <!-- Nipple -->
+  <path d="M258 222 C266 216 272 218 274 222 C272 226 266 228 258 222 Z" fill="#d8b89a" stroke="#c9a961" stroke-width="1.6" stroke-linejoin="round" />
+</svg>
+
+<style>
+  .planedia { display: block; width: 100%; height: auto; }
+</style>

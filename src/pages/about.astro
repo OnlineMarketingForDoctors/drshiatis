@@ -38,12 +38,12 @@ const path = [
   {
     place: 'Boston University, USA',
     role: 'Fulbright Scholar',
-    text: 'A period of study in the United States on a Fulbright Scholarship, one of the most competitive academic awards available to UK graduates.',
+    text: 'A period of study in the United States on a Fulbright Scholarship, one of the most competitive academic awards available to international graduates.',
   },
   {
     place: 'London Deanery',
     role: 'Specialist plastic surgery training',
-    text: 'Higher surgical training across all the major London plastic surgery units, including Imperial College, the Royal Free Hospital, Guy’s and St Thomas’ Hospital and Chelsea and Westminster Hospital.',
+    text: 'Higher surgical training in the UK’s most sought after school of surgery and plastic surgery units, including Imperial College, the Royal Free Hospital, Guy’s and St Thomas’ Hospital and Chelsea and Westminster Hospital.',
   },
   {
     place: 'Royal College of Surgeons of England',
@@ -234,23 +234,9 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
   <section class="intro section bg-ivory" aria-labelledby="intro-title">
     <div class="container">
       <header class="intro__head" data-reveal-group>
-        <p class="eyebrow eyebrow--gold" data-reveal>The practice</p>
-        <h2 class="h2" id="intro-title" data-reveal>Refined results, <em class="italic">honestly arrived at</em></h2>
+        <p class="eyebrow eyebrow--gold" data-reveal>How he works</p>
+        <h2 class="h2" id="intro-title" data-reveal>What every patient <em class="italic">can expect</em></h2>
       </header>
-
-      <div class="intro__body" data-reveal-group>
-        <p class="lead" data-reveal>
-          What that looks like in a consulting room, and what it means for the result you are asking for.
-        </p>
-        <div class="intro__cols" data-reveal>
-          <p>
-            His philosophy is centred on elegant, natural-looking results that enhance confidence while respecting each patient’s individual anatomy. Surgery is planned around proportion rather than a fixed idea of how a result should look, so that the outcome is refined rather than obvious, and still recognisably you.
-          </p>
-          <p>
-            He continues to refine his practice through leading national and international education, incorporating evidence-based innovations in breast and body contouring: advanced implant technologies, internal support techniques, ultrasound-assisted liposuction and skin-tightening technologies. A small number of facial procedures complement the surgical practice.
-          </p>
-        </div>
-      </div>
 
       <ul class="intro__commitments" data-reveal-group>
         {commitments.map((c, i) => (
@@ -303,7 +289,7 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
     <div class="container">
       <header class="path__head" data-reveal-group>
         <p class="eyebrow eyebrow--gold" data-reveal>Training and appointments</p>
-        <h2 class="h2" id="path-title" data-reveal>Where the <em class="italic">hands were trained</em></h2>
+        <h2 class="h2" id="path-title" data-reveal>A rigorous surgical journey, shaped by <em class="italic">centres of excellence</em></h2>
         <p class="lead measure" data-reveal>
           Fifteen years in plastic surgery, through the London teaching hospitals, a microsurgery fellowship and an NHS consultant post, all before a single aesthetic result is planned.
         </p>
@@ -344,7 +330,7 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
         <p class="eyebrow eyebrow--gold" data-reveal>NHS and private practice</p>
         <h2 class="h2" id="dual-title" data-reveal>Two practices, <em class="italic">one standard</em></h2>
         <p class="lead measure" data-reveal>
-          Reconstructive surgery and aesthetic surgery are usually spoken about separately. Mr Shiatis does both, and each makes the other better.
+          Reconstructive surgery and aesthetic surgery are usually spoken about separately. Mr Shiatis does both, and each complements the other.
         </p>
       </header>
 
@@ -368,7 +354,7 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
             <img src="/images/about-lounge.webp" alt="Mr Shiatis outside his private consulting rooms" width="1500" height="1000" loading="lazy" decoding="async" />
           </div>
           <p class="eyebrow eyebrow--gold dual__label" data-reveal>Private</p>
-          <h3 class="h3 dual__title" data-reveal>Fitzrovia Hospital, with Pantheons Clinic</h3>
+          <h3 class="h3 dual__title" data-reveal>Pantheons Clinic</h3>
           <p class="dual__text" data-reveal>
             Private patients are seen under the Pantheons Clinic, with consultations and surgery at Fitzrovia Hospital in central London. The setting is deliberately boutique: discreet, unhurried, and built around a single surgeon rather than a production line.
           </p>
@@ -383,13 +369,21 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
   <!-- What he treats -->
   <section class="treats section bg-ivory" id="procedures" aria-labelledby="treats-title">
     <div class="container">
-      <header class="treats__head" data-reveal-group>
-        <p class="eyebrow eyebrow--gold" data-reveal>What he treats</p>
-        <h2 class="h2" id="treats-title" data-reveal>A focused <em class="italic">practice</em></h2>
-        <p class="lead measure" data-reveal>
-          Most of the practice is breast and body surgery, for patients after weight loss or pregnancy, for asymmetry, and for men with gynaecomastia.
-        </p>
-      </header>
+      <div class="treats__intro">
+        <header class="treats__head" data-reveal-group>
+          <p class="eyebrow eyebrow--gold" data-reveal>What he treats</p>
+          <h2 class="h2" id="treats-title" data-reveal>A focused <em class="italic">practice</em></h2>
+          <p class="lead measure" data-reveal>
+            Most of the practice is breast and body surgery, for patients after weight loss or pregnancy, for asymmetry, and for men with gynaecomastia.
+          </p>
+        </header>
+
+        <figure class="treats__figure" data-reveal>
+          <div class="cover treats__img" data-img-reveal>
+            <img src="/images/about-treats.webp" alt="Mr Shiatis in surgical scrubs at the door of his clinic" width="1200" height="1500" loading="lazy" decoding="async" />
+          </div>
+        </figure>
+      </div>
 
       <div class="treats__grid" data-reveal-group>
         {groups.map((g) => (
@@ -469,7 +463,7 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
         <p class="eyebrow eyebrow--gold" data-reveal>Where he practises</p>
         <h2 class="h2" id="where-title" data-reveal>Central London, <em class="italic">and the counties around it</em></h2>
         <p class="lead" data-reveal>
-          Consultations and surgery take place at Fitzrovia Hospital, a CQC-registered hospital in central London, with patients travelling in from across the South East.
+          Consultations and surgery take place at Fitzrovia Hospital, a CQC-registered hospital in central London, with patients travelling in from all over the UK and abroad.
         </p>
         <ul class="where__regions" data-reveal>
           {regions.map((r) => <li>{r}</li>)}
@@ -792,10 +786,16 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
   /* ---------------------------------------------------------------------
      What he treats
   --------------------------------------------------------------------- */
-  .treats__head {
-    max-width: 44rem;
+  .treats__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
     margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
+  .treats__figure { margin: 0; }
+  .treats__img { aspect-ratio: 4 / 5; }
+  .treats__head { max-width: 44rem; }
   .treats__head .h2 { margin-top: 1rem; }
   .treats__head .lead { margin-top: 1.5rem; }
 
@@ -946,6 +946,8 @@ const rel = (href) => (href.startsWith('http') ? 'noopener' : null);
   --------------------------------------------------------------------- */
   @media (max-width: 1100px) {
     .treats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .treats__intro { grid-template-columns: minmax(0, 1fr); }
+    .treats__img { aspect-ratio: 3 / 2; }
   }
 
   @media (max-width: 900px) {

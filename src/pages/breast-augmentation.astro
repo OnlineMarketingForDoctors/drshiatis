@@ -4,6 +4,7 @@ import PageHead from '../components/PageHead.astro';
 import Reviews from '../components/Reviews.astro';
 import SectionNav from '../components/SectionNav.astro';
 import BaCarousel from '../components/BaCarousel.astro';
+import PlaneDiagram from '../components/PlaneDiagram.astro';
 import Meet from '../components/Meet.astro';
 import PageCta from '../components/PageCta.astro';
 import { site } from '../data/site.js';
@@ -30,7 +31,7 @@ const icons = {
   variant="solid"
   path="/breast-augmentation"
   title="Breast Augmentation London | Mr Andreas Shiatis, Consultant Plastic Surgeon"
-  description="Breast augmentation with Mr Andreas Shiatis FRCS (Plast), Consultant Plastic Surgeon in London. Implants chosen by measurement, two consultations before any decision, from £6,000."
+  description="Breast augmentation with Mr Andreas Shiatis FRCS (Plast), Consultant Plastic Surgeon in London. Implants chosen by measurement, two consultations before any decision, from £8,000."
 >
   <!-- Hero -->
   <PageHead
@@ -107,12 +108,14 @@ const icons = {
             That decision is which implant, in which plane, for your particular chest. Mr Shiatis
             plans it by measurement: chest width, the width of your own breast base, how much
             tissue there is to cover an implant and how elastic your skin is. Those numbers narrow
-            the sensible range considerably before anybody discusses a look.
+            the sensible range considerably before anybody discusses a look. Additional imaging and
+            the rice bag test can help you conceptualise the likely result.
           </p>
           <p>
             He offers breast harmonisation through traditional augmentation alongside the latest
-            tissue preservation technique, Preserve. Which suits you is a conversation, not a
-            product you choose from a list.
+            tissue preservation technique, Preserve. This technique preserves the natural suspensory
+            ligaments of your breast and allows for more natural results. Which technique suits you
+            and your anatomy is the result of our conversation, not a product you choose from a list.
           </p>
         </div>
       </div>
@@ -132,7 +135,7 @@ const icons = {
     <div class="container glanceband__inner">
       <div class="glancecard" data-reveal-group>
         <p class="eyebrow eyebrow--gold" data-reveal>At a glance</p>
-        <h2 class="h2 glancecard__title" id="gl-title" data-reveal>Breast augmentation <em class="italic">at a glance</em></h2>
+        <h2 class="h2 glancecard__title" id="gl-title" data-reveal>Traditional breast augmentation <em class="italic">at a glance</em></h2>
         <p class="glancecard__lead" data-reveal>
           A snapshot of what to expect. Every plan is individual, so Mr Shiatis confirms your own
           timings at your consultation.
@@ -172,8 +175,37 @@ const icons = {
     </div>
   </section>
 
+  <!-- Journey: the heading holds its place on the left while the steps run past -->
+  <section class="section" id="journey" aria-labelledby="jr-title">
+    <div class="container jrn">
+      <div class="jrn__aside">
+        <div class="jrn__sticky">
+          <p class="eyebrow eyebrow--gold" data-reveal>Your journey</p>
+          <h2 class="h2 shead__title" id="jr-title" data-reveal>From enquiry <em class="italic">to settled</em></h2>
+          <figure class="jrn__fig" data-reveal>
+            <div class="cover jrn__img" data-img-reveal>
+              <img src="/images/ba-plan.webp" alt="A measuring tape, skin marker and calipers on a sheet of paper on a consulting desk" width="1120" height="1400" loading="lazy" decoding="async" />
+            </div>
+          </figure>
+        </div>
+      </div>
+
+      <ol class="steps" data-reveal-group>
+        {steps.map((s) => (
+          <li class="step" data-reveal>
+            <span class="step__n italic" aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
+            <div>
+              <h3 class="step__title">{s.title}</h3>
+              <p class="step__text">{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
   <!-- Candidates -->
-  <section class="section" id="candidates" aria-labelledby="cd-title">
+  <section class="section bg-ivory-2" id="candidates" aria-labelledby="cd-title">
     <div class="container">
       <header class="shead">
         <p class="eyebrow eyebrow--gold" data-reveal>Suitability</p>
@@ -190,43 +222,11 @@ const icons = {
         </div>
       </div>
       <p class="suit__note" data-reveal>
-        None of these is a verdict. They are the things Mr Shiatis will want to talk through, and
-        if surgery is not the right answer for you he will say so.
+        Consider each consultation an open conversation, where Mr Shiatis will guide you through the
+        options and highlight any lifestyle or anatomical considerations that affect your decision
+        making. Additional support, including 3D imaging and the rice bag test, will help you make a
+        more bespoke decision.
       </p>
-    </div>
-  </section>
-
-  <!-- The operation: a wide plate, then the account in two columns beneath it -->
-  <section class="section bg-ivory-2" id="procedure" aria-labelledby="pr-title">
-    <div class="container">
-      <figure class="opplate" data-reveal>
-        <div class="cover opplate__img" data-img-reveal>
-          <img src="/images/ba-theatre.webp" alt="An operating theatre set up and waiting, instrument trolley draped in surgical cloth" width="1800" height="1012" loading="lazy" decoding="async" />
-        </div>
-      </figure>
-
-      <div class="opgrid">
-        <header class="opgrid__head">
-          <p class="eyebrow eyebrow--gold" data-reveal>The operation</p>
-          <h2 class="h2 shead__title" id="pr-title" data-reveal>What it <em class="italic">involves</em></h2>
-        </header>
-        <div class="prose opgrid__cols" data-reveal>
-          <p>
-            You are marked up standing and in daylight before you go anywhere near theatre, because
-            the plan has to work on a body that is upright rather than lying down.
-          </p>
-          <p>
-            Under general anaesthetic, a short incision is made in the fold beneath the breast,
-            where the scar sits hidden. A pocket is created in the chosen plane, the implant is
-            placed through a sleeve that keeps it from touching skin, and the position is checked
-            with you sat up on the table before closing.
-          </p>
-          <p>
-            About an hour and a half. No drains in a routine case. You wake in recovery, go back to
-            your own room, and most patients are home the same evening.
-          </p>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -269,9 +269,9 @@ const icons = {
       </div>
 
       <p class="suit__note" data-reveal>
-        Mr Shiatis also offers Preserve, a tissue preservation technique used alongside traditional
-        augmentation where it suits the patient. Whether it applies to you is discussed at
-        consultation.
+        Mr Shiatis also offers Preserve by Motiva, a tissue preservation technique used where it
+        suits the patient. It makes use of the latest ergonomic implant technology by Motiva.
+        Whether it applies to you is discussed at consultation.
       </p>
     </div>
   </section>
@@ -290,13 +290,13 @@ const icons = {
 
       <ul class="planes" data-reveal-group>
         {[
-          { t: 'Subglandular', s: 'Above the muscle', img: 'ba-plane-subglandular', d: 'Between breast tissue and chest muscle. Shorter recovery and easier access later, but rippling can show where there is little tissue or thin skin.' },
-          { t: 'Submuscular', s: 'Below the muscle', img: 'ba-plane-submuscular', d: 'Under the pectoral muscle. More natural look and feel, less rippling, less interference with mammograms. Longer and more uncomfortable recovery.' },
-          { t: 'Dual plane', s: 'Both', img: 'ba-plane-dual', d: 'Upper part under the muscle, lower part under breast tissue. The natural look of submuscular with the shape of subglandular, and the usual answer for mild sagging.' },
+          { t: 'Subglandular', s: 'Above the muscle', plane: 'subglandular', d: 'Between breast tissue and chest muscle. Shorter recovery and easier access later, but rippling can show where there is little tissue or thin skin.' },
+          { t: 'Submuscular', s: 'Below the muscle', plane: 'submuscular', d: 'Under the pectoral muscle. More natural look and feel, less rippling, less interference with mammograms. Longer and more uncomfortable recovery.' },
+          { t: 'Dual plane', s: 'Both', plane: 'dual', d: 'Upper part under the muscle, lower part under breast tissue. The natural look of submuscular with the shape of subglandular, and the usual answer for mild sagging.' },
         ].map((p) => (
           <li class="plane" data-reveal>
-            <div class="cover plane__dia">
-              <img src={`/images/${p.img}.webp`} alt={`Cross section of the breast showing ${p.t.toLowerCase()} implant placement, ${p.s.toLowerCase()}`} width="700" height="840" loading="lazy" decoding="async" />
+            <div class="plane__dia">
+              <PlaneDiagram plane={p.plane} title={`Cross section of the breast showing ${p.t.toLowerCase()} implant placement, ${p.s.toLowerCase()}`} />
             </div>
             <h3 class="plane__title">{p.t}</h3>
             <p class="plane__sub">{p.s}</p>
@@ -308,37 +308,43 @@ const icons = {
     </div>
   </section>
 
-  <!-- Journey: the heading holds its place on the left while the steps run past -->
-  <section class="section" id="journey" aria-labelledby="jr-title">
-    <div class="container jrn">
-      <div class="jrn__aside">
-        <div class="jrn__sticky">
-          <p class="eyebrow eyebrow--gold" data-reveal>Your journey</p>
-          <h2 class="h2 shead__title" id="jr-title" data-reveal>From enquiry <em class="italic">to settled</em></h2>
-          <figure class="jrn__fig" data-reveal>
-            <div class="cover jrn__img" data-img-reveal>
-              <img src="/images/ba-plan.webp" alt="A measuring tape, skin marker and calipers on a sheet of paper on a consulting desk" width="1120" height="1400" loading="lazy" decoding="async" />
-            </div>
-          </figure>
+  <!-- The operation: a wide plate, then the account in two columns beneath it -->
+  <section class="section bg-ivory-2" id="procedure" aria-labelledby="pr-title">
+    <div class="container">
+      <figure class="opplate" data-reveal>
+        <div class="cover opplate__img" data-img-reveal>
+          <img src="/images/ba-theatre.webp" alt="An operating theatre set up and waiting, instrument trolley draped in surgical cloth" width="1800" height="1012" loading="lazy" decoding="async" />
+        </div>
+      </figure>
+
+      <div class="opgrid">
+        <header class="opgrid__head">
+          <p class="eyebrow eyebrow--gold" data-reveal>The operation</p>
+          <h2 class="h2 shead__title" id="pr-title" data-reveal>What it <em class="italic">involves</em></h2>
+        </header>
+        <div class="prose opgrid__cols" data-reveal>
+          <p>
+            Marking is performed in a standing or sitting position before going to theatre, because
+            the plan has to work on a body that is upright rather than lying down.
+          </p>
+          <p>
+            Under general anaesthetic, a short incision is made in the fold beneath the breast,
+            where the scar sits hidden. A pocket is created in the chosen plane, the implant is
+            placed through a sleeve that keeps it from touching skin, and the position is checked
+            with you sat up on the table before closing.
+          </p>
+          <p>
+            The procedure takes an hour and a half. No drains are used in routine cases. Recovery
+            takes place in the recovery area and then your own room, and we aim to send you home
+            the same day.
+          </p>
         </div>
       </div>
-
-      <ol class="steps" data-reveal-group>
-        {steps.map((s) => (
-          <li class="step" data-reveal>
-            <span class="step__n italic" aria-hidden="true">{String(s.n).padStart(2, '0')}</span>
-            <div>
-              <h3 class="step__title">{s.title}</h3>
-              <p class="step__text">{s.text}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
     </div>
   </section>
 
   <!-- Recovery: the timeline, with two staggered plates alongside it -->
-  <section class="section bg-ivory-2" id="recovery" aria-labelledby="rc-title">
+  <section class="section" id="recovery" aria-labelledby="rc-title">
     <div class="container rec">
       <div class="rec__copy">
         <p class="eyebrow eyebrow--gold" data-reveal>Recovery</p>
@@ -376,7 +382,7 @@ const icons = {
     <div class="container statement__inner" data-reveal-group>
       <p class="eyebrow" data-reveal>On timing</p>
       <p class="statement__line" data-reveal>
-        Implants drop and soften for about three months. The result worth judging is the one at the
+        Implants drop and soften for about six months. The result worth judging is the one at the
         end of that, <em class="italic">not the one in the mirror in week one.</em>
       </p>
     </div>
@@ -598,7 +604,7 @@ const icons = {
     margin-left: 36%;
     margin-top: -22%;
     /* A ring of the section colour, so the upper plate reads as the nearer one. */
-    outline: clamp(0.4rem, 1vw, 0.75rem) solid var(--ivory-2);
+    outline: clamp(0.4rem, 1vw, 0.75rem) solid var(--ivory);
   }
   .rec__img { aspect-ratio: 4 / 5; }
 
@@ -695,7 +701,7 @@ const icons = {
 
   /* Placement */
   .planes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.75rem, 4vw, 3rem); }
-  .plane__dia { aspect-ratio: 5 / 6; background: rgba(9, 29, 56, 0.35); }
+  .plane__dia { aspect-ratio: 5 / 6; display: grid; place-items: center; padding: clamp(0.75rem, 2vw, 1.25rem); background: rgba(9, 29, 56, 0.35); }
   .plane__title {
     margin-top: 1.1rem;
     font-family: var(--font-display);

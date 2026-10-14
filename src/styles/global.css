@@ -180,6 +180,12 @@ ul, ol { padding: 0; list-style: none; }
 section[id] { scroll-margin-top: 5.5rem; }
 
 .section { padding-block: var(--section); }
+
+/* Room at the foot of the page for the sticky action bar on a phone, and the
+   back-to-top button lifted clear of it. */
+@media (max-width: 900px) {
+  body { padding-bottom: calc(3.4rem + env(safe-area-inset-bottom, 0px)); }
+}
 .section--tight { padding-block: calc(var(--section) * 0.6); }
 
 .bg-ivory { background: var(--ivory); }

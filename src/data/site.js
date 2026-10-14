@@ -4,8 +4,10 @@ export const site = {
   // Without the honorific, for the hero lockup.
   surgeonShort: 'Andreas Shiatis',
   qualifications: 'BA MBBS FRCS(Plast)',
-  phoneDisplay: '+44 (0)20 8050 9669',
-  phoneHref: 'tel:+442080509669',
+  // The Pantheons Clinic line. WhatsApp below is still the old 020 number;
+  // it has not been confirmed that the landline takes WhatsApp.
+  phoneDisplay: '+44 (0)1342 330302',
+  phoneHref: 'tel:+441342330302',
   // WhatsApp is off the site; the href stays in case it comes back.
   whatsappHref: 'https://wa.me/442080509669',
   email: 'info@drshiatis.com',
