@@ -63,32 +63,24 @@ const families = [
       <h2 class="h2" id="flagship-title" data-reveal>Flagship <em class="italic">treatments</em></h2>
     </header>
 
-    <div class="flag__index">
-      {families.map((f) => (
-        <div class="flag__family">
-          <h3 class="flag__label">{f.label}</h3>
-
-          <ul class="flag__rows" data-reveal-group>
-            {f.items.map((p) => (
-              <li data-reveal>
-                <a class="flag__row" href={p.href}>
-                  <span class="flag__thumb">
-                    <img src={p.img} alt={p.alt} width="400" height="400" loading="lazy" decoding="async" />
-                  </span>
-                  <span class="flag__copy">
-                    <span class="flag__name">{p.name}</span>
-                    <span class="flag__note">{p.note}</span>
-                  </span>
-                  <span class="flag__arrow" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+    <ul class="flag__grid" data-reveal-group>
+      {families.flatMap((f) => f.items).map((p) => (
+        <li data-reveal>
+          <a class="flag__row" href={p.href}>
+            <span class="flag__thumb">
+              <img src={p.img} alt={p.alt} width="400" height="400" loading="lazy" decoding="async" />
+            </span>
+            <span class="flag__copy">
+              <span class="flag__name">{p.name}</span>
+              <span class="flag__note">{p.note}</span>
+            </span>
+            <span class="flag__arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+            </span>
+          </a>
+        </li>
       ))}
-    </div>
+    </ul>
   </div>
 </section>
 
@@ -107,28 +99,17 @@ const families = [
     padding-bottom: clamp(2rem, 3.5vw, 3rem);
   }
 
-  /* Two columns, one per family, divided by the brand's gold hairline. */
-  .flag__index {
+  /* Three across, the treatments flowing in one grid. */
+  .flag__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(1.25rem, 2.5vw, 2.5rem);
+    border-top: 1px solid rgba(184, 150, 79, 0.4);
   }
-  .flag__family { padding-inline: clamp(1rem, 2.5vw, 2.75rem); }
-  .flag__family:first-child { padding-left: 0; }
-  .flag__family:last-child {
-    padding-right: 0;
-    border-left: 1px solid rgba(184, 150, 79, 0.4);
-  }
-
-  .flag__label {
-    padding-bottom: 0.9rem;
-    border-bottom: 1px solid rgba(184, 150, 79, 0.4);
-    font-family: var(--font-body);
-    font-size: var(--fs-eyebrow);
-    font-weight: 500;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
+  /* The cell stretches but the link inside does not, so the rules under each
+     card land at different heights unless it is told to fill. */
+  .flag__grid > li { display: grid; }
+  .flag__grid .flag__row { height: 100%; align-content: center; }
 
   .flag__row {
     position: relative;
@@ -219,14 +200,15 @@ const families = [
   :global(.reduced-motion) .flag__thumb img,
   :global(.reduced-motion) .flag__arrow { transition: none; }
 
+  @media (max-width: 1100px) {
+    .flag__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 760px) {
+    .flag__grid { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 900px) {
-    /* One column: the families stack, the divider lies down between them. */
-    .flag__index { grid-template-columns: 1fr; }
-    .flag__family { padding-inline: 0; }
-    .flag__family:last-child {
-      border-left: 0;
-      margin-top: clamp(2rem, 5vw, 3rem);
-    }
     .flag__row {
       padding-inline: 0;
       /* No hover on touch, so the sweep would only ever half-fire. */
