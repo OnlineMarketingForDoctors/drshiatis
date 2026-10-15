@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-// The hero's muted background video, paused while the lightbox is open.
+// The hero's muted background film, paused while the lightbox is open.
 let heroPlayer = null;
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -106,96 +106,43 @@ function initHero() {
 }
 
 function initHeroVideo() {
-  const container = $('[data-hero-video]');
-  const mount = container?.querySelector('[data-yt-mount]');
-  if (!container || !mount) return;
+  const video = $('[data-hero-video]');
+  if (!video) return;
 
-  // Reduced motion, or a connection the visitor is paying for by the megabyte:
-  // never fetch the player. The section keeps its plain black ground.
+  // Reduced motion, or a connection the visitor is paying for by the
+  // megabyte: never fetch the film. The poster carries the hero on its own.
   const conn = navigator.connection;
   const frugal = conn && (conn.saveData || /2g/.test(conn.effectiveType || ''));
   if (reduceMotion || frugal) return;
 
-  const id = container.dataset.heroVideo;
-  if (!id) return;
+  heroPlayer = video;
 
-  const build = () => {
-    // The API replaces the mount node with the iframe, so the mount has to sit
-    // inside the styled wrapper or the video ends up outside the cover box.
-    heroPlayer = new window.YT.Player(mount, {
-      // Privacy-enhanced mode, the same domain the lightbox uses. Without it
-      // the player defaults to youtube.com and sets tracking cookies on the
-      // home page before anyone has asked for a video.
-      host: 'https://www.youtube-nocookie.com',
-      videoId: id,
-      playerVars: {
-        autoplay: 1,
-        mute: 1,
-        controls: 0,
-        loop: 1,
-        playlist: id,
-        playsinline: 1,
-        rel: 0,
-        modestbranding: 1,
-        disablekb: 1,
-        iv_load_policy: 3,
-        cc_load_policy: 3,
-        fs: 0,
-      },
-      events: {
-        onReady: (e) => {
-          e.target.mute();
-          e.target.playVideo();
-        },
-        onStateChange: (e) => {
-          if (e.data === window.YT.PlayerState.PLAYING) {
-            container.classList.add('is-playing');
-            // YouTube force-enables captions for muted autoplay, and
-            // cc_load_policy alone does not hold. Tearing the module out once
-            // playback has actually started does.
-            try {
-              e.target.unloadModule('captions');
-              e.target.unloadModule('cc');
-              e.target.setOption('captions', 'track', {});
-            } catch {}
-          }
-          // Belt and braces: the loop playlist occasionally drops a lap.
-          if (e.data === window.YT.PlayerState.ENDED) e.target.playVideo();
-        },
-      },
-    });
-  };
+  // A browser that refuses to autoplay, or a file it cannot decode, simply
+  // leaves the poster showing: the class that fades the film in never lands.
+  const play = () => video.play().catch(() => {});
 
+  video.addEventListener('playing', () => video.classList.add('is-playing'));
+  video.addEventListener('error', () => video.classList.remove('is-playing'));
+
+  // Let the page paint and settle before pulling down several megabytes.
   const load = () => {
-    if (window.YT && window.YT.Player) {
-      build();
-      return;
-    }
-    const prev = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      if (typeof prev === 'function') prev();
-      build();
-    };
-    const s = document.createElement('script');
-    s.src = 'https://www.youtube.com/iframe_api';
-    s.async = true;
-    document.head.appendChild(s);
+    video.preload = 'auto';
+    video.load();
+    play();
   };
-
-  // Let the page paint and settle before pulling in the player.
   if (document.readyState === 'complete') setTimeout(load, 400);
   else window.addEventListener('load', () => setTimeout(load, 400), { once: true });
 
   // Don't burn battery decoding a video nobody can see.
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) heroPlayer?.pauseVideo?.();
-    else if (!document.querySelector('[data-lightbox]:not([hidden])')) heroPlayer?.playVideo?.();
+    if (document.hidden) video.pause();
+    else if (!document.querySelector('[data-lightbox]:not([hidden])')) play();
   });
   ScrollTrigger.create({
-    trigger: container,
+    trigger: video,
     start: 'top bottom',
     end: 'bottom top',
-    onToggle: (self) => (self.isActive ? heroPlayer?.playVideo?.() : heroPlayer?.pauseVideo?.()),
+    onToggle: (self) => (self.isActive ? play() : video.pause()),
   });
 }
 
@@ -549,22 +496,23 @@ function initLightbox() {
     root.hidden = true;
     frame.innerHTML = '';
     document.body.classList.remove('menu-open');
-    try { heroPlayer?.playVideo?.(); } catch {}
+    try { heroPlayer?.play?.(); } catch {}
     lastFocus?.focus?.();
   };
 
-  const open = (id) => {
+  const open = (src) => {
     lastFocus = document.activeElement;
-    const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
-    iframe.title = 'Video';
-    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-    iframe.allowFullscreen = true;
-    frame.replaceChildren(iframe);
+    const player = document.createElement('video');
+    player.src = src;
+    player.controls = true;
+    player.autoplay = true;
+    player.setAttribute('playsinline', '');
+    player.play().catch(() => {});
+    frame.replaceChildren(player);
     root.hidden = false;
     root.classList.add('is-open');
     document.body.classList.add('menu-open');
-    try { heroPlayer?.pauseVideo?.(); } catch {}
+    try { heroPlayer?.pause?.(); } catch {}
     $('[data-lightbox-close]:not(.lightbox__backdrop)', root)?.focus();
   };
 

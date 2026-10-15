@@ -1,5 +1,5 @@
 ---
-// Full-screen video lightbox. The iframe is created on open and removed on
+// Full-screen video lightbox. The player is created on open and removed on
 // close so playback stops and nothing loads until it is asked for.
 ---
 
@@ -41,7 +41,8 @@
     background: #000;
     box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
   }
-  .lightbox__frame :global(iframe) {
+  .lightbox__frame :global(iframe),
+  .lightbox__frame :global(video) {
     position: absolute;
     inset: 0;
     width: 100%;
