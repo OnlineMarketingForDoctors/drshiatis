@@ -1,8 +1,19 @@
 ---
-import { reviews } from '../data/reviews.js';
+import { reviews as all } from '../data/reviews.js';
 import Stars from './Stars.astro';
+
+// A procedure page passes the Doctify categories it wants, so a tummy tuck
+// page does not carry breast reviews. Omit it and every review shows.
+interface Props { procedures?: string[] }
+const { procedures } = Astro.props;
+
+const wanted = procedures?.map((p) => p.toLowerCase());
+const reviews = wanted
+  ? all.filter((r) => wanted.includes(r.procedure.toLowerCase()))
+  : all;
 ---
 
+{reviews.length > 0 && (
 <section class="reviews section" id="reviews" aria-label="Patient reviews">
   <div class="reviews__viewport" data-reviews>
     <ul class="reviews__track container" data-reviews-track>
@@ -30,6 +41,7 @@ import Stars from './Stars.astro';
   </div>
 
 </section>
+)}
 
 <style>
   .reviews {
