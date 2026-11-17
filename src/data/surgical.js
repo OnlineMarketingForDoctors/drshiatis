@@ -32,7 +32,7 @@ export const areas = [
     intro:
       'Reshaping after pregnancy or weight loss, and the contouring that refines a shape rather than reduces it.',
     items: [
-      ['Abdominoplasty (tummy tuck)', 'abdominoplasty-(tummy-tuck)', '/tummy-tuck'],
+      ['Abdominoplasty (tummy tuck)', 'abdominoplasty-(tummy-tuck)'],
       ['Body Lift', 'body-lift'],
       ['Liposuction / Liposculpting', 'liposuction%2F-liposculpting-'],
       ['Arm Lift', 'arm-lift'],
