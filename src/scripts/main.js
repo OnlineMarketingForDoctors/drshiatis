@@ -88,13 +88,10 @@ function initHero() {
   const hero = $('[data-hero]');
   if (!hero) return;
 
+  // The entrance itself is CSS now, in Hero.astro: it has to paint without
+  // waiting for this bundle, because the hero carries the largest paint on
+  // the page. Only the scroll-linked drift is left here.
   if (!reduceMotion) {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.15 });
-    tl.to('.hero__line > span', { y: 0, duration: 1.2, stagger: 0.12, ease: 'expo.out' })
-      .to('[data-hero-rule]', { scaleX: 1, duration: 1, ease: 'expo.inOut' }, '-=0.7')
-      .to('[data-hero-line]', { opacity: 1, y: 0, duration: 0.9, stagger: 0.12 }, '-=0.6')
-      .fromTo('.site-header', { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 1 }, '-=0.9');
-
     gsap.to('.hero__content', {
       yPercent: 18,
       ease: 'none',
@@ -111,9 +108,13 @@ function initHeroVideo() {
 
   // Reduced motion, or a connection the visitor is paying for by the
   // megabyte: never fetch the film. The poster carries the hero on its own.
+  // A phone is treated the same way. The film is eight megabytes, which on a
+  // mobile connection is both a real cost to the visitor and the single
+  // largest thing competing for the bandwidth the first screen needs.
   const conn = navigator.connection;
   const frugal = conn && (conn.saveData || /2g/.test(conn.effectiveType || ''));
-  if (reduceMotion || frugal) return;
+  const small = window.matchMedia('(max-width: 900px)').matches;
+  if (reduceMotion || frugal || small) return;
 
   heroPlayer = video;
 
